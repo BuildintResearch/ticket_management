@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>i-Check List/Add Sites</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css?v=3.0" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex justify-content-between align-items-center">
+
+      <div class="logo">
+        <!-- <h1><a href="index.html">SoftLand</a></h1> -->
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>
+      </div>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li class="dropdown"><a href="#"><span>Links</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href='https://i-checklist.web.app/'>iCheck List</a></li>
+              <li><a href="#">iCheckList History</a></li>
+              <li><a href="https://console.euronet.buildint.co/login" target="_blank">Euronet</a></li>
+              <li class="dropdown"><a href="#"><span>IDFC</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://idfc.cloud-building.com/" target="_blank">iControlling</a></li>
+                  <li><a href="https://console.buildint.co/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>ICICI Pru</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://icicipru.cloud-building.com/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>HDFC</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://hdfc.cloud-building.com/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>Kotak</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://kotak.cloud-building.com/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+            </ul>
+            
+          </li>
+          <!-- <li><a href="contact.html">Contact Us</a></li> -->
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+  
+
+  <main id="main">
+
+    <!-- ======= Home Section ======= -->
+    <section class="section">
+      <div class="container">
+
+        <div class ="row" id="main-row">
+          <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Add New Site</h5>
+                    <div class="row">
+                        <div class="col-md-4 col-12">
+                            <div style="margin-top: 10px !important;" id="add_site_dropdown" class="add_site_dropdown">
+                                <select style="padding-bottom: 15px; width: 100%" id="add-select" class="add-select">
+                                    <option>ATMID</option>
+                                    <option>BRANCHID</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <input id="site_id" type="text" class="input site_input" placeholder="Site ID">
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <input id="site_name" type="text" class="input site_input" placeholder="Site Name">
+                        </div>
+                    </div>
+                    
+                    <input onclick="reset()" style="margin: auto; width: 50%;" type="reset" class="add-site-button" value="Clear Form" checked>
+                    <input onclick="submitform3()" type="submit" class="add-site-button" value="Submit">
+                </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      
+    </section>
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-md-7">
+          <p class="copyright">&copy; Copyright Buildint. All Rights Reserved</p>
+          <div class="credits">
+            Designed by <a href="#">Buildint Team</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <a id="back-to-top" href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script> -->
+  <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <script src="assets/js/main.js?v=3.0"></script>
+  <script src="assets/js/app.js?v=3.0"></script>
+
+
+  <!-- firebase deploy --only hosting:i-checklist -->
+
+</body>
+
+</html>

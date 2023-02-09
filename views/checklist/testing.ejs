@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>iCheck List</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- test -->
+<link rel="stylesheet" href="assets/vendor/glyphicons-only-bootstrap/css/bootstrapg.min.css" rel="stylesheet">
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js">
+    </script>
+    <script src=
+"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+    </script>
+
+    <!-- Include Moment.js CDN -->
+    <script type="text/javascript" src=
+"https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js">
+    </script>
+ 
+    <!-- Include Bootstrap DateTimePicker CDN -->
+    <link
+        href=
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet">
+ 
+    <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
+        </script>
+
+    <!-- test end -->
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style-test.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex justify-content-between align-items-center">
+
+      <div class="logo">
+        <!-- <h1><a href="index.html">SoftLand</a></h1> -->
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>
+      </div>
+      <a class="capture-a" href="capture.html"><div class="bi bi-camera camera-icon"></div></a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li class="dropdown"><a href="#"><span>Links</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="addSIte.html">Add Sites</a></li>
+              <li><a href="index.html">Survey/Service</a></li>
+              <!-- <li><a href="testing.html">Testing Report</a></li> -->
+              <!-- <li><a href="history.html">Check List History</a></li>
+              <li><a href="testing.html">Testing Report</a></li> -->
+              <li><a href="https://console.euronet.buildint.co/login" target="_blank">Euronet</a></li>
+              <li class="dropdown"><a href="#"><span>History</span><i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="history.html">Check List History</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>IDFC</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://idfc.cloud-building.com/" target="_blank">iControlling</a></li>
+                  <li><a href="https://console.buildint.co/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>ICICI Pru</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://icicipru.cloud-building.com/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>HDFC</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://hdfc.cloud-building.com/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>Kotak</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://kotak.cloud-building.com/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+            </ul>
+            
+          </li>
+          <!-- <li><a href="contact.html">Contact Us</a></li> -->
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+  
+
+  <main id="main">
+
+    <!-- ======= Home Section ======= -->
+    <section class="section">
+      <div class="container">
+
+        <div class ="row" id="main-row">
+          <div class="col">
+            <div style="border: 0px;" class="card">
+              <div class="checklist-box">
+                <div class="checklist-snip">
+                  <div style="width: 30%; float:right; display: none;" class="img-logo-snip">
+                    <img src="assets/img/logo.png" alt="" class="img-fluid">
+                  </div>
+                  <input id="tab-1" type="radio" name="tab" class="atm" checked><label for="tab-1" class="tab atm_tab">Hardware</label>
+                  <input id="tab-2" type="radio" name="tab" class="branch"><label for="tab-2" class="tab branch_tab">Data</label>
+                  <div class="checklist-space">
+                    <div class="atm-form">
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="group">
+                            <form action="/checklist/postdata/hwtest" method="post">
+                              <label for="dateTime" class="label">Date and Time</label>
+                              <input name="currdate" for="dateTime" class="form-control" type="text" id="datetime" placeholder="Select Date"/>
+                            <script type="text/javascript">
+                              var dateNow = new Date();
+                              $('#datetime').datetimepicker({
+                                  format: 'DD-MM-YYYY HH:mm',
+                                  sideBySide:true,
+                                  useCurrent: true,
+                                  locale: 'en',
+                                  defaultDate: dateNow
+                              });
+                             
+                            </script>
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="group">
+                              <label for="mbsn" class="label">Motherboard S/N</label>
+                              <input name="mbsn" id="mbsn" type="text" class="input" placeholder="S/N">
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="group">
+                              <label for="wifiswitchname" class="label">WIFI Switch Name</label>
+                              <input name="wifiname" id="wifiswitchname" type="text" class="input" placeholder="name">
+                            </div>
+                          </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="macid" class="label">MAC ID</label>
+                            <input name="macid" id="macid" type="text" class="input" placeholder="mac id">
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="group">
+                              <label for="deviceid" class="label">Device ID</label>
+                              <input name="deviceid" id="deviceid" type="text" class="input" placeholder="device id">
+                            </div>
+                          </div>
+  
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="rplnh" class="label">Raw Power LN</label>
+                            <input name="rplnh" id="rplnh" type="text" class="input" placeholder="V">
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="rpleh" class="label">Raw Power LE</label>
+                            <input name="rpleh" for="rpleh" id="rpleh" type="text" class="input" placeholder="V">
+                          </div>
+                        </div>
+  
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="upslnh" class="label">UPS Power LN</label>
+                            <input name="upslnh" id="upslnh" type="text" class="input" placeholder="V">
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="upsleh" class="label">UPS Power LE</label>
+                            <input name="upsleh" id="upsleh" type="text" class="input" placeholder="V">
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="temph" class="label">Temperature</label>
+                            <input name="temph" id="temph" type="text" class="input" placeholder="C">
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="humidityh" class="label">Humidity</label>
+                            <input name="humidityh" id="humidityh" type="text" class="input" placeholder="%">
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="bvh" class="label">Battery Voltage</label>
+                            <input name="battery_volt" id="bvh" type="text" class="input" placeholder="V">
+                          </div>
+                        </div>
+                       
+
+                        <div class="col-6">
+                            <div class="group">
+                              <label for="doorh" class="label">Door (D)</label>
+                              <input name="door" id="doorh" name="door" type="checkbox" class="checkbox" value="OK">
+                            </div>
+                          </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="wifih" class="label">WIFI (W)</label>
+                            <input name="wifi" id="wifih" name="wifi" type="checkbox" class="checkbox" value="OK">
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="group">
+                              <label for="starh" class="label">Star (*)</label>
+                              <input name="star" id="starh" name="star" type="checkbox" class="checkbox" value="OK">
+                            </div>
+                          </div>
+
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="beeph" class="label">Beep Sound</label>
+                              <input id="beeph" name="beep" type="checkbox" class="checkbox" value="OK">
+                            </div>
+                          </div>
+
+                          <div class="col-12">
+                            <div class="group">
+                              <label for="presenceh" class="label">Presence (P)</label>
+                              <input id="presenceh" name="presence" type="checkbox" class="checkbox" value="OK">
+                            </div>
+                          </div>
+
+
+
+                        <div style="margin-bottom: 10px;" class="group">
+                          <div class="row">
+                            <div class="col-12 form-check">
+                                <label><b>AC1</b></label>
+                            </div>
+                            <div class="col-3">
+                                <input name="ac1watt" type="text" id="ac1wh" class="input" placeholder="Watts">
+                            </div>
+                            <div class="col-3">
+                                <input name="ac1current" type="text" id="ac1ch" class="input" placeholder="Current">
+                            </div>
+                            <div class="col-3">
+                                <input name="ac1kwh" type="text" id="ac1kwhh" class="input" placeholder="KWH">
+                            </div>
+                            <div class="col-3">
+                                <label for="ac1storeh" class="label">Storing</label>
+                                <input id="ac1storeh" name="ac1store" type="checkbox" class="checkbox" value="OK">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style="margin-bottom: 10px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
+                                  <label><b>AC2</b></label>
+                              </div>
+                              <div class="col-3">
+                                <input name="ac2watt" type="text" id="ac2wh" class="input" placeholder="Watts">
+                              </div>
+                              <div class="col-3">
+                                  <input name="ac2current" type="text" id="ac2ch" class="input" placeholder="Current">
+                              </div>
+                              <div class="col-3">
+                                  <input name="ac2kwh" type="text" id="ac2kwhh" class="input" placeholder="KWH">
+                              </div>
+                              <div class="col-3">
+                                  <label for="ac2storeh" class="label">Storing</label>
+                                  <input id="ac2storeh" name="ac2store" type="checkbox" class="checkbox" value="OK">
+                              </div>
+                            </div>
+                        </div>
+
+                          <div style="margin-bottom: 10px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
+                                  <label><b>Lobby</b></label>
+                              </div>
+                              <div class="col-3">
+                                <input name="lbywatt" id="lobbywh" type="text" class="input" placeholder="Watts">
+                            </div>
+                              <div class="col-3">
+                                  <input name="lbycurrent" id="lobbych" type="text" class="input" placeholder="Current">
+                              </div>
+                              <div class="col-3">
+                                  <input name="lbykwh" id="lobbykwhh" type="text" class="input" placeholder="KWH">
+                              </div>
+                              <div class="col-3">
+                                  <label for="lobbystoreh" class="label">Storing</label>
+                                  <input name="lbystore" id="lobbystoreh" name="lobbystore" type="checkbox" class="checkbox" value="OK">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style="margin-bottom: 10px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
+                                  <label><b>Signage</b></label>
+                              </div>
+                              <div class="col-3">
+                                <input name="signwatt" id="signagewh" type="text" class="input" placeholder="Watts">
+                              </div>
+                              <div class="col-3">
+                                  <input name="signcurrent" id="signagech" type="text" class="input" placeholder="Current">
+                              </div>
+                              <div class="col-3">
+                                  <input name="signkwh" id="signagekwhh" type="text" class="input" placeholder="KWH">
+                              </div>
+                              <div class="col-3">
+                                  <label for="signagestoreh" class="label">Storing</label>
+                                  <input id="signagestoreh" name="signstore" type="checkbox" class="checkbox">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style="margin-bottom: 10px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
+                                  <label><b>DVR</b></label>
+                              </div>
+                              <div class="col-3">
+                                <input name="dvrwatt" id="dvrwh" type="text" class="input" placeholder="Watts">
+                              </div>
+                              <div class="col-3">
+                                  <input name="dvrcurrent" id="dvrch" type="text" class="input" placeholder="Current">
+                              </div>
+                              <div class="col-3">
+                                  <input name="dvrkwh" id="dvrkwhh" type="text" class="input" placeholder="KWH">
+                              </div>
+                              <div class="col-3">
+                                  <label for="dvrstoreh" class="label">Storing</label>
+                                  <input id="dvrstoreh" name="dvrstore" type="checkbox" class="checkbox" value="OK">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style="margin-bottom: 10px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
+                                  <label><b>UPS Input</b></label>
+                              </div>
+                              <div class="col-3">
+                                <input name="upswatt" id="upswh" type="text" class="input" placeholder="Watts">
+                              </div>
+                              <div class="col-3">
+                                  <input name="upscurrent" id="upsch" type="text" class="input" placeholder="Current">
+                              </div>
+                              <div class="col-3">
+                                  <input name="upskwh" id="upskwhh" type="text" class="input" placeholder="KWH">
+                              </div>
+                              <div class="col-3">
+                                  <label for="upstoreh" class="label">Storing</label>
+                                  <input name="upsstore" id="upstoreh" type="checkbox" class="checkbox" value="OK">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style="margin-bottom: 10px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
+                                  <label><b>ATM</b></label>
+                              </div>
+                              <div class="col-3">
+                                <input name="atmwatt" id="atmwh" type="text" class="input" placeholder="Watts">
+                              </div>
+                              <div class="col-3">
+                                  <input name="atmcurrent" id="atmch" type="text" class="input" placeholder="Current">
+                              </div>
+                              <div class="col-3">
+                                  <input name="atmkwh" id="atmkwhh" type="text" class="input" placeholder="KWH">
+                              </div>
+                              <div class="col-3">
+                                  <label for="atmstoreh" class="label">Storing</label>
+                                  <input id="atmstoreh" name="atmstore" type="checkbox" class="checkbox" value="OK">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style="margin-bottom: 35px;" class="group">
+                            <div class="row">
+                                <div class="col-12 form-check text" style="margin-top: 25px;">
+                                    <label><b>Relay Testing</b></label>
+                                </div>
+                                <div class="col-6" style="margin-top: 8px;">
+                                    <label for="ac1relayh" class="label">AC1</label>
+                                    <input id="ac1relayh" name="ac1relay" type="checkbox" class="checkbox" value="OK">
+                                </div>
+                                <div class="col-6" style="margin-top: 8px;">
+                                    <label for="ac2relayh" class="label">AC2</label>
+                                    <input id="ac2relayh" name="ac2relay" type="checkbox" class="checkbox" value="OK">
+                                </div>
+                                <div class="col-6" style="margin-top: 8px;">
+                                    <label for="lobbyrelayh" class="label">Lobby</label>
+                                    <input id="lobbyrelayh" name="lbyrelay" type="checkbox" class="checkbox" value="OK">
+                                </div>
+                                <div class="col-6" style="margin-top: 8px;">
+                                    <label for="signagerelayh" class="label">Signage</label>
+                                    <input id="signagerelayh" name="signrelay" type="checkbox" class="checkbox" value="OK">
+                                </div>
+                                <div class="col-6" style="margin-top: 8px;">
+                                    <label for="vsatrelayh" class="label">Vsat</label>
+                                    <input id="vsatrelayh" name="vsatrelay" type="checkbox" class="checkbox" value="OK">
+                                </div>
+                                <div class="col-6" style="margin-top: 8px;">
+                                    <label for="routerrelayh" class="label">Router</label>
+                                    <input id="routerrelayh" name="routerrelay" type="checkbox" class="checkbox" value="OK">
+                                </div>
+                                <div class="col-6" style="margin-top: 8px;">
+                                    <label for="atmrelayh" class="label">ATM</label>
+                                    <input id="atmrelayh" name="atmrelay" type="checkbox" class="checkbox" value="OK">
+                                </div>
+                                <div class="col-6" style="margin-top: 8px;">
+                                    <label for="sparerelayh" class="label">Spare</label>
+                                    <input id="sparerelayh" name="sparerelay" type="checkbox" class="checkbox" value="OK">
+                                </div>
+                            </div>
+                          </div>
+                          
+                          <div style="margin-bottom: 35px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
+                                <label><b>Notes</b></label>
+                              </div>
+                              <div class="col-12 form-dropdown">
+                                <input style="padding: 0 20px 0 20px" id="notesh" name="notes" type="text" class="input" placeholder="Note">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style="margin-bottom: 35px;" class="group">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label><b>Tested by</b></label>
+                                </div>
+                                <div class="col-12">
+                                    <input name="testedby" id="testbyh" type="text" class="input">
+                                </div>
+                            </div>
+                          </div>                         
+
+                        <div class="group">
+                          <input onclick="reset()" style="margin: auto; width: 50%;" type="reset" class="button" value="Clear Form" checked>
+                        </div>
+                        <div class="group">
+                          <input type="submit" class="button" value="Submit">
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+
+                    <form action="/checklist/postdata/datatest" method="post">
+                    <div class="branch-form">
+                      <div class="row">
+                        <div class="col-12">
+                            <div class="group">
+                              <label for="mbsn1" class="label">Motherboard S/N</label>
+                              <input name="mbsn" id="mbsn1" type="text" class="input" placeholder="S/N">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="group">
+                              <label for="rplnd" class="label">Raw Power LN</label>
+                              <input name="raw_powerln" id="rplnd" type="text" class="input" placeholder="V">
+                            </div>
+                          </div>
+  
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="rpled" class="label">Raw Power LE</label>
+                              <input name="raw_powerle" for="rpled" id="rpled" type="text" class="input" placeholder="V">
+                            </div>
+                          </div>
+    
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="upslnd" class="label">UPS Power LN</label>
+                              <input name="ups_powerln" id="upslnd" type="text" class="input" placeholder="V">
+                            </div>
+                          </div>
+  
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="upsled" class="label">UPS Power LE</label>
+                              <input name="ups_powerle" id="upsled" type="text" class="input" placeholder="V">
+                            </div>
+                          </div>
+  
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="tempd" class="label">Temperature</label>
+                              <input name="temp" id="tempd" type="text" class="input" placeholder="C">
+                            </div>
+                          </div>
+  
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="humidityd" class="label">Humidity</label>
+                              <input name="humidity" id="humidityd" type="text" class="input" placeholder="%">
+                            </div>
+                          </div>
+  
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="bvd" class="label">Battery Voltage</label>
+                              <input name="battery_volt" id="bvd" type="text" class="input" placeholder="V">
+                            </div>
+                          </div>
+                          <div class="col-6">
+                              <div class="group">
+                              </div>
+                            </div>
+  
+                          <div class="col-6">
+                              <div class="group">
+                                <label for="doord" class="label">Door (D)</label>
+                                <input name="door" id="doord" type="checkbox" class="checkbox">
+                              </div>
+                            </div>
+  
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="wifid" class="label">WIFI (W)</label>
+                              <input name="wifi" id="wifid" type="checkbox" class="checkbox">
+                            </div>
+                          </div>
+  
+                          <div class="col-6">
+                              <div class="group">
+                                <label for="stard" class="label">Star (*)</label>
+                                <input name="star" id="stard" type="checkbox" class="checkbox">
+                              </div>
+                            </div>
+  
+                            <div class="col-6">
+                              <div class="group">
+                                <label for="presenced" class="label">Presence (P)</label>
+                                <input name="presence" id="presenced" type="checkbox" class="checkbox">
+                              </div>
+                            </div>
+  
+  
+  
+                          <div style="margin-bottom: 10px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
+                                  <label><b>AC1</b></label>
+                              </div>
+                              <div class="col-3">
+                                  <input name="ac1watt" type="text" id="ac1wd" class="input" placeholder="Watts">
+                              </div>
+                              <div class="col-3">
+                                  <input name="ac1current" type="text" id="ac1cd" class="input" placeholder="Current">
+                              </div>
+                              <div class="col-3">
+                                  <input type="text" id="ac1kwhd" class="input" placeholder="KWH">
+                              </div>
+                              <div class="col-3">
+                                  <label for="ac1stored" class="label">Storing</label>
+                                  <input name="ac1store" id="ac1stored" type="checkbox" class="checkbox">
+                              </div>
+                            </div>
+                          </div>
+  
+                          <div style="margin-bottom: 10px;" class="group">
+                              <div class="row">
+                                <div class="col-12 form-check">
+                                    <label><b>AC2</b></label>
+                                </div>
+                                <div class="col-3">
+                                  <input name="ac2watt" type="text" id="ac2wd" class="input" placeholder="Watts">
+                                </div>
+                                <div class="col-3">
+                                    <input name="ac2current" type="text" id="ac2cd" class="input" placeholder="Current">
+                                </div>
+                                <div class="col-3">
+                                    <input name="ac2kwh" type="text" id="ac2kwhd" class="input" placeholder="KWH">
+                                </div>
+                                <div class="col-3">
+                                    <label for="ac2stored" class="label">Storing</label>
+                                    <input name="ac2store" id="ac2stored" type="checkbox" class="checkbox">
+                                </div>
+                              </div>
+                          </div>
+  
+                            <div style="margin-bottom: 10px;" class="group">
+                              <div class="row">
+                                <div class="col-12 form-check">
+                                    <label><b>Lobby</b></label>
+                                </div>
+                                <div class="col-3">
+                                  <input name="lbywatt" id="lobbywd" type="text" class="input" placeholder="Watts">
+                              </div>
+                                <div class="col-3">
+                                    <input name="lbycurrent" id="lobbycd" type="text" class="input" placeholder="Current">
+                                </div>
+                                <div class="col-3">
+                                    <input name="lbykwh" id="lobbykwhd" type="text" class="input" placeholder="KWH">
+                                </div>
+                                <div class="col-3">
+                                    <label for="lobbystored" class="label">Storing</label>
+                                    <input name="lbystore" id="lobbystored" type="checkbox" class="checkbox">
+                                </div>
+                              </div>
+                            </div>
+  
+                            <div style="margin-bottom: 10px;" class="group">
+                              <div class="row">
+                                <div class="col-12 form-check">
+                                    <label><b>Signage</b></label>
+                                </div>
+                                <div class="col-3">
+                                  <input name="signwatt" id="signagewd" type="text" class="input" placeholder="Watts">
+                                </div>
+                                <div class="col-3">
+                                    <input name="signcurrent" id="signagecd" type="text" class="input" placeholder="Current">
+                                </div>
+                                <div class="col-3">
+                                    <input name="signkwh" id="signagekwhd" type="text" class="input" placeholder="KWH">
+                                </div>
+                                <div class="col-3">
+                                    <label for="signagestored" class="label">Storing</label>
+                                    <input name="signstore" id="signagestored" type="checkbox" class="checkbox">
+                                </div>
+                              </div>
+                            </div>
+  
+                            <div style="margin-bottom: 10px;" class="group">
+                              <div class="row">
+                                <div class="col-12 form-check">
+                                    <label><b>DVR</b></label>
+                                </div>
+                                <div class="col-3">
+                                  <input name="dvrwatt" id="dvrwd" type="text" class="input" placeholder="Watts">
+                                </div>
+                                <div class="col-3">
+                                    <input name="dvrcurrent" id="dvrcd" type="text" class="input" placeholder="Current">
+                                </div>
+                                <div class="col-3">
+                                    <input name="dvrkwh" id="dvrkwhd" type="text" class="input" placeholder="KWH">
+                                </div>
+                                <div class="col-3">
+                                    <label for="dvrstored" class="label">Storing</label>
+                                    <input name="dvrstore" id="dvrstored" type="checkbox" class="checkbox">
+                                </div>
+                              </div>
+                            </div>
+  
+                            <div style="margin-bottom: 10px;" class="group">
+                              <div class="row">
+                                <div class="col-12 form-check">
+                                    <label><b>UPS Input</b></label>
+                                </div>
+                                <div class="col-3">
+                                  <input name="upswatt" id="upswd" type="text" class="input" placeholder="Watts">
+                                </div>
+                                <div class="col-3">
+                                    <input name="upscurrent" id="upscd" type="text" class="input" placeholder="Current">
+                                </div>
+                                <div class="col-3">
+                                    <input name="upskwh" id="upskwhd" type="text" class="input" placeholder="KWH">
+                                </div>
+                                <div class="col-3">
+                                    <label for="upstored" class="label">Storing</label>
+                                    <input name="upsstore" id="upstored" type="checkbox" class="checkbox">
+                                </div>
+                              </div>
+                            </div>
+  
+                            <div style="margin-bottom: 10px;" class="group">
+                              <div class="row">
+                                <div class="col-12 form-check">
+                                    <label><b>ATM</b></label>
+                                </div>
+                                <div class="col-3">
+                                  <input name="atmwatt" id="atmwd" type="text" class="input" placeholder="Watts">
+                                </div>
+                                <div class="col-3">
+                                    <input name="atmcurrent" id="atmcd" type="text" class="input" placeholder="Current">
+                                </div>
+                                <div class="col-3">
+                                    <input name="atmkwh" id="atmkwhd" type="text" class="input" placeholder="KWH">
+                                </div>
+                                <div class="col-3">
+                                    <label for="atmstored" class="label">Storing</label>
+                                    <input name="atmstore" id="atmstored" type="checkbox" class="checkbox">
+                                </div>
+                              </div>
+                            </div>
+  
+                            <div style="margin-bottom: 35px;" class="group">
+                              <div class="row">
+                                  <div class="col-12 form-check text" style="margin-top: 25px;">
+                                      <label><b>Relay Testing</b></label>
+                                  </div>
+                                  <div class="col-6" style="margin-top: 8px;">
+                                      <label for="ac1relayd" class="label">AC1</label>
+                                      <input name="ac1relay" id="ac1relayd" type="checkbox" class="checkbox">
+                                  </div>
+                                  <div class="col-6" style="margin-top: 8px;">
+                                      <label for="ac2relayd" class="label">AC2</label>
+                                      <input name="ac2relay" id="ac2relayd" type="checkbox" class="checkbox">
+                                  </div>
+                                  <div class="col-6" style="margin-top: 8px;">
+                                      <label for="lobbyrelayd" class="label">Lobby</label>
+                                      <input name="lbyrelay" id="lobbyrelayd" type="checkbox" class="checkbox">
+                                  </div>
+                                  <div class="col-6" style="margin-top: 8px;">
+                                      <label for="signagerelayd" class="label">Signage</label>
+                                      <input name="signrelay" id="signagerelayd" type="checkbox" class="checkbox">
+                                  </div>
+                                  <div class="col-6" style="margin-top: 8px;">
+                                      <label for="vsatrelayd" class="label">Vsat</label>
+                                      <input name="vsatrelay" id="vsatrelayd" type="checkbox" class="checkbox">
+                                  </div>
+                                  <div class="col-6" style="margin-top: 8px;">
+                                      <label for="routerrelayd" class="label">Router</label>
+                                      <input name="routerrelay" id="routerrelayd" type="checkbox" class="checkbox">
+                                  </div>
+                                  <div class="col-6" style="margin-top: 8px;">
+                                      <label for="atmrelayd" class="label">ATM</label>
+                                      <input name="atmrelay" id="atmrelayd" type="checkbox" class="checkbox">
+                                  </div>
+                                  <div class="col-6" style="margin-top: 8px;">
+                                      <label for="sparerelayd" class="label">Spare</label>
+                                      <input name="sparerelay" id="sparerelayd" type="checkbox" class="checkbox">
+                                  </div>
+                              </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 35px;" class="group">
+                              <div class="row">
+                                <div class="col-12 form-check">
+                                  <label><b>Notes</b></label>
+                                </div>
+                                <div class="col-12 form-dropdown">
+                                  <input name="notes" style="padding: 0 20px 0 20px" id="notesd" type="text" class="input" placeholder="Note">
+                                </div>
+                              </div>
+                            </div>
+  
+                            <div style="margin-bottom: 35px;" class="group">
+                              <div class="row">
+                                  <div class="col-12">
+                                      <label><b>Tested by</b>
+                                          <input name="testedby" id="testbyd" type="text" class="input">
+                                      </label>
+                                  </div>
+                              </div>
+                            </div>
+
+                        <div class="group">
+                          <input onclick="reset()" style="margin: auto; width: 50%;" type="reset" class="button" value="Clear Form">
+                        </div>
+                        <div class="group">
+                          <input type="submit" class="button" value="Submit">
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>   
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-md-7">
+          <p class="copyright">&copy; Copyright Buildint. All Rights Reserved</p>
+          <div class="credits">
+            Designed by <a href="#">Buildint Team</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <a id="back-to-top" href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase.js"></script>
+  <!-- <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script> -->
+  
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+ 
+    <!-- Include Bootstrap DateTimePicker CDN -->
+    
+  
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js?v=3.0"></script>
+  <script src="assets/js/app.js?v=3.0"></script>
+  <script src="assets/js/testlist.js"></script>
+
+  <!-- firebase deploy --only hosting:i-checklist -->
+
+
+</body>
+
+</html>

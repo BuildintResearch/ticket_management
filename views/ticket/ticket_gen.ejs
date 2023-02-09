@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>Register Ticket</title>
+</head>
+
+<body onload="tkgen()">
+
+    <nav id="nav-bar-top" class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <a class="navbar-brand" href="#">Ticket Management</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Overview</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/mytickets">My Tickets</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/issues"><b>Issues</b></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/history">History</a>
+              </li>
+            <% if(user_type=='Super Admin'){ %>
+            <li class="nav-item">
+                <a class="nav-link" href="/adduser">Add Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/addproject">Add Projects</a>
+            </li>
+            <% } %>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout" onclick="clear_storage()">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+        <!-- <button class="btn btn-primary"><i class="fa fa-plus"></i></button> -->
+    <div id="tkt-acc">
+    <div class="accordion" id="ticket_window">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="ticket_head">
+            <!-- data-bs-toggle="collapse" -->
+            <button class="accordion-button" type="button" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <a href="issues"><i class="fa fa-arrow-left" style="font-size: 20px;"></i></a> <span>Generate Ticket</span>
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <form enctype="multipart/form-data" name="ticket_data" action="/posturl/ticket" method="POST" id="ticket_form">
+                    <div class="mb-3">
+                        <label for="ticket_subject" class="form-label">User ID</label>
+                        <input name="userid" class="form-control" id="user_id" readonly="readonly">
+                    </div>
+                    <div class="mb-3">
+                        <label for="ticket_subject" class="form-label">Subject</label>
+                        <input name="subject" class="form-control" id="ticket_subject">
+                    </div>
+                    <div class="mb-3">
+                      <label for="project_name" class="form-label">Select Project</label>
+                      <input name="project" class="form-control" id="project_name" list="project_list">
+                      <datalist id="project_list">
+                        <!-- project list here -->
+                      </datalist>
+                    </div>
+                    <div class="mb-3">
+                        <label for="site_name" class="form-label">Select Location</label>
+                        <input name="location" class="form-control" id="site_name" list="site_list">
+                        <datalist id="site_list">
+                          <!-- project locations here -->
+                        </datalist>
+                    </div>
+                    <div class="mb-3">
+                        <label for="project_dept" class="form-label">Select Department</label>
+                        <select name="dept" id="tkt_status" class="form-select form-select-md mb-3" aria-label=".form-select-sm example">
+                            <option  value="Service" selected>Service</option>
+                            <option value="Data Analyst">Data Analyst</option>
+                            <option value="Software">Software</option>
+                            <option value="Project">Project</option>
+                          </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select name="status" id="tkt_status" class="form-select form-select-md mb-3" aria-label=".form-select-sm example">
+                            <option  value="New" selected>New</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Reopen">Reopen</option>
+                          </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="project_p" class="form-label">Assignee</label>
+                        <input name="assignee" class="form-control" id="project_p" list="p_list">
+                        <datalist id="p_list">
+                          <!-- assignee list here -->
+                        </datalist>
+                    </div>
+                    <div class="mb-3">
+                        <label for="project_pr" class="form-label">Priority</label>
+                        <select name="priority" id="priority" class="form-select form-select-md mb-3" aria-label=".form-select-sm example">
+                            <option  value="Normal" selected>Normal</option>
+                            <option value="Low">Low</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="due_dt" class="form-label">Due Date</label>
+                        <input name="due_date" class="form-control" id="due_dt" type="datetime-local">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="exampleFormControlTextarea1">Description</label>
+                        <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                  <!-- </form> -->
+                  <!-- code to upload files *ftp or database*-->
+                  <!-- <form name="file_input" action="/files" enctype="multipart/form-data" method="POST" id="ticket_images"> -->
+                  <div class="input-group mb-3">
+                      <label class="input-group-text" for="file_input">Upload</label>
+                      <input name="file_input" type="file" class="form-control" id="file_input" multiple="multiple">
+                  </div>
+                  <button id="btn1" type="submit" class="btn btn-primary">Create</button>
+
+                  </form>
+            </div>
+          </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>Register Ticket</title>
+</head>
+
+<body>
+
+    <nav id="nav-bar-top" class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <a class="navbar-brand" href="#">Ticket Management</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Overview</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/mytickets">My Tickets</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="issues">Issues</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/history">History</a>
+              </li>
+              <% if(user_type=='Super Admin'){ %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/adduser">Add Users</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/addproject"><b>Add Projects</b></a>
+                </li>
+                <% } %>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+              </li>
+          </ul>
+        </div>
+      </nav>
+        <!-- <button class="btn btn-primary"><i class="fa fa-plus"></i></button> -->
+    <div id="add-project">
+    <div class="accordion" id="ticket_window">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="ticket_head">
+            <!-- data-bs-toggle="collapse" -->
+            <button class="accordion-button" type="button" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <a href="issues"><i class="fa fa-arrow-left" style="font-size: 20px;"></i></a> <span>Add Project</span>
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <form action="/posturl/addproject" method="POST">
+                    <div class="mb-3">
+                        <label for="pname" class="form-label">Project Name</label>
+                        <input name="project_name" class="form-control" id="pname">
+                    </div>
+                  
+                    <div class="mb-3">
+                      <label for="locationname" class="form-label">Location Name</label>
+                      <input name="location_name" class="form-control" id="locationname">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add Project</button>
+                    <% if(message){ %>
+                    <div class="alert alert-success" style="margin-top: 10px;" role="alert">
+                      <h4 class="alert-heading">Project Added!</h4>
+                      <p>Name : <%= message['project_name'] %> <br> Location : <%= message['location_name'] %></p>
+                      <hr>
+                      <p class="mb-0">Ticket raised to service team.</p>
+                    </div>
+                    <% } %>
+            </div>
+          </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>

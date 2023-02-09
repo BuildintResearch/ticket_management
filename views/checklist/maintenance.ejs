@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>iCheck List</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- test -->
+
+  <!-- <link href=
+"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+        rel="stylesheet"> -->
+        <link rel="stylesheet" href="assets/vendor/glyphicons-only-bootstrap/css/bootstrapg.min.css" rel="stylesheet">
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js">
+    </script>
+    <script src=
+"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+    </script>
+ 
+    <!-- Include Moment.js CDN -->
+    <script type="text/javascript" src=
+"https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js">
+    </script>
+ 
+    <!-- Include Bootstrap DateTimePicker CDN -->
+    <link
+        href=
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet">
+ 
+    <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
+        </script>
+
+    <!-- test end -->
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  
+  <!-- Template Main CSS File -->
+  <link href="assets/css/maintenance.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex justify-content-between align-items-center">
+
+      <div class="logo">
+        <!-- <h1><a href="index.html">SoftLand</a></h1> -->
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>
+      </div>
+      <a class="capture-a" href="capture.html"><div class="bi bi-camera camera-icon"></div></a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li class="dropdown"><a href="#"><span>Links</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="addSIte.html">Add Sites</a></li>
+              <li><a href="history.html">Check List History</a></li>
+              <li><a href="https://console.euronet.buildint.co/login" target="_blank">Euronet</a></li>
+              <li class="dropdown"><a href="#"><span>IDFC</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://idfc.cloud-building.com/" target="_blank">iControlling</a></li>
+                  <li><a href="https://console.buildint.co/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>ICICI Pru</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://icicipru.cloud-building.com/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>HDFC</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://hdfc.cloud-building.com/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>Kotak</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="https://kotak.cloud-building.com/" target="_blank">iMonitoring</a></li>
+                </ul>
+              </li>
+            </ul>
+            
+          </li>
+          <!-- <li><a href="contact.html">Contact Us</a></li> -->
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+  
+
+  <main id="main">
+
+    <!-- ======= Home Section ======= -->
+    <section class="section">
+      <div class="container">
+
+        <div class ="row" id="main-row">
+          <div class="col">
+            <div style="border: 0px;" class="card">
+              <div class="checklist-box">
+                
+                <div class="checklist-snip">
+                  <div style="width: 30%; float:right; display: none;" class="img-logo-snip">
+                    <img src="assets/img/logo.png" alt="" class="img-fluid">
+                  </div>
+                  <input id="tab-1" type="radio" name="tab" class="atm" checked><label for="tab-1" class="tab atm_tab">ATM</label>
+                  <input id="tab-2" type="radio" name="tab" class="branch"><label for="tab-2" class="tab branch_tab">Branch</label>
+                  <div class="checklist-space">
+                    <div class="atm-form">
+                      <div class="row">
+                        
+                        <div class="col-12">
+                          <div class="group">
+                              <label for="dateTime" class="label">Date and Time</label>
+                              <input for="dateTime" class="form-control" type="text" id="datetime" placeholder="Select Date"/>
+                            <script type="text/javascript">
+                              var dateNow = new Date();
+                              $('#datetime').datetimepicker({
+                                  format: 'DD-MM-YYYY HH:mm',
+                                  sideBySide:true,
+                                  useCurrent: true,
+                                  locale: 'en',
+                                  defaultDate: dateNow
+                              });
+                             
+                            </script>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="atm-code" class="label">ATM Code</label>
+                            <div for="atm-code" id="atm_id_dropdown" class="atm_id_dropdown"></div>
+                          </div>
+                        </div>
+  
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="atm-name" class="label">ATM Name</label>
+                            <div for="atm-name" id="atm_name_dropdown" class="atm_name_dropdown"></div>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="manager-name" class="label">Manager Name</label>
+                            <input for="manager-name" id="manager_name" type="text" class="input" placeholder="Manager name">
+                          </div>
+                        </div>
+  
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="manager-contact" class="label">Manager No.</label>
+                            <input for="manager-contact" id="contact" type="text" class="input" placeholder="Contact No.">
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                          <div class="group">
+                            <label for="manager-email" class="label">Manager Email ID</label>
+                            <input for="manager-email" id="email" type="text" class="input" placeholder="Email id">
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="person-name" class="label">Site Person Name</label>
+                            <input for="person-name" id="person_name" type="text" class="input" placeholder="Site person name">
+                          </div>
+                        </div>
+  
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="person-contact" class="label">Site Person No.</label>
+                            <input for="person-contact" id="person_contact" type="text" class="input" placeholder="Contact no.">
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="ac1" type="checkbox" name="atm_check" class="check" value="AC 1" checked>
+                              <label for="ac1"><span class="icon"></span> AC 1</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dac1" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_dac1" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_dac1" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="ac2" type="checkbox" name="atm_check" class="check" value="AC 2" checked>
+                              <label for="ac2"><span class="icon"></span> AC 2</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dac2" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_dac2" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_dac2" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="lobby" type="checkbox" name="atm_check" class="check" value="Lobby Light" checked>
+                              <label for="lobby"><span class="icon"></span> Lobby Light</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dlobby" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_dlobby" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_dlobby" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="signage" type="checkbox" name="atm_check" class="check" value="Signage" checked>
+                              <label for="signage"><span class="icon"></span> Signage</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dsignage" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_dsignage" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_dsignage" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="dvr" type="checkbox" name="atm_check" class="check" value="DVR" checked>
+                              <label for="dvr"><span class="icon"></span> DVR</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="ddvr" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_ddvr" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_ddvr" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="vsat" type="checkbox" name="atm_check" class="check" value="Vsat" checked>
+                              <label for="vsat"><span class="icon"></span> Vsat</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dvsat" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_dvsat" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_dvsat" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="tnh" type="checkbox" name="atm_check" class="check" value="Temp and Humidity" checked>
+                              <label for="tnh"><span class="icon"></span> Temp. & Humidity</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dtnh" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_dtnh" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_dtnh" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="occupany" type="checkbox" name="atm_check" class="check" value="Occupany" checked>
+                              <label for="occupany"><span class="icon"></span> Occupany</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="doccupany" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_doccupany" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_doccupany" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="earthing" type="checkbox" name="atm_check" class="check" value="Earthing" checked>
+                              <label for="earthing"><span class="icon"></span> Earthing</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dearthing" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_dearthing" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_dearthing" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="atm_ups" type="checkbox" name="atm_check" class="check" value="UPS Charging and Output" checked>
+                              <label for="atm_ups"><span class="icon"></span> UPS Charging & Output</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="datm_ups" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_datm_ups" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_datm_ups" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="atm_iatm_box" type="checkbox" name="atm_check" class="check" value="iATM BOX" checked>
+                              <label for="atm_iatm_box"><span class="icon"></span> iATM Box</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="datm_iatm_box" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_datm_iatm_box" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_datm_iatm_box" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="atm_router" type="checkbox" name="atm_check" class="check" value="Router" checked>
+                              <label for="atm_router"><span class="icon"></span> Router</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="datm_router" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_datm_router" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_datm_router" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="atm_battery" type="checkbox" name="atm_check" class="check" value="Battery" checked>
+                              <label for="atm_battery"><span class="icon"></span> Battery</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="datm_battery" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_datm_battery" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_datm_battery" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="atm_machine" type="checkbox" name="atm_check" class="check" value="ATM Machine" checked>
+                              <label for="atm_machine"><span class="icon"></span> ATM Machine</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="datm_machine" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_datm_machine" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_datm_machine" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <input onclick="reset()" style="margin: auto; width: 50%;" type="reset" class="button" value="Clear Form" checked>
+                        </div>
+                        <div class="group">
+                          <input onclick="submitform()" type="submit" class="button" value="Submit">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="branch-form">
+                      <div class="row">
+
+                        <div class="col-12">
+                          <div class="group">
+                              <label for="dateTime" class="label">Date and Time</label>
+                              <input for="dateTime" class="form-control" type="text" id="datetime2" placeholder="Select Date"/>
+                            <script type="text/javascript">
+                              var dateNow = new Date();
+                              $('#datetime2').datetimepicker({
+                                  format: 'DD-MM-YYYY HH:mm',
+                                  sideBySide:true,
+                                  useCurrent: true,
+                                  locale: 'en',
+                                  defaultDate: dateNow
+                              });
+                             
+                            </script>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="branch-code" class="label">Branch Code</label>
+                            <div for="branch-code" id="branch_id_dropdown" class="branch_id_dropdown"></div>
+                          </div>
+                        </div>
+  
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="branch-name" class="label">Branch Name</label>
+                            <div for="branch-name" id="branch_name_dropdown" class="branch_name_dropdown"></div>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="manager-name" class="label">Manager Name</label>
+                            <input for="manager-name id="branch_manager_name" type="text" class="input" placeholder="Manager name">
+                          </div>
+                        </div>
+  
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="manager-contact" class="label">Manager No.</label>
+                            <input for="manager-contact" id="branch_contact" type="text" class="input" placeholder="Contact No.">
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                          <div class="group">
+                            <label for="manager-email" class="label">Manager Email ID.</label>
+                            <input for="manager-email" id="branch_email" type="text" class="input" placeholder="Email id">
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="person-name" class="label">Site Person Name</label>
+                            <input for="person-name" id="branch_person_name" type="text" class="input" placeholder="Site person name">
+                          </div>
+                        </div>
+  
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="person-contact" class="label">Site Person No.</label>
+                            <input id="branch_person_contact" type="text" class="input" placeholder="Contact no.">
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="visit_purpose" type="checkbox" name="branch_check" class="check" value="Visit Purpose" checked>
+                              <label for="visit_purpose"><span class="icon"></span> Visit Purpose</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dvisit_purpose" class="form-select">
+                                <option selected>Replace</option>
+                                <option>Repair</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="iatm_box" type="checkbox" name="branch_check" class="check" value="iATM Box" checked>
+                              <label for="iatm_box"><span class="icon"></span> iATM Box</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="diatm_box" class="form-select">
+                                <option selected>Replace</option>
+                                <option>Repair</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="iems_box" type="checkbox" name="branch_check" class="check" value="iEMS Box" checked>
+                              <label for="iems_box"><span class="icon"></span> iEMS Box</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="diems_box" class="form-select">
+                                <option selected>Replace</option>
+                                <option>Repair</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="zion" type="checkbox" name="branch_check" class="check" value="Zion" checked>
+                              <label for="zion"><span class="icon"></span> Zion</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dzion" class="form-select">
+                                <option selected>Replace</option>
+                                <option>Repair</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="wifi_switch" type="checkbox" name="branch_check" class="check" value="Wifi Switch" checked>
+                              <label for="wifi_switch"><span class="icon"></span> Wifi Switch</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dwifi_switch" class="form-select">
+                                <option selected>Replace</option>
+                                <option>Repair</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="contactor" type="checkbox" name="branch_check" class="check" value="Contactor" checked>
+                              <label for="contactor"><span class="icon"></span> Contactor</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dcontactor" class="form-select">
+                                <option selected>Replace</option>
+                                <option>Repair</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="smart_meter" type="checkbox" name="branch_check" class="check" value="iEMS Smart Meter" checked>
+                              <label for="smart_meter"><span class="icon"></span> iEMS Smart Meter</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dsmart_meter" class="form-select">
+                                <option selected>Replace</option>
+                                <option>Repair</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="atm_ac" type="checkbox" name="branch_check" class="check" value="ATM AC" checked>
+                              <label for="atm_ac"><span class="icon"></span> ATM AC</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="datm_ac" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_datm_ac" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_datm_ac" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="electric_ac" type="checkbox" name="branch_check" class="check" value="Server Room AC" checked>
+                              <label for="electric_ac"><span class="icon"></span>Electrical/Server AC</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="delectric_ac" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_delectric_ac" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_delectric_ac" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="branch_ac" type="checkbox" name="branch_check" class="check" value="Branch AC" checked>
+                              <label for="branch_ac"><span class="icon"></span> Branch AC</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dbranch_ac" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_dbranch_ac" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_dbranch_ac" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="branch_ups" type="checkbox" name="branch_check" class="check" value="Branch UPS" checked>
+                              <label for="branch_ups"><span class="icon"></span> Branch UPS</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="dbranch_ups" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_dbranch_ups" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_dbranch_ups" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <div class="row">
+                            <div class="col-6 form-check">
+                              <input id="electrical_wiring" type="checkbox" name="branch_check" class="check" value="Electrical Wiring" checked>
+                              <label for="electrical_wiring"><span class="icon"></span> Electrical Wiring</label>
+                            </div>
+                            <div class="col-6 form-dropdown">
+                              <select id="delectrical_wiring" class="form-select">
+                                <option selected>Working</option>
+                                <option>Not Working</option>
+                              </select>
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="days_delectrical_wiring" type="text" class="input" placeholder="No. of days">
+                            </div>
+                            <div class="col-6 form-data">
+                              <input id="reason_delectrical_wiring" type="text" class="input" placeholder="Reason">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="group">
+                          <input onclick="reset()" style="margin: auto; width: 50%;" type="reset" class="button" value="Clear Form">
+                        </div>
+                        <div class="group">
+                          <input onclick="submitform2()" type="submit" class="button" value="Submit">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>   
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-md-7">
+          <p class="copyright">&copy; Copyright Buildint. All Rights Reserved</p>
+          <div class="credits">
+            Designed by <a href="#">Buildint Team</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <a id="back-to-top" href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+ 
+    <!-- Include Bootstrap DateTimePicker CDN -->
+    
+  
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js?v=3.0"></script>
+  <script src="assets/js/maintenance.js"></script>
+
+  <!-- firebase deploy --only hosting:i-checklist -->
+
+
+</body>
+
+</html>
