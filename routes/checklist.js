@@ -3,7 +3,19 @@ var router = express.Router();
 var bodyParser = require('body-parser')
 var urlparser = bodyParser.urlencoded({ extended: true })
 var db = require('./database')
-
+const multer  = require('multer');
+var FTPStorage = require('multer-ftp')
+console.log(__dirname)
+router.use(express.static("./views/checklist/"));
+let upload = multer({
+    storage: new FTPStorage({
+        ftp:{
+            host:'85.25.130.56',
+            user:'buildint_master',
+            password: 'buildint@2021',
+        }
+    })
+})
 router.use(express.static("views/checklist/"));
 router.get('/survey_service', function(req, res){
    res.render('checklist/survey_service.ejs');
@@ -13,10 +25,26 @@ router.get('/testing', function(req,res){
     res.render('checklist/testing.ejs')
 })
 
-router.post('/postdata/:param', urlparser, function (req, res){
+router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
     var param = req.params.param
-    console.log(req.body)
     if(param == 'survey'){
+        console.log("files list : ",req.files)
+        if(req.files!=null){
+            let sign_img = "";
+            let site_img = "";
+            for(i=0;i<req.files.length;i++){
+                if(req.files[i]['fieldname']=='sign_imgs'){
+                    sign_img += req.files[i]['path']+";"
+                }
+                if(req.files[i]['fieldname']=='site_img'){
+                    site_img += req.files[i]['path']+";"
+                }
+            }
+            sign_img = sign_img.slice(0, -1)
+            site_img = site_img.slice(0, -1)
+            req.body['sign_imgs'] = sign_img;
+            req.body['site_img'] = site_img;
+        }
         var sql = 'INSERT INTO survey SET ?';
         const formData = req.body
         console.log('URL POST : ',formData)
@@ -40,7 +68,7 @@ router.post('/postdata/:param', urlparser, function (req, res){
                     if(err){throw err}
                     else{
                         console.log('Ticket generated !!!')
-                        res.render('checklist/survey_service.ejs',{"message":req.body})
+                        res.render('back')
                     }
                 })
             }
@@ -77,7 +105,7 @@ router.post('/postdata/:param', urlparser, function (req, res){
                                 if(err){throw err}
                                 else{
                                     console.log('Ticket generated !!!')
-                                    res.render('checklist/survey_service.ejs',{"message":req.body})
+                                    res.render('back')
                                 }
                             })
                         }

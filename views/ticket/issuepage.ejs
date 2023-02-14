@@ -29,6 +29,12 @@
               <a class="nav-link" href="/issues"><b>Issues</b></a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/checklist/survey_service">Survey/Service</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/checklist/testing">Testing</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="/history">History</a>
             </li>
             <% if(user_type=='Super Admin'){ %>
@@ -76,7 +82,13 @@
             <p><b>Department : </b><%= data[0]['dept'] %></p>
           </div>
           <div class="col-6">
-            <p><b>Assignee : </b><%= data[0]['assignee'] %></p>
+            <p><b>Assignee : </b><% for(i=0;i<users.length-1;i++){ %>
+              <!-- <%= users[i]['user_id'] %> -->
+              <% if(data[0]['assignee'] == users[i]['user_id']){ %>
+                <%= users[i]['fname'] %> <%= users[i]['lname'] %>
+              <% } %>
+              <% } %>
+            </p>
           </div>
         </div>
         <div class="row" style="text-align: center; font-size: 20px;">
@@ -113,6 +125,9 @@
         <p style="color: gray;"><%= followup[i]['user_id'] %> :</p>
         <p><%= followup[i]['description'] %></p>
         <p>Images : </p>
+        <div onload="getimg()" id="img                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    -<%=followup[i]['comment_id']%>">
+           <!-- generate image here  -->
+        </div>
         <%= followup[i]['attachments'] %>
       </div>
       

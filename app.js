@@ -1,18 +1,56 @@
 // imports
 var PromiseFtp = require('promise-ftp');
+var FTPClient = require('ftp');
+var c = new FTPClient();
 var express = require('express')
 var flash = require('express-flash')
 var session = require('express-session');
-var img64=require('image-base64-ftp')
+var img64 = require('image-base64-ftp')
 var FTPStorage = require('multer-ftp')
 const multer  = require('multer');
 const {Base64Encode} = require("base64-stream");
-const upload = multer({
+// const fileUpload = require('express-fileupload');
+
+// // custom ftp upload function
+// function ftp_upload(dest,filename){
+//     //make ftp connection
+//     c.connect({
+//       host: "85.25.130.56",
+//       user: "buildint_master",
+//       password: "buildint@2021"
+//     });
+//     console.log(filename)
+//     //check if directory exists on ftp
+//     c.on('ready', function(){
+//       console.log('------ upload:ready ----------------');
+//       dir = dest  // test dir
+//       c.cwd(dir, (err) => {   // check dir exists
+//         err ? c.mkdir(dir, () => {  // if not make dir
+//           c.cwd(dir, (err) => {   // cd to dir
+//             console.log('Uploading, dir made')  // upload if exists
+//             c.put(dir,filename, (err, filelist)=>{
+//                 console.log(filelist)
+//               c.end()
+//             })
+//           })
+//         })
+//         : c.cwd(dir, (err) => {   // cd to dir
+//           console.log('Uploading, dir exists')  // upload if exists
+//           c.put(dir,filename, (err)=>{
+//             c.end()
+//           })
+//         })
+//       })
+//     })
+//   }
+
+// multer upload function
+let upload = multer({
     storage: new FTPStorage({
         ftp:{
             host:'85.25.130.56',
             user:'buildint_master',
-            password: 'buildint@2021'
+            password: 'buildint@2021',
         }
     })
 })
@@ -26,6 +64,7 @@ var checklist = require('./routes/checklist');
 app.engine('html',require('ejs').renderFile)
 app.use(express.static("public"));
 app.use(express.static("views/checklist/"));
+
 const corsOptions = {
     origin:"*",
     credential:true,
@@ -65,11 +104,11 @@ app.get("/getimage", async function (req, res) {
         res.on("finish", resolve);
         stream.once("error", reject);
         stream.pipe(new Base64Encode()).pipe(res); // see here
-    });
+    })
     } catch (e) {
-      console.error(e);
+        console.error(e);
     } finally {
-      await ftp.end();
+        await ftp.end();
     }
   });
 
@@ -166,28 +205,30 @@ app.get('/logout', function (req, res){
     res.redirect('/login')
 })
 
+
 // insert ticket to db, add user, add project
 app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
-    console.log(req.body,req.files)
+    console.log("Files : ",req.files)
     var form = req.params.form
-    if(form == 'ticket'){
-        if(req.files!=null){
-            let file_name_list = "";
-            for(i=0;i<req.files.length;i++){
-                file_name_list += req.files[i]['path']+";"
+        if(form == 'ticket'){
+            if(req.files!=null){
+                let file_name_list = "";
+                for(i=0;i<req.files.length;i++){        
+                    file_name_list += req.files[i]['path']+";"
+                }
+                file_name_list = file_name_list.slice(0, -1)
+                req.body['attachments'] = file_name_list;
             }
-            file_name_list = file_name_list.slice(0, -1)
-            req.body['attachments'] = file_name_list;
+            var sql = 'INSERT INTO tickets SET ?';
+            const formData = req.body
+            console.log("URL POST : ",formData)
+            db.query(sql, formData, function(err, data){
+            if(err) throw err;
+            console.log("User data inserted successfully")
+            })  
+            res.redirect('/create_ticket')
         }
-        var sql = 'INSERT INTO tickets SET ?';
-        const formData = req.body
-        console.log("URL POST : ",formData)
-        db.query(sql, formData, function(err, data){
-        if(err) throw err;
-        console.log("User data inserted successfully")
-        })
-        res.redirect('/create_ticket')
-    }
+
     if(form == 'adduser'){
         const {fname,lname,usermail, pass, dept,user_type, mobileno} = req.body
         console.log(req.body)
@@ -238,6 +279,7 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
     }
 })
 
+
 // fetch data from db using * and where conditions
 app.get('/getdata/:table/:column/:where', function(req, res){
     var table = req.params.table;
@@ -279,7 +321,10 @@ app.get('/issuepage/:id', function(req, res){
         if(err) throw err
     db.query('SELECT * FROM tickets WHERE tkid = '+id, function(err, rows, fields){
         if(err) throw err
-        res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1})
+    db.query('SELECT * from users', function(err, rows2, fields){
+        if(err) throw err
+        res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2})
+    })
     })
     })
 })
@@ -321,26 +366,33 @@ app.get('/history', function(req, res){
 })
 
 //ftp file route // unused route
-app.post('/files', upload.any(),async (req, res, next) => {
-    let file_name_list = "";
-    // req.files[0]['path'] = './upload/'+req.files[0]['path']
-    if(req.files == null){
-        res.send('no files selected')
-    }
-    else{
-        for(i=0;i<req.files.length;i++){
-            file_name_list += req.files[i]['path']+";"
-        }
-        file_name_list = file_name_list.slice(0, -1)
-        console.log(file_name_list)
-        // res.send("File upload successfull ")
-        res.end('success')
-    }
-});
+// app.post('/files', upload.any(),async (req, res, next) => {
+//     let file_name_list = "";
+//     // req.files[0]['path'] = './upload/'+req.files[0]['path']
+//     if(req.files == null){
+//         res.send('no files selected')
+//     }
+//     else{
+//         for(i=0;i<req.files.length;i++){
+//             file_name_list += req.files[i]['path']+";"
+//         }
+//         file_name_list = file_name_list.slice(0, -1)
+//         console.log(file_name_list)
+//         // res.send("File upload successfull ")
+//         res.end('success')
+//     }
+// });
 
 app.get('/fetchimg/:tkid', async(req,res) => {
     var tkid = req.params.tkid
     db.query('SELECT * from tickets WHERE tkid='+tkid, function(err, rows, fields){
+        if(err) throw err
+        res.send(rows)
+    })
+})
+app.get('/fetchimg1/:tkid', async(req,res) => {
+    var tkid = req.params.tkid
+    db.query('SELECT * from ticket_followup WHERE comment_id='+tkid, function(err, rows, fields){
         if(err) throw err
         res.send(rows)
     })

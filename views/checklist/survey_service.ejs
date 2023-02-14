@@ -55,19 +55,19 @@
 
   
   <!-- Template Main CSS File -->
-  <link href="assets/css/style.css?v=3.0" rel="stylesheet">
+  <link href="/assets/css/style.css?v=3.0" rel="stylesheet">
 
 </head>
 
 <body>
+  
 
   <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top d-flex align-items-center">
+  <!-- <header id="header" class="fixed-top d-flex align-items-center">
     <div class="container d-flex justify-content-between align-items-center">
 
       <div class="logo">
-        <!-- <h1><a href="index.html">SoftLand</a></h1> -->
-        <!-- Uncomment below if you prefer to use an image logo -->
+        
         <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>
       </div>
       <a class="capture-a" href="capture.html"><div class="bi bi-camera camera-icon"></div></a>
@@ -77,8 +77,7 @@
             <ul>
               <li><a href="addSIte.html">Add Sites</a></li>
               <li><a href="testing.html">Testing Report</a></li>
-              <!-- <li><a href="history.html">Check List History</a></li>
-              <li><a href="testing.html">Testing Report</a></li> -->
+              
               <li><a href="https://console.euronet.buildint.co/login" target="_blank">Euronet</a></li>
               <li class="dropdown"><a href="#"><span>History</span><i class="bi bi-chevron-right"></i></a>
                 <ul>
@@ -110,13 +109,11 @@
             </ul>
             
           </li>
-          <!-- <li><a href="contact.html">Contact Us</a></li> -->
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
-
+      </nav>
     </div>
-  </header><!-- End Header -->
+  </header> -->
   
 
   <main id="main">
@@ -136,7 +133,7 @@
                   <input id="tab-1" type="radio" name="tab" class="atm" checked><label for="tab-1" id="tab1" class="tab atm_tab">Survey</label>
                   <input id="tab-2" type="radio" name="tab" class="branch"><label for="tab-2" id="tab2" class="tab branch_tab">Service</label>
                   <div class="checklist-space">
-                    <form action="/checklist/postdata/survey" method="post">
+                    <form enctype="multipart/form-data" action="/checklist/postdata/survey" method="post">
                       <div class="atm-form">
                         <div class="row">
                           <div class="col-12">
@@ -571,7 +568,7 @@
                                 <label for="atm_site">Add Site Images</label>
                               </div>
                               <div class="col-12 form-dropdown">
-                                <input name="site_img" for="atm_site" id="atm_site_file" type="file" class="input" accept="image/gif, image/jpeg, image/png, image/jpg" multiple>
+                                <input name="site_img" for="atm_site" id="atm_site_file" type="file" class="input" multiple="multiple">
                               </div>
                             </div>
                           </div>
@@ -581,7 +578,7 @@
                                 <label for="atm_sign">Add Signature</label>
                               </div>
                               <div class="col-12 form-dropdown">
-                                <input name="sign_imgs" for="atm_sign" id="atm_sign_file" type="file" class="input" accept="image/gif, image/jpeg, image/png, image/jpg" multiple="multiple">
+                                <input name="sign_imgs" for="atm_sign" type="file" id="atm_sign_file" class="input">
                               </div>
                             </div>
                           </div>
@@ -599,7 +596,7 @@
 
 <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
 
-                  <form action="/checklist/postdata/service" method="post">
+                  <form enctype="multipart/form-data" action="/checklist/postdata/service" method="post">
                     <div class="branch-form">
                      
                       <div class="row">

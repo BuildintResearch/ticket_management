@@ -139,16 +139,16 @@ function tkgen(){
 async function getImage(){
   let tkid = document.getElementById('tkid').innerText
   console.log(tkid)
-  await fetch("http://192.168.0.194:5500/fetchimg/"+tkid)
+  await fetch("/fetchimg/"+tkid)
   .then(response => response.json())
-  .then(data => 
+  .then(data =>
     {
       html = ""
       let img_list = data[0]['attachments']
       img_list = img_list.split(';')
       for(var i=0; i<=img_list.length-1; i++){
         console.log(img_list[i])
-        fetch("http://192.168.0.194:5500/getimage?path="+img_list[i])
+        fetch("/getimage?path="+img_list[i])
         .then(response => response.text())
         .then(result => {
           console.log(result)
