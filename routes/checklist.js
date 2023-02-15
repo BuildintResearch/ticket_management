@@ -25,6 +25,10 @@ router.get('/testing', function(req,res){
     res.render('checklist/testing.ejs')
 })
 
+router.get('/branch_c', function(req,res){
+    res.render('checklist/branch_checklist.ejs')
+})
+
 router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
     var param = req.params.param
     if(param == 'survey'){
@@ -51,6 +55,9 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
         db.query(sql, formData, function(err, data){
             if(err) {throw err}
             else{
+                // send email to concerned departments after survey checklist upload
+                // email async function here
+                
                 console.log("User data inserted successfully")
                 // generate ticket to service team for installation on survey checklist upload
                 obj = {userid: '36',
@@ -68,7 +75,7 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                     if(err){throw err}
                     else{
                         console.log('Ticket generated !!!')
-                        res.render('back')
+                        res.redirect('back')
                     }
                 })
             }
@@ -78,6 +85,22 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
     if(param == 'service'){
         if(req.body['option'] == "Installation"){
             delete req.body['option']
+            if(req.files!=null){
+                let sign_img = "";
+                let site_img = "";
+                for(i=0;i<req.files.length;i++){
+                    if(req.files[i]['fieldname']=='sign_imgs'){
+                        sign_img += req.files[i]['path']+";"
+                    }
+                    if(req.files[i]['fieldname']=='site_img'){
+                        site_img += req.files[i]['path']+";"
+                    }
+                }
+                sign_img = sign_img.slice(0, -1)
+                site_img = site_img.slice(0, -1)
+                req.body['sign_imgs'] = sign_img;
+                req.body['site_img'] = site_img;
+            }
             var sql = 'INSERT INTO inst SET ?';
             const formData = req.body
             console.log('URL POST : ',formData)
@@ -105,7 +128,7 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                                 if(err){throw err}
                                 else{
                                     console.log('Ticket generated !!!')
-                                    res.render('back')
+                                    res.redirect('back')
                                 }
                             })
                         }
@@ -116,6 +139,22 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
 
         if(req.body['option'] == "Service"){
             delete req.body['option']
+            if(req.files!=null){
+                let sign_img = "";
+                let site_img = "";
+                for(i=0;i<req.files.length;i++){
+                    if(req.files[i]['fieldname']=='sign_imgs'){
+                        sign_img += req.files[i]['path']+";"
+                    }
+                    if(req.files[i]['fieldname']=='site_img'){
+                        site_img += req.files[i]['path']+";"
+                    }
+                }
+                sign_img = sign_img.slice(0, -1)
+                site_img = site_img.slice(0, -1)
+                req.body['sign_imgs'] = sign_img;
+                req.body['site_img'] = site_img;
+            }
             var sql = 'INSERT INTO service SET ?';
             const formData = req.body
             console.log('URL POST : ',formData)

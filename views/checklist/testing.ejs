@@ -124,11 +124,12 @@
                   <input id="tab-1" type="radio" name="tab" class="atm" checked><label for="tab-1" class="tab atm_tab">Hardware</label>
                   <input id="tab-2" type="radio" name="tab" class="branch"><label for="tab-2" class="tab branch_tab">Data</label>
                   <div class="checklist-space">
+                    <form enctype="multipart/form-data" action="/checklist/postdata/hwtest" method="post">
+
                     <div class="atm-form">
                       <div class="row">
                         <div class="col-12">
                           <div class="group">
-                            <form action="/checklist/postdata/hwtest" method="post">
                               <label for="dateTime" class="label">Date and Time</label>
                               <input name="currdate" for="dateTime" class="form-control" type="text" id="datetime" placeholder="Select Date"/>
                             <script type="text/javascript">
