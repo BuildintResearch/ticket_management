@@ -75,8 +75,8 @@
                   <div style="width: 30%; float:right; display: none;" class="img-logo-snip">
                     <img src="assets/img/logo.png" alt="" class="img-fluid">
                   </div>
-                  <input id="tab-1" type="radio" name="tab" class="atm" checked><label for="tab-1" id="tab1" class="tab atm_tab">Survey</label>
-                  <input id="tab-2" type="radio" name="tab" class="branch"><label for="tab-2" id="tab2" class="tab branch_tab">Service</label>
+                  <input id="tab-1" type="radio" name="tab" class="atm" ><label for="tab-1" id="tab1" class="tab atm_tab">Survey</label>
+                  <input id="tab-2" type="radio" name="tab" class="branch"checked><label for="tab-2" id="tab2" class="tab branch_tab">Installation</label>
                   <div class="checklist-space">
                     <form enctype="multipart/form-data" action="/checklist/postdata/survey" method="post">
                       <div class="atm-form">
@@ -198,29 +198,7 @@
                               </div>
                             </div>
                           </div>
-                          <div style="margin-bottom: 35px;" class="group">
-                            <div class="row">
-                              <div class="col-12 form-check">
-                                <label for="ac2"><b>Devices Count</b></label>
-                              </div>
-                              <div class="col-6 form-dropdown">
-                                <input name="izion_count" class="input" type="text" placeholder="iZion">
-                              </div>
-                              <div class="col-6 form-dropdown">
-                                <input name="piazza_count" class="input" type="text" placeholder="Piazza">
-                              </div>
-                              <div class="col-6 form-dropdown">
-                                <input name="smart_meter_count" class="input" type="text" placeholder="Smart Meter">
-                              </div>
-                              <div class="col-6 form-dropdown">
-                                <input name="wifi/hotspot_count" class="input" type="text" placeholder="Wifi/Hotspot">
-                              </div>
-                              <div class="col-12 form-dropdown">
-                                <input name="sim_number_count" class="input" type="text" placeholder="Sim Number">
-                              </div>
-                            </div>
-                          </div> 
-
+                          
                           <div style="margin-bottom: 35px;" class="group">
                             <div class="row">
                               <div class="col-12 form-check">
@@ -272,6 +250,29 @@
                           <div style="margin-bottom: 35px;" class="group">
                             <div class="row">
                               <div class="col-12 form-check">
+                                <label for="ac2"><b>Devices Count</b></label>
+                              </div>
+                              <div class="col-6 form-dropdown">
+                                <input name="izion_count" class="input" type="text" placeholder="iZion">
+                              </div>
+                              <div class="col-6 form-dropdown">
+                                <input name="piazza_count" class="input" type="text" placeholder="Piazza">
+                              </div>
+                              <div class="col-6 form-dropdown">
+                                <input name="smart_meter_count" class="input" type="text" placeholder="Smart Meter">
+                              </div>
+                              <div class="col-6 form-dropdown">
+                                <input name="wifi/hotspot_count" class="input" type="text" placeholder="Wifi/Hotspot">
+                              </div>
+                              <div class="col-12 form-dropdown">
+                                <input name="sim_number_count" class="input" type="text" placeholder="Sim Number">
+                              </div>
+                            </div>
+                          </div> 
+
+                          <div style="margin-bottom: 35px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
                                 <label for="ac2"><b>Floor Plan</b></label>
                               </div>
                               <div class="col-12 form-dropdown">
@@ -315,16 +316,14 @@
                             </div>
                           </div>
 
-                          <div style="margin-bottom: 35px;" class="group">
-                            <div class="row">
-                              <div class="col-12 form-check">
+                          <!-- <div style="margin-bottom: 35px;" class="group"> -->
+                            <!-- <div class="row"> -->
+                              <!-- <div class="col-12 form-check">
                                 <label for="ac2"><b>Branch Architecture/Installation SLD</b></label>
-                              </div>
-                              <div class="col-12 form-dropdown">
-                                <!-- Add Meter Details -->
-                              </div>
-                            </div>
-                          </div>
+                              </div> -->
+                              
+                            <!-- </div> -->
+                          <!-- </div> -->
 
                           
                           <div style="margin-bottom: 35px;" class="group">
@@ -337,7 +336,18 @@
                               </div>
                             </div>
                           </div>
-
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="intime" class="label">In Time</label>
+                              <input name="intime" id="intime" type="text" class="input">
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="outtime" class="label">Out Time</label>
+                              <input name="outtime" id="outtime" type="text" class="input">
+                            </div>
+                          </div>
                           <div style="margin-bottom: 35px;" class="group">
                             <div class="row">
                               <div class="col-12 form-check">
@@ -395,24 +405,19 @@
                           </div>
                         </div>
 
-                        <div class="col-12">
-                          <div class="group">
-                            <label for="option-select" class="label">Select</label>
-                              <select name="option" class="datalist" id="option-select" onclick="updatefunc(this.id)">
-                                <option value="Service">Service</option>
-                                <option value="Installation">Installation</option>
-                              </select>
-                          </div>
-                        </div>
-                        <div class="col-12">
-                          <div class="group">
-                            <label for="project-name" class="label">Project</label>
-                            <input name="project_name" for="project-name" id="project_name_dd" type="text" class="input" placeholder="Project Name">
-                          </div>
-                        </div>
                         <div class="col-6">
                           <div class="group">
-                            <label for="branch-code" class="label">ATM Code</label>
+                            <label for="project-name" class="label">Project</label>
+                            <input name="project_name" for="project-name" id="project_name_dd" list="branch_project_list" type="text" class="datalist" placeholder="Project Name">
+                            <datalist id="branch_project_list">
+                              <!-- list code generated here -->
+                            </datalist>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="group">
+                            <label for="branch-code" class="label">Branch Code</label>
                             <input name="atmid" onkeyup="get_details(this.id)" id="atm_id" class="datalist" list="atmid_list" placeholder="Enter Device ID">
                               <datalist id="atmid_list">
                                 <!-- list code generated here -->
@@ -420,379 +425,128 @@
                           </div>
                         </div>
   
-                        <div class="col-6">
+                        <div class="col-12">
                           <div class="group">
-                            <label for="branch-name" class="label">ATM Name</label>
-                            <!-- <input for="branch-name" id="branch_name_dropdown" class="branch_name_dropdown"> -->
-                            <input name="atmc" id="atm_name" class="datalist" list="atmname_list" placeholder="Enter ATM Name">
-                              <datalist id="atmname_list">
-                                <!-- list code generated here -->
-                              </datalist>
-                          </div>
-                        </div>
-
-                        <div class="col-6">
-                          <div class="group">
-                            <label for="manager-name" class="label">Manager Name</label>
-                            <input name="mgr_name" for="manager-name" id="mgr_name" type="text" class="input" placeholder="Manager name">
-                          </div>
-                        </div>
-  
-                        <div class="col-6">
-                          <div class="group">
-                            <label for="manager-contact" class="label">Manager No.</label>
-                            <input name="mgr_con" for="manager-contact" id="mgr_con" type="text" class="input" placeholder="Contact No.">
+                            <label for="branch-name" class="label">Address</label>
+                            <input name="atmc" id="atm_name" class="input" list="atmname_list" placeholder="Enter ATM Name">
                           </div>
                         </div>
 
                         <div class="col-12">
                           <div class="group">
-                            <label for="manager-email" class="label">Manager Email ID.</label>
-                            <input name="mgr_email" for="manager-email" id="mgr_email" type="text" class="input" placeholder="Email id">
+                            <label for="branch-name" class="label">City</label>
+                            <input name="atmc" id="atm_name" class="input" list="atmname_list" placeholder="Enter ATM Name">
                           </div>
-                        </div>
+                        </div></div>
 
+                        <div class="col-12">
+                          <div class="group">
+                            <label for="branch-name" class="label"><b>Architecture/Installation SLD</b></label><br>
+                            <label for="branch-name" class="label">Smart Meter Count</label>
+                            <input name="atmc" type="number" id="meter_count" class="input" list="atmname_list" placeholder="Enter Smart Meter Count">
+                          </div>
+
+                          <div class="row" id="meter_count_div">
+                            <!-- <div class="col-4">
+                              <div class="group">
+                                <label for="test">Meter - 1</label>
+                              </div>
+                            </div> 
+                            <div class="row" id="meter_count_div">
+                              <div class="row">
+                                <div class="col-3">
+                                  <div class="group">
+                                    <select type="text"  class="input">
+                                      <option value=1>1-Phase</option>
+                                      <option value=3>3-Phase</option>
+                                      <option value="" selected hidden></option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-9">
+                                  <div class="row">
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="R" class="input"></div></div>
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="Y" class="input"></div></div>
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="B" class="input"></div></div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-3">
+                                  <div class="group">
+                                    <select type="text" class="input">
+                                      <option value=1>1-Phase</option>
+                                      <option value=3>3-Phase</option>
+                                      <option value="" selected hidden></option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-9">
+                                  <div class="row">
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="R" class="input"></div></div>
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="Y" class="input"></div></div>
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="B" class="input"></div></div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-3">
+                                  <div class="group">
+                                    <select type="text" class="input">
+                                      <option value=1>1-Phase</option>
+                                      <option value=3>3-Phase</option>
+                                      <option value="" selected hidden></option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-9">
+                                  <div class="row">
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="R" class="input"></div></div>
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="Y" class="input"></div></div>
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="B" class="input"></div></div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-3">
+                                  <div class="group">
+                                    <select type="text" class="input">
+                                      <option value=1>1-Phase</option>
+                                      <option value=3>3-Phase</option>
+                                      <option value="" selected hidden></option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-9">
+                                  <div class="row">
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="R" class="input"></div></div>
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="Y" class="input"></div></div>
+                                    <div class="col-4"><div class="group"><input type="text" placeholder="B" class="input"></div></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div> -->
+                          </div>
+
+                        
+
+                        
+                       
                         <div class="col-6">
                           <div class="group">
-                            <label for="person-name" class="label">Site Person Name</label>
+                            <label for="person-name" class="label">Site Electrician Name</label>
                             <input name="site_prs" for="person-name" id="site_prs" type="text" class="input" placeholder="Site person name">
                           </div>
                         </div>
   
                         <div class="col-6">
                           <div class="group">
-                            <label for="person-contact" class="label">Site Person No.</label>
+                            <label for="person-contact" class="label">Site Electrician No.</label>
                             <input name="site_p_con" id="site_p_con" type="text" class="input" placeholder="Contact no.">
                           </div>
                         </div>
                         
-                        <div class="col-3">
-                          <label></label>
-                        </div>
-                        <div class="col-3">
-                          <label>Connected</label>
-                        </div>
-                        <div class="col-3">
-                          <label>Not Connected</label>
-                        </div>
-                        <div class="col-3">
-                          <label>Remarks</label>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>AC1</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div name="ac1s" class="group">
-                            <input name="ac1s" id="ac1c" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="ac1s" id="ac1dc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="ac1r" id="ac1r" type="text" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>AC2</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="ac2s" id="ac2c" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="ac2s" id="ac2dc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="ac2r" type="text" id="ac2r" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>Lobby</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="lobbys" id="lc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="lobbys" id="ldc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="lobbyr" type="text" id="lobbyr" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>Signage</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="signages" id="sc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="signages" id="sdc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="signager" type="text" class="input" id="signager">
-                          </div>
-                        </div>
                         
-                        <div class="col-3">
-                          <div class="group">
-                            <label>DVR</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="dvrs" id="dvrc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="dvrs" id="dvrdc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="dvrr" type="text" id="dvrr" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>VSAT</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="vsats" id="vsatc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="vsats" id="vsatdc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="vsatr" type="text" id="vsatr" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>Temp & Humidity</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="tahs" id="tahc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="tahs" id="tahdc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="tahr" type="text" id="tahr" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>Occupancy</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="occus" id="oc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="occus" id="odc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input id="ocr" type="text" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>Door Sensor</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="doors" id="dsc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="doors" id="dsdc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input id="dsr" type="text" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>Earthing</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="earthings" id="ec" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="earthings" id="edc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input id="er" type="text" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>UPS charging & output</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="upss" id="upsc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="upss" id="upsdc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input id="upsr" type="text" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>iATM Box</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="iatms" id="iatmc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="iatms" id="iatmdc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="iatmr" type="text" id="iatmr" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>Router</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="routers" id="rc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="routers" id="rdc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="routerr" type="text" id="routerr" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>Battery</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="batterys" id="bc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="batterys" id="bdc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="br" type="text" id="br" class="input">
-                          </div>
-                        </div>
-
-                        <div class="col-3">
-                          <div class="group">
-                            <label>ATM Machine</label>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="atmms" id="atmmc" type="radio" value="Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="atmms" id="atmmdc" type="radio" value="Not Connected">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="group">
-                            <input name="atmmr" type="text" id="atmmr" class="input">
-                          </div>
-                        </div>
                         
                         <div class="col-6">
                           <div class="group">
@@ -836,7 +590,7 @@
                           </div>
                         </div>
 
-                        <div style="margin-bottom: 35px;" class="group"></div>
+                        <div style="margin-bottom: 35px;" class="group">
                           <div class="row">
                             <div class="col-12 form-check">
                               <label for="atm_site">Add Site Images</label>
