@@ -1,14 +1,14 @@
-// document.getElementById("ac_count_input").addEventListener('change', function(){
-//     var count = document.getElementById('ac_count_input')
-//     var ele = document.getElementById('ac_count_div')
-//     html = ""
-//     ele.innerHTML = ""
-//     for(i=0;i<count.value;i++){
-//         html += '<label style="margin-top:20px">AC-'+(i+1)+'</label> <div class="col-4" style="margin-top: 15px;"> <input class="input" type="text" placeholder="Area"> </div> <div class="col-4" style="margin-top: 15px;"> <input class="input" type="text" placeholder="AC Type"> </div> <div class="col-4" style="margin-top: 15px;"> <input class="input" type="text" placeholder="Brand"> </div> <div class="col-4" style="margin-top: 15px;"> <input class="input" type="text" placeholder="Model"> </div> <div class="col-4" style="margin-top: 15px;"> <input class="input" type="text" placeholder="Quantity"> </div> <div class="col-4" style="margin-top: 15px;"> <input class="input" type="text" placeholder="Comms"> </div>'
-//     }
-//     ele.innerHTML+=html
+document.getElementById("ac_count_input").addEventListener('change', function(){
+    var count = document.getElementById('ac_count_input')
+    var ele = document.getElementById('ac_count_div')
+    html = ""
+    ele.innerHTML = ""
+    for(i=0;i<count.value;i++){
+        html += '<label style="margin-top:20px">AC-'+(i+1)+'</label> <div class="col-4" style="margin-top: 15px;"> <input class="input" name="AC-'+(i+1)+'_area" type="text" placeholder="Area"> </div> <div class="col-4" style="margin-top: 15px;"> <input name="AC-'+(i+1)+'_type" class="input" type="text" placeholder="AC Type"> </div> <div class="col-4" style="margin-top: 15px;"> <input name="AC-'+(i+1)+'_brand" class="input" type="text" placeholder="Brand"> </div> <div class="col-4" style="margin-top: 15px;"> <input name="AC-'+(i+1)+'_model" class="input" type="text" placeholder="Model"> </div> <div class="col-4" style="margin-top: 15px;"> <input class="input" name="AC-'+(i+1)+'_quantity" type="text" placeholder="Quantity"> </div> <div class="col-4" style="margin-top: 15px;"> <input name="AC-'+(i+1)+'_comms" class="input" type="text" placeholder="Comms"> </div>'
+    }
+    ele.innerHTML+=html
     
-// })
+})
 function load_check(clicked){
 
     var x = document.getElementById(clicked)
@@ -25,11 +25,11 @@ document.getElementById("meter_count").addEventListener('change', function (){
         
         // html += '<div class="row" id="meter_count_div"> <div class="col-4"> <div class="group"> <label for="test">Meter - 1</label> </div> </div> <div class="row" id="meter_count_div"> <div class="col-4"> <div class="group"> <select type="text"  class="input"> <option value=1>Single Phase</option> <option value=3>Three Phase</option> <option value="" selected hidden></option> </select> </div> </div> <div class="col-4"> <div class="group"> <select type="text" class="input"> <option value=1>Single Phase</option> <option value=3>Three Phase</option> <option value="" selected hidden></option> </select> </div> </div> <div class="col-4"> <div class="group"> <select type="text" class="input"> <option value=1>Single Phase</option> <option value=3>Three Phase</option> <option value="" selected hidden></option> </select> </div> </div> </div> </div>'
 
-        html += '<div class="row" id="meter_count_div"> <div class="col-4"> <div class="group"> <label for="test">Meter - '+(i+1)+'</label> </div> </div> <div class="row" id="meter_count_div"> <div class="row"> <div class="col-3"> <div class="group"> <select id="meter-'+(i+1)+'_ch1" onchange="load_check(this.id)" type="text"  class="input"> <option value=1>1-Phase</option> <option value=3>3-Phase</option> <option value="" selected hidden></option> </select> </div> </div> <div class="col-9"> <div class="row"> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch1_ct1" type="text" placeholder="R" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch1_ct2" type="text" placeholder="Y" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch1_ct3" type="text" placeholder="B" class="input"></div></div> </div> </div> </div> <div class="row"> <div class="col-3"> <div class="group"> <select id="meter-'+(i+1)+'_ch2" onchange="load_check(this.id)" type="text" class="input"> <option value=1>1-Phase</option> <option value=3>3-Phase</option> <option value="" selected hidden></option> </select> </div> </div> <div class="col-9"> <div class="row"> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch2_ct1" type="text" placeholder="R" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch2_ct2" type="text" placeholder="Y" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch2_ct3" type="text" placeholder="B" class="input"></div></div> </div> </div> </div> <div class="row"> <div class="col-3"> <div class="group"> <select id="meter-'+(i+1)+'_ch3" onchange="load_check(this.id)" type="text" class="input"> <option value=1>1-Phase</option> <option value=3>3-Phase</option> <option value="" selected hidden></option> </select> </div> </div> <div class="col-9"> <div class="row"> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch3_ct1" type="text" placeholder="R" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch3_ct2"type="text" placeholder="Y" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch3_ct3" type="text" placeholder="B" class="input"></div></div> </div> </div> </div> <div class="row"> <div class="col-3"> <div class="group"> <select id="meter-'+(i+1)+'_ch4" onchange="load_check(this.id)"type="text" class="input"> <option value=1>1-Phase</option> <option value=3>3-Phase</option> <option value="" selected hidden></option> </select> </div> </div> <div class="col-9"> <div class="row"> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch4_ct1" type="text" placeholder="R" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch4_ct2" type="text" placeholder="Y" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch4_ct3" type="text" placeholder="B" class="input"></div></div> </div> </div> </div> </div> </div>'
+        html += '<div class="row" id="meter_count_div"> <div class="col-4"> <div class="group"> <label for="test">Meter - '+(i+1)+'</label> </div> </div> <div class="row" id="meter_count_div"> <div class="row"> <div class="col-3"> <div class="group"> <select id="meter-'+(i+1)+'_ch1" name="meter-'+(i+1)+'_ch1" onchange="load_check(this.id)" type="text"  class="input"> <option value=1>1-Phase</option> <option value=3>3-Phase</option> <option value="" selected hidden></option> </select> </div> </div> <div class="col-9"> <div class="row"> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch1_ct1" name="meter-'+(i+1)+'_ch1_ct1" type="text" placeholder="R" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch1_ct2" name="meter-'+(i+1)+'_ch1_ct2" type="text" placeholder="Y" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch1_ct3" name="meter-'+(i+1)+'_ch1_ct3" type="text" placeholder="B" class="input"></div></div> </div> </div> </div> <div class="row"> <div class="col-3"> <div class="group"> <select id="meter-'+(i+1)+'_ch2" name="meter-'+(i+1)+'_ch2" onchange="load_check(this.id)" type="text" class="input"> <option value=1>1-Phase</option> <option value=3>3-Phase</option> <option value="" selected hidden></option> </select> </div> </div> <div class="col-9"> <div class="row"> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch2_ct1" name="meter-'+(i+1)+'_ch2_ct1" type="text" placeholder="R" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch2_ct2" name="meter-'+(i+1)+'_ch2_ct2" type="text" placeholder="Y" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch2_ct3" name="meter-'+(i+1)+'_ch2_ct3" type="text" placeholder="B" class="input"></div></div> </div> </div> </div> <div class="row"> <div class="col-3"> <div class="group"> <select id="meter-'+(i+1)+'_ch3" name="meter-'+(i+1)+'_ch3" onchange="load_check(this.id)" type="text" class="input"> <option value=1>1-Phase</option> <option value=3>3-Phase</option> <option value="" selected hidden></option> </select> </div> </div> <div class="col-9"> <div class="row"> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch3_ct1" name="meter-'+(i+1)+'_ch3_ct1" type="text" placeholder="R" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch3_ct2" name="meter-'+(i+1)+'_ch3_ct2" type="text" placeholder="Y" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch3_ct3" name="meter-'+(i+1)+'_ch3_ct3" type="text" placeholder="B" class="input"></div></div> </div> </div> </div> <div class="row"> <div class="col-3"> <div class="group"> <select id="meter-'+(i+1)+'_ch4" name="meter-'+(i+1)+'_ch4" onchange="load_check(this.id)"type="text" class="input"> <option value=1>1-Phase</option> <option value=3>3-Phase</option> <option value="" selected hidden></option> </select> </div> </div> <div class="col-9"> <div class="row"> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch4_ct1" name="meter-'+(i+1)+'_ch4_ct1" type="text" placeholder="R" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch4_ct2" name="meter-'+(i+1)+'_ch4_ct2" type="text" placeholder="Y" class="input"></div></div> <div class="col-4"><div class="group"><input id="meter-'+(i+1)+'_ch4_ct3" name="meter-'+(i+1)+'_ch4_ct3" type="text" placeholder="B" class="input"></div></div> </div> </div> </div> </div> </div>'
 
     }
 
-    ele.innerHTML+=html
+    ele.innerHTML += html
 })
 
 function load_check(clicked){
@@ -42,7 +42,7 @@ function load_check(clicked){
         x1.style.display = 'block'
         x2.style.display = 'block'
         x1.disabled = false
-        x2.disbaled = false
+        x2.disabled = false
     }
     if(x == 3){
         x1 = document.getElementById(ele.id+'_ct2')
@@ -50,7 +50,7 @@ function load_check(clicked){
         x1.style.display = 'none'
         x2.style.display = 'none'
         x1.disabled = true
-        x2.disbaled = true
+        x2.disabled = true
     }
 
 }

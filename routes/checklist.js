@@ -7,6 +7,7 @@ const multer  = require('multer');
 var FTPStorage = require('multer-ftp')
 console.log(__dirname)
 router.use(express.static("./views/checklist/"));
+
 let upload = multer({
     storage: new FTPStorage({
         ftp:{
@@ -191,9 +192,88 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
         }
     })
     }
-    console.log(req.body)
+    if(param == 'site_survey'){
+        if(req.files!=null){
+            let sign_img = "";
+            let site_img = "";
+            for(i=0;i<req.files.length;i++){
+                if(req.files[i]['fieldname']=='sign_imgs'){
+                    sign_img += req.files[i]['path']+";"
+                }
+                if(req.files[i]['fieldname']=='site_img'){
+                    site_img += req.files[i]['path']+";"
+                }
+            }
+            console.log(sign_img, site_img)
+            sign_img = sign_img.slice(0, -1)
+            site_img = site_img.slice(0, -1)
+            req.body['sign_imgs'] = sign_img;
+            req.body['site_img'] = site_img;
+        }
+        var sql = 'INSERT INTO site_survey SET ?';
+        const formData = req.body
+        let hvac_details = {}
+        console.log("URL POST : ",formData)
+        console.log('Printing HVAC details ...')
+        for (const [key, value] of Object.entries(formData)) {
+            if(key.includes("AC-")){
+                hvac_details[key] = value
+                console.log(`${key}: ${value}`);
+                delete req.body[key]
+            }
+          }
+          req.body['hvac_details'] = JSON.stringify(hvac_details)
+          console.log(req.body)
+          db.query(sql, req.body, function(err, data){
+            if(err) {throw err}
+            else{
+                console.log("User data inserted successfully")
+                res.redirect('back');
+            }
+        })
+    }
+
+    if(param == 'site_inst'){
+        if(req.files!=null){
+            let sign_img = "";
+            let site_img = "";
+            for(i=0;i<req.files.length;i++){
+                if(req.files[i]['fieldname']=='sign_imgs'){
+                    sign_img += req.files[i]['path']+";"
+                }
+                if(req.files[i]['fieldname']=='site_img'){
+                    site_img += req.files[i]['path']+";"
+                }
+            }
+            console.log(sign_img, site_img)
+            sign_img = sign_img.slice(0, -1)
+            site_img = site_img.slice(0, -1)
+            req.body['sign_imgs'] = sign_img;
+            req.body['site_img'] = site_img;
+        }
+        var sql = 'INSERT INTO site_inst SET ?';
+        const formData = req.body
+        let meter_details = {}
+        console.log("URL POST : ",formData)
+        console.log(formData)
+        console.log('Printing meter details ...')
+        for (const [key, value] of Object.entries(formData)) {
+            if(key.includes("meter-")){
+                meter_details[key] = value
+                console.log(`${key}: ${value}`);
+                delete req.body[key]
+            }
+          }
+          req.body['meter_details'] = JSON.stringify(meter_details)
+          console.log(req.body)
+          db.query(sql, req.body, function(err, data){
+            if(err) {throw err}
+            else{
+                console.log("User data inserted successfully")
+                res.redirect('back');
+            }
+        })
+    }
 })
-
-
 
 module.exports = router;

@@ -75,10 +75,10 @@
                   <div style="width: 30%; float:right; display: none;" class="img-logo-snip">
                     <img src="assets/img/logo.png" alt="" class="img-fluid">
                   </div>
-                  <input id="tab-1" type="radio" name="tab" class="atm" ><label for="tab-1" id="tab1" class="tab atm_tab">Survey</label>
-                  <input id="tab-2" type="radio" name="tab" class="branch"checked><label for="tab-2" id="tab2" class="tab branch_tab">Installation</label>
+                  <input id="tab-1" type="radio" name="tab" class="atm" checked><label for="tab-1" id="tab1" class="tab atm_tab">Survey</label>
+                  <input id="tab-2" type="radio" name="tab" class="branch"><label for="tab-2" id="tab2" class="tab branch_tab">Installation</label>
                   <div class="checklist-space">
-                    <form enctype="multipart/form-data" action="/checklist/postdata/survey" method="post">
+                    <form enctype="multipart/form-data" action="/checklist/postdata/site_survey" method="post">
                       <div class="atm-form">
                         <div class="row">
                           <div class="col-12">
@@ -262,7 +262,7 @@
                                 <input name="smart_meter_count" class="input" type="text" placeholder="Smart Meter">
                               </div>
                               <div class="col-6 form-dropdown">
-                                <input name="wifi/hotspot_count" class="input" type="text" placeholder="Wifi/Hotspot">
+                                <input name="wifi_hotspot_count" class="input" type="text" placeholder="Wifi/Hotspot">
                               </div>
                               <div class="col-12 form-dropdown">
                                 <input name="sim_number_count" class="input" type="text" placeholder="Sim Number">
@@ -290,7 +290,7 @@
                                 <label for="ac2"><b>No. of ACs</b></label>
                                 <input id="ac_count_input" name="ac_count" class="input" type="number" placeholder="ACs Count">
                               </div>
-                              <div class="row" id="ac_count_div">
+                              <div name="hvac details" class="row" id="ac_count_div">
                                 <!-- add ac div here -->
                                 <!-- area, ac_type, brand, model, quantity, capacity, communication -->
                                 <!-- <label>AC1</label>
@@ -383,7 +383,7 @@
 
 <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
 
-                  <form enctype="multipart/form-data" action="/checklist/postdata/service" method="post">
+                  <form enctype="multipart/form-data" action="/checklist/postdata/site_inst" method="post">
                     <div class="branch-form">
                      
                       <div class="row">
@@ -418,7 +418,7 @@
                         <div class="col-6">
                           <div class="group">
                             <label for="branch-code" class="label">Branch Code</label>
-                            <input name="atmid" onkeyup="get_details(this.id)" id="atm_id" class="datalist" list="atmid_list" placeholder="Enter Device ID">
+                            <input name="branch_code" onkeyup="get_details(this.id)" id="atm_id" class="datalist" list="atmid_list" placeholder="Enter Device ID">
                               <datalist id="atmid_list">
                                 <!-- list code generated here -->
                               </datalist>
@@ -428,14 +428,14 @@
                         <div class="col-12">
                           <div class="group">
                             <label for="branch-name" class="label">Address</label>
-                            <input name="atmc" id="atm_name" class="input" list="atmname_list" placeholder="Enter ATM Name">
+                            <input name="address" id="atm_name" class="input" list="atmname_list" placeholder="Enter Address">
                           </div>
                         </div>
 
                         <div class="col-12">
                           <div class="group">
                             <label for="branch-name" class="label">City</label>
-                            <input name="atmc" id="atm_name" class="input" list="atmname_list" placeholder="Enter ATM Name">
+                            <input name="city" id="atm_name" class="input" list="atmname_list" placeholder="Enter City">
                           </div>
                         </div></div>
 
@@ -443,95 +443,13 @@
                           <div class="group">
                             <label for="branch-name" class="label"><b>Architecture/Installation SLD</b></label><br>
                             <label for="branch-name" class="label">Smart Meter Count</label>
-                            <input name="atmc" type="number" id="meter_count" class="input" list="atmname_list" placeholder="Enter Smart Meter Count">
+                            <input name="meter_count" type="number" id="meter_count" class="input" list="atmname_list" placeholder="Enter Smart Meter Count">
                           </div>
 
                           <div class="row" id="meter_count_div">
-                            <!-- <div class="col-4">
-                              <div class="group">
-                                <label for="test">Meter - 1</label>
-                              </div>
-                            </div> 
-                            <div class="row" id="meter_count_div">
-                              <div class="row">
-                                <div class="col-3">
-                                  <div class="group">
-                                    <select type="text"  class="input">
-                                      <option value=1>1-Phase</option>
-                                      <option value=3>3-Phase</option>
-                                      <option value="" selected hidden></option>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="col-9">
-                                  <div class="row">
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="R" class="input"></div></div>
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="Y" class="input"></div></div>
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="B" class="input"></div></div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-3">
-                                  <div class="group">
-                                    <select type="text" class="input">
-                                      <option value=1>1-Phase</option>
-                                      <option value=3>3-Phase</option>
-                                      <option value="" selected hidden></option>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="col-9">
-                                  <div class="row">
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="R" class="input"></div></div>
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="Y" class="input"></div></div>
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="B" class="input"></div></div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-3">
-                                  <div class="group">
-                                    <select type="text" class="input">
-                                      <option value=1>1-Phase</option>
-                                      <option value=3>3-Phase</option>
-                                      <option value="" selected hidden></option>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="col-9">
-                                  <div class="row">
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="R" class="input"></div></div>
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="Y" class="input"></div></div>
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="B" class="input"></div></div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-3">
-                                  <div class="group">
-                                    <select type="text" class="input">
-                                      <option value=1>1-Phase</option>
-                                      <option value=3>3-Phase</option>
-                                      <option value="" selected hidden></option>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="col-9">
-                                  <div class="row">
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="R" class="input"></div></div>
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="Y" class="input"></div></div>
-                                    <div class="col-4"><div class="group"><input type="text" placeholder="B" class="input"></div></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div> -->
+                            <!-- generate html here -->
                           </div>
 
-                        
-
-                        
-                       
                         <div class="col-6">
                           <div class="group">
                             <label for="person-name" class="label">Site Electrician Name</label>
