@@ -26,6 +26,10 @@ router.get('/testing', function(req,res){
     res.render('checklist/testing.ejs')
 })
 
+router.get('/back', function(req,res){
+    res.redirect('back')
+})
+
 router.get('/branch_c', function(req,res){
     res.render('checklist/branch_checklist.ejs')
 })
@@ -61,16 +65,17 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 
                 console.log("User data inserted successfully")
                 // generate ticket to service team for installation on survey checklist upload
-                obj = {userid: '36',
-                subject: 'Site Installation',
+                obj = {userid: '40,39',
+                subject: 'Site Installation(Monitoring)',
                 project: req.body['project_name'],
                 location: req.body['atmcity'],
+                city : req.body['atmcity'],
                 dept: 'Service',
                 status: 'POC',
                 assignee: '40',
                 priority: 'High',
                 due_date: '',
-                description: '',
+                description: 'Complete the monitoring installation and upload the checklist',
                 attachments: 'none'}
                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                     if(err){throw err}
@@ -227,8 +232,27 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
           db.query(sql, req.body, function(err, data){
             if(err) {throw err}
             else{
+                // generate ticket here to installation
+
                 console.log("User data inserted successfully")
-                res.redirect('back');
+                obj = {userid: '36',
+                subject: 'Site Installation',
+                project: req.body['project_name'],
+                location: req.body['city']+'_'+req.body['branch_code'],
+                dept: 'Service',
+                status: 'POC',
+                assignee: '40',
+                priority: 'High',
+                due_date: '',
+                description: '',
+                attachments: 'none'}
+                db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+                    if(err){throw err}
+                    else{
+                        console.log('Ticket generated !!!')
+                        res.redirect('back')
+                    }
+                })
             }
         })
     }
@@ -269,8 +293,28 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
           db.query(sql, req.body, function(err, data){
             if(err) {throw err}
             else{
+                // generate ticket here to software team
+
                 console.log("User data inserted successfully")
-                res.redirect('back');
+                // generate ticket to software team for dashboard creation on installation checklist upload
+                obj = {userid: '36',
+                subject: 'Dashboard Creation',
+                project: req.body['project_name'],
+                location: req.body['city']+'_'+req.body['branch_code'],
+                dept: 'Software',
+                status: 'POC',
+                assignee: '43',
+                priority: 'High',
+                due_date: '',
+                description: '',
+                attachments: 'none'}
+                db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+                    if(err){throw err}
+                    else{
+                        console.log('Ticket generated !!!')
+                        res.redirect('back')
+                    }
+                })
             }
         })
     }

@@ -235,19 +235,23 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
         db.query('INSERT INTO users SET ?',{fname:fname,lname:lname,usermail:usermail,pass:pass,dept:dept,user_type:user_type,mobileno:mobileno})
         res.redirect('/adduser')
     } 
+
     if(form == 'addproject'){
+        console.log(req.body)
         db.query('INSERT INTO projects SET ?', req.body, function (err, rows, fields){
             if(err) {throw err}
             else{
                 console.log('Project Added Successfully')
                 // generate ticket to service team to perform site survey
-                obj = {userid: '36',
+                // service support team
+                obj = {userid: '44',
                 subject: 'Site Survey',
                 project: req.body['project_name'],
                 location: req.body['location_name'],
+                city: req.body['city_name'],
                 dept: 'Service',
                 status: 'POC',
-                assignee: '40',
+                assignee: '40,39',
                 priority: 'High',
                 due_date: '',
                 description: 'Complete the site survey and upload the checklist',
@@ -259,7 +263,6 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
                         res.render('ticket/add_project.ejs',{"message":req.body})
                     }
                 })
-                
             }
         })
     }
@@ -271,11 +274,19 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
             }
             file_name_list = file_name_list.slice(0, -1)
             req.body['attachments'] = file_name_list;
+
+            const {tkid,description,user_id,attachments} = req.body
+            console.log(req.body)
+            db.query('INSERT INTO ticket_followup SET ?',{tkid:tkid,description:description,user_id:user_id,attachments:attachments})
+            res.redirect('back');
         }
-        const {tkid,description,user_id,attachments} = req.body
-        console.log(req.body)
-        db.query('INSERT INTO ticket_followup SET ?',{tkid:tkid,description:description,user_id:user_id,attachments:attachments})
-        res.redirect('back');
+        else{
+            const {tkid,description,user_id} = req.body
+            console.log(req.body)
+            db.query('INSERT INTO ticket_followup SET ?',{tkid:tkid,description:description,user_id:user_id})
+            res.redirect('back');
+        }
+        
     }
 })
 
@@ -300,7 +311,7 @@ app.get('/getdata/:table/:column/:where', function(req, res){
         })
     }
     else{
-        db.query('SELECT * from '+table+' where '+column+' = "'+where+'";', function(err, rows, fields){
+        db.query('SELECT * from '+table+' where '+column+' LIKE "%'+where+'%";', function(err, rows, fields){
             if(err) throw err
             res.send(rows)
         })
@@ -309,7 +320,7 @@ app.get('/getdata/:table/:column/:where', function(req, res){
 
 app.get('/gettable/:ass', function(req,res){
     var ass = req.params.ass
-    db.query('SELECT * FROM tickets WHERE assignee = '+ass, function(err, rows, fields){
+    db.query('SELECT * FROM tickets WHERE assignee LIKE "%'+ass+'%"', function(err, rows, fields){
         if(err) throw err
         res.send(rows)
     })
