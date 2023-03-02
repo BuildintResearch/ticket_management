@@ -7,6 +7,7 @@ const multer  = require('multer');
 var FTPStorage = require('multer-ftp')
 console.log(__dirname)
 router.use(express.static("./views/checklist/"));
+var mail = require('./mail')
 
 let upload = multer({
     storage: new FTPStorage({
@@ -18,6 +19,10 @@ let upload = multer({
     })
 })
 router.use(express.static("views/checklist/"));
+
+router.get('/test', function(req,res){
+    res.render('checklist/test_mail.ejs')
+})
 
 router.get('/survey_service', function(req, res){
    res.render('checklist/survey_service.ejs');
@@ -242,7 +247,7 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 // generate ticket here to installation
 
                 console.log("User data inserted successfully")
-                obj = {userid: '36',
+                obj = {userid: '44',
                 subject: 'Site Installation',
                 project: req.body['project_name'],
                 location: req.body['city']+'_'+req.body['branch_code'],

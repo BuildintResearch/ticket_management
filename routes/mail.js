@@ -19,7 +19,7 @@ async function testmail(mail_list){
         to: mail_list,
         subject: "CheckList - Location",
         // text: "",
-        html: 'PFA Checklist',
+        html: '<h1>Test</h1>',
     }
     
     transporter.sendMail(mailoption, function(err, response){
@@ -32,4 +32,5 @@ async function testmail(mail_list){
         }
     });
 }
-testmail("research@buildint.co")
+
+module.exports = {testmail}
