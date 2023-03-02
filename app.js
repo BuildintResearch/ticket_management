@@ -253,6 +253,7 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
                 status: 'POC',
                 assignee: '40,39',
                 priority: 'High',
+                type:req.body['project_type'],
                 due_date: '',
                 description: 'Complete the site survey and upload the checklist',
                 attachments: 'none'}

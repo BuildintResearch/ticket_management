@@ -18,6 +18,7 @@ let upload = multer({
     })
 })
 router.use(express.static("views/checklist/"));
+
 router.get('/survey_service', function(req, res){
    res.render('checklist/survey_service.ejs');
 });
@@ -32,6 +33,10 @@ router.get('/back', function(req,res){
 
 router.get('/branch_c', function(req,res){
     res.render('checklist/branch_checklist.ejs')
+})
+
+router.get('/software_c', function(req,res){
+    res.render('checklist/software_checklist.ejs')
 })
 
 router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
@@ -65,15 +70,16 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 
                 console.log("User data inserted successfully")
                 // generate ticket to service team for installation on survey checklist upload
-                obj = {userid: '40,39',
+                obj = {userid: '44',
                 subject: 'Site Installation(Monitoring)',
                 project: req.body['project_name'],
                 location: req.body['atmcity'],
                 city : req.body['atmcity'],
                 dept: 'Service',
                 status: 'POC',
-                assignee: '40',
+                assignee: '39,40',
                 priority: 'High',
+                type:'ATM',
                 due_date: '',
                 description: 'Complete the monitoring installation and upload the checklist',
                 attachments: 'none'}
@@ -119,7 +125,7 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                         else{
                             console.log("User data inserted successfully")
                             // generate ticket to software team for dashboard creation on installation checklist upload
-                            obj = {userid: '36',
+                            obj = {userid: '44',
                             subject: 'Dashboard Creation',
                             project: req.body['project_name'],
                             location: req.body['atmc'],
@@ -128,7 +134,8 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                             assignee: '43',
                             priority: 'High',
                             due_date: '',
-                            description: '',
+                            description: 'Create Dashboard, verify checklists.',
+                            type:'Software',
                             attachments: 'none'}
                             db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                                 if(err){throw err}
@@ -297,7 +304,7 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
 
                 console.log("User data inserted successfully")
                 // generate ticket to software team for dashboard creation on installation checklist upload
-                obj = {userid: '36',
+                obj = {userid: '44',
                 subject: 'Dashboard Creation',
                 project: req.body['project_name'],
                 location: req.body['city']+'_'+req.body['branch_code'],
@@ -305,8 +312,9 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 status: 'POC',
                 assignee: '43',
                 priority: 'High',
+                type:'Software',
                 due_date: '',
-                description: '',
+                description: 'Create Dashboard, verify checklists.',
                 attachments: 'none'}
                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                     if(err){throw err}
@@ -315,6 +323,17 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                         res.redirect('back')
                     }
                 })
+            }
+        })
+    }
+
+    if(param=='software'){
+        var sql = 'INSERT INTO software SET ?';
+        db.query(sql, req.body, function(err,data){
+            if(err) throw err;
+            else{
+                console.log('Checklist Submitted for Software!!!')
+                res.redirect('back')
             }
         })
     }
