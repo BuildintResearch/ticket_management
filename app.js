@@ -9,7 +9,6 @@ var img64 = require('image-base64-ftp')
 var FTPStorage = require('multer-ftp')
 const multer  = require('multer');
 const {Base64Encode} = require("base64-stream");
-
 var mailer = require('./mailer')
 
 // const fileUpload = require('express-fileupload');
@@ -228,7 +227,6 @@ app.get('/logout', function (req, res){
     res.redirect('/login')
 })
 
-
 // insert ticket to db, add user, add project
 app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
     console.log("Files : ",req.files)
@@ -331,7 +329,6 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
         
     }
 })
-
 
 // fetch data from db using * and where conditions
 app.get('/getdata/:table/:column/:where', function(req, res){
@@ -455,6 +452,7 @@ app.get('/fetchimg/:tkid', async(req,res) => {
         res.send(rows)
     })
 })
+
 app.get('/fetchimg1/:tkid', async(req,res) => {
     var tkid = req.params.tkid
     db.query('SELECT * from ticket_followup WHERE comment_id='+tkid, function(err, rows, fields){
