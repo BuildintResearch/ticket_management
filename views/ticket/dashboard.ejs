@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <title>Overview</title>
+</head>
+
+<body onload="index_load()">
+    <nav id="nav-bar-top" class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <a class="navbar-brand" href="/">Ticket Management</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Overview</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/mytickets">My Tickets</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/issues">Issues</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/checklist/survey_service">iATM Checklist</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/checklist/testing">iATM Testing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/checklist/branch_c">Branch Checklist</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/history">History</a>
+            </li>
+            <% if(user_type=='Super Admin'){ %>
+              <li class="nav-item active">
+                <a class="nav-link" href="/dashboard"><b>Dashboard</b></a>
+              </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/adduser">Add Users</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/addproject">Add Projects</a>
+            </li>
+            <% } %>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout" onclick="clear_storage()">Logout</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="text-align: center; margin-top: 30px;">
+        <div class="row">
+            <div class="col-sm-3 border-start border-primary border-5 rounded" style="padding: 5px;">
+                <span>Total Tickets</span>
+                <p><span><%=ticket_data['total_tickets']%></span></p>
+            </div>
+            <div class="col-sm-3 border-start border-success border-5 rounded" style="padding: 5px;">
+                <span>Total Closed</span>
+                <p><span><%=ticket_data['solved_tickets']%></span></p>
+            </div>
+            <div class="col-sm-3 border-start border-danger border-5 rounded" style="padding: 5px;">
+                <span>Tickets Opened Today</span>
+                <p><span><%=ticket_data['opened_today']%></span></p>
+            </div>
+            <div class="col-sm-3 border-start border-info border-5 rounded" style="padding: 5px;">
+                <span>Total Closed Today</span>
+                <p><span><%=ticket_data['solved_today']%></span></p>
+            </div>
+        </div>
+
+        <div class="container" style="text-align: center; margin-top: 10px;">
+            <div class="row">
+                <div class="col-sm-3 border-start border-dark border-5 rounded" style="padding: 5px;">
+                    <span>Total POC(s)</span>
+                    <p><span><%=project_data['POC_Count']%></span></p>
+                </div> 
+                <div class="col-sm-3 border-start border-dark border-5 rounded" style="padding: 5px;">
+                    <span>Total Surveys</span>
+                    <p><span><%=project_data['survey_count']+project_data['site_survey_count']%></span></p>
+                </div>
+                <div class="col-sm-3 border-start border-dark border-5 rounded" style="padding: 5px;">
+                    <span>Total Sites</span>
+                    <p><span><%=project_data['sites_active']%></span></p>
+                </div>
+                <div class="col-sm-3 border-start border-dark border-5 rounded" style="padding: 5px;">
+                    <span>Total Data Points</span>
+                    <p><span><%=project_data['device_count']%></span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5 mb-5">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header" style="text-align: left;">
+                      <div class="row">
+                        <div class="col-6">
+                            Project Overview
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- <canvas id="project_donut" width="500px" height="350px"></canvas> -->
+                        
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Date Added</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% for(i=0;i<project_details.length;i++){ %>
+                              <tr>
+                                    <td><%=project_details[i]['project_name']%></td>
+                                    <td><%=project_details[i]['location_name']%></td>
+                                    <td><%=project_details[i]['category']%></td>
+                                    <td><%=project_details[i]['project_type']%></td>
+                                    <td><%=project_details[i]['created_at'].toISOString().slice(0, 10)%></td>
+                              </tr>
+                              <%}%>
+                            </tbody>
+                          </table>
+                    </div>
+                  </div>
+                </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header" style="text-align: left;">
+                      <div class="row">
+                        <div class="col-6">
+                            <p id="high_pr" hidden><%=priority[0]['count']%></p>
+                            <p id="low_pr" hidden><%=priority[1]['count']%></p>
+                            <p id="normal_pr" hidden><%=priority[2]['count']%></p>
+                            Tickets Overview
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <canvas class="ticket_donut"></canvas>
+                        <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#exampleModal">View More</button>
+                    </div>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Tickets Overview</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <!-- modal body here -->
+                              
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Dept</th>
+                                    <th scope="col">Open Tickets</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>1</td>
+                                    <td>Service</td>
+                                    <td><%=ticket_seg['service']%></td>
+                                  </tr>
+                                  <tr>
+                                    <td>2</td>
+                                    <td>Data Analyst</td>
+                                    <td><%=ticket_seg['data']%></td>
+                                  </tr>
+                                  <tr>
+                                    <td>3</td>
+                                    <td>Software</td>
+                                    <td><%=ticket_seg['software']%></td>
+                                  </tr>
+                                  <tr>
+                                    <td>4</td>
+                                    <td>Project</td>
+                                    <td><%=ticket_seg['project']%></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="modal-footer">
+                              <a href="/history"><button class="btn btn-primary">View History</button></a>
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <div class="details">
+                        <ul></ul>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="js/chart.js"></script>
+</body>
+</html>

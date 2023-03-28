@@ -71,7 +71,7 @@
           <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <form enctype="multipart/form-data" name="ticket_data" action="/posturl/ticket" method="POST" id="ticket_form">
-                    <div class="mb-3">
+                    <div class="mb-3" hidden>
                         <label for="ticket_subject" class="form-label">User ID</label>
                         <input name="userid" class="form-control" id="user_id" readonly="readonly">
                     </div>
@@ -114,23 +114,24 @@
                     </div>
                     <div class="mb-3">
                         <label for="project_p" class="form-label">Assignee</label>
-                        <input name="assignee" class="form-control" id="project_p" list="p_list">
+                        <!-- <input name="assignee" class="form-control" id="project_p" list="p_list">
                         <datalist id="p_list"> -->
                           <!-- assignee list here -->
-                        </datalist>
-                          <!-- multiple select dropdown -->
-                         <!-- <select name="assignee" class="selectpicker" multiple data-live-search="true">
-                          <option>Mustard</option>
-                          <option>Ketchup</option>
-                          <option>Relish</option>
-                        </select> -->
-                    </div>
+                        <!-- </datalist> -->
+                        <select id="p_list" name="assignee" class="form-select" size="5" aria-label="size 3 select example" multiple>
+                          <!-- <option selected>Open this select menu</option> -->
+                          <!-- <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option> -->
+                        </select>
+                      </div>
                     <div class="mb-3">
                         <label for="project_pr" class="form-label">Priority</label>
                         <select name="priority" id="priority" class="form-select form-select-md mb-3" aria-label=".form-select-sm example">
                             <option  value="Normal" selected>Normal</option>
                             <option value="Low">Low</option>
                             <option value="High">High</option>
+                            <option value="POC">POC</option>
                         </select>
                     </div>
                     <div class="form-group mb-3">

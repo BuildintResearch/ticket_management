@@ -14,10 +14,7 @@
 
     <h1><span class="fa fa-sign-in"></span> Login</h1><br>
 
-    <!-- <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %> -->
-        
+    
     <!-- LOGIN FORM -->
     <form action="/loginpost" method="POST">
         <div class="form-group">
@@ -43,12 +40,14 @@
     async function getuid(){
         var mail = document.getElementById("mailid").value
         console.log(mail)
-        await fetch("http://192.168.0.194:5500/getdata/users/usermail/"+mail)
+        await fetch("/getdata/users/usermail/"+mail)
         .then(response => response.json())
         .then(data => {
             let uid = data[0]['user_id']
             localStorage.setItem("uid", uid)
+            console.log(uid)
         })
+
     }
 </script>
 </body>

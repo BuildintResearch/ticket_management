@@ -8,6 +8,7 @@ var FTPStorage = require('multer-ftp')
 console.log(__dirname)
 router.use(express.static("./views/checklist/"));
 var mail = require('./mail')
+var pdf = require('./pdf')
 
 let upload = multer({
     storage: new FTPStorage({
@@ -20,8 +21,37 @@ let upload = multer({
 })
 router.use(express.static("views/checklist/"));
 
-router.get('/test', function(req,res){
-    res.render('checklist/test_mail.ejs')
+// router.get('/test', function(req,res){
+//     db.query('SELECT * FROM site_survey WHERE site_survey_id = "41"', function(err,rows,fields){
+//         if(err){throw err}
+//         else{
+//             pdf.generate_pdf(rows[0])
+//             res.sendStatus(200)
+//         }
+//     })
+    
+// })
+
+router.post('/test', function(req,err){
+    res.send(req.body)
+})
+
+router.get('/test1', function(req,res){
+    db.query("SELECT * FROM site_survey WHERE site_survey_id = '41'", function(err,rows,fields){
+        if(err){throw err}
+        else{
+            res.render('checklist/branch_survey_iems_pdf.ejs',{'data':rows[0]})
+        }
+    }) 
+})
+
+router.get('/test2', function(req,res){
+    db.query("SELECT * FROM site_inst WHERE site_inst_id = '7'", function(err,rows,fields){
+        if(err){throw err}
+        else{
+            res.render('checklist/branch_inst_iems_pdf.ejs',{'data':rows[0]})
+        }
+    }) 
 })
 
 router.get('/survey_service', function(req, res){
@@ -87,7 +117,8 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 type:'ATM',
                 due_date: '',
                 description: 'Complete the monitoring installation and upload the checklist',
-                attachments: 'none'}
+                attachments: 'none',
+                created_at: null}
                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                     if(err){throw err}
                     else{
@@ -141,7 +172,8 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                             due_date: '',
                             description: 'Create Dashboard, verify checklists.',
                             type:'Software',
-                            attachments: 'none'}
+                            attachments: 'none',
+                            created_at : null}
                             db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                                 if(err){throw err}
                                 else{
@@ -245,24 +277,35 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
             if(err) {throw err}
             else{
                 // generate ticket here to installation
-
                 console.log("User data inserted successfully")
                 obj = {userid: '44',
-                subject: 'Site Installation',
+                subject: 'Site Installation(Monitoring)',
                 project: req.body['project_name'],
                 location: req.body['city']+'_'+req.body['branch_code'],
                 dept: 'Service',
+                city : req.body['city'],
+                type : 'Branch',
                 status: 'POC',
-                assignee: '40',
+                assignee: '40,39',
                 priority: 'High',
                 due_date: '',
-                description: '',
-                attachments: 'none'}
+                description: 'Complete Site Installation, upload the checklist',
+                attachments: 'none',
+                created_at:null}
                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                     if(err){throw err}
                     else{
+                        db.query('SELECT * FROM site_survey order by 1 desc limit 1', function(err, rows1, fields){
+                            if(err){throw err}
+                            else{
+                                console.log(rows1[0])
+                                // shoot mail for inventory here
+                                mail.testmail('research@buildint.co',rows1)
+                                res.render('checklist/branch_survey_iems_pdf.ejs',{'data':rows1[0]})
+                            }
+                        })
                         console.log('Ticket generated !!!')
-                        res.redirect('back')
+                        // res.redirect('back')
                     }
                 })
             }
@@ -320,12 +363,16 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 type:'Software',
                 due_date: '',
                 description: 'Create Dashboard, verify checklists.',
-                attachments: 'none'}
+                attachments: 'none',
+                created_at : null}
                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                     if(err){throw err}
                     else{
                         console.log('Ticket generated !!!')
-                        res.redirect('back')
+                        // res.redirect('back')
+                        db.query('SELECT * FROM site_inst order by 1 desc limit 1', function(err,rows,fields){
+                            res.render('checklist/branch_inst_iems_pdf.ejs',{'data':rows[0]})
+                        })
                     }
                 })
             }

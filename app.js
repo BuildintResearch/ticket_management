@@ -9,6 +9,9 @@ var img64 = require('image-base64-ftp')
 var FTPStorage = require('multer-ftp')
 const multer  = require('multer');
 const {Base64Encode} = require("base64-stream");
+
+var mailer = require('./mailer')
+
 // const fileUpload = require('express-fileupload');
 
 // // custom ftp upload function
@@ -43,7 +46,6 @@ const {Base64Encode} = require("base64-stream");
 //       })
 //     })
 //   }
-
 // multer upload function
 let upload = multer({
     storage: new FTPStorage({
@@ -58,7 +60,7 @@ var bodyParser = require('body-parser')
 var urlparser = bodyParser.urlencoded({ extended: true })
 var db = require('./routes/database')
 const cors = require("cors");
-const { json, urlencoded } = require('express');
+const { json, urlencoded, query } = require('express');
 var app = express();
 var checklist = require('./routes/checklist');
 app.engine('html',require('ejs').renderFile)
@@ -127,6 +129,27 @@ app.get('/adduser', (req, res) => {
     }
     else{
         res.render('ticket/login.ejs',{ message: req.flash('loginMessage') })
+    }
+})
+
+app.get('/dashboard', (req, res) => {
+    if(req.session.loggedin){
+        let query = "SELECT  count(*) 'total_tickets' , sum(CASE WHEN solved = 1 THEN 1 ELSE 0 END) 'solved_tickets', sum(CASE WHEN (date(convert_tz(created_at, '-00:00','-05:30'))) = CURDATE() THEN 1 ELSE 0 END) 'opened_today', sum(CASE WHEN (date(convert_tz(created_at, '-00:00','-05:30'))) = CURDATE() and solved = 1 THEN 1 ELSE 0 END) 'solved_today' FROM tickets t ;"
+        db.query(query, function(err, rows, fields){
+            db.query("SELECT (SELECT COUNT(*) FROM projects WHERE category='POC')'POC_Count' ,(SELECT COUNT(*) FROM survey s) 'survey_count', (SELECT COUNT(*) FROM site_survey ss) 'site_survey_count', (SELECT COUNT(*) FROM software s2) 'sites_active', (SELECT * FROM (SELECT sum(izion_count+piazza_count+smart_meter_count+wifi_hotspot_count)'device_active' FROM site_survey ss)x)'device_count' FROM dual;;", function(err,rows1,fields){
+                db.query("SELECT priority, count(*) 'count' FROM tickets group by priority;", function(err, rows2, fields){
+                    db.query("SELECT * FROM projects order by 1 desc limit 10", function(err,rows3,fields){
+                        db.query("SELECT sum(CASE WHEN dept = 'Service' and solved = 0 THEN 1 ELSE 0 END)'service', sum(CASE WHEN dept = 'Data Analyst' and solved = 0 THEN 1 ELSE 0 END)'data', sum(CASE WHEN dept = 'Software' and solved = 0 THEN 1 ELSE 0 END)'software', sum(CASE WHEN dept = 'Project' and solved = 0 THEN 1 ELSE 0 END)'project' from tickets;", function(err,rows4,fields){
+                            console.log(rows,rows1,rows2,rows3,rows4[0])
+                            res.render('ticket/dashboard.ejs',{'ticket_data':rows[0],'project_data':rows1[0],'priority':rows2,'project_details':rows3,'ticket_seg':rows4[0]})
+                        })
+                    })
+                })
+            })
+        })
+    }
+    else{
+        res.redirect('/login')
     }
 })
 
@@ -219,12 +242,29 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
                 file_name_list = file_name_list.slice(0, -1)
                 req.body['attachments'] = file_name_list;
             }
+            req.body['assignee'] = req.body['assignee'].join()
+            req.body['created_at'] = null;
             var sql = 'INSERT INTO tickets SET ?';
             const formData = req.body
             console.log("URL POST : ",formData)
             db.query(sql, formData, function(err, data){
-            if(err) throw err;
-            console.log("User data inserted successfully")
+            if(err){throw err}
+            else{
+                console.log("User data inserted successfully")
+                // generate ticket mail to concerned person
+                db.query("SELECT * FROM users WHERE user_id IN ("+req.body['assignee']+")", function(err,rows,fields){
+                    if(err){throw err}
+                    else{
+                        let user_mail = []
+                        console.log(rows)
+                        for(i=0;i<rows.length;i++){
+                            user_mail.push(rows[i]['usermail'])
+                        }
+                        mailer.ticket_mail(user_mail,req.body)
+                    }
+                })
+                // mailer.ticket_mail(formData['assignee'])
+            }
             })  
             res.redirect('/create_ticket')
         }
@@ -256,7 +296,8 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
                 type:req.body['project_type'],
                 due_date: '',
                 description: 'Complete the site survey and upload the checklist',
-                attachments: 'none'}
+                attachments: 'none',
+                created_at : null}
                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                     if(err){throw err}
                     else{
@@ -294,27 +335,33 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
 
 // fetch data from db using * and where conditions
 app.get('/getdata/:table/:column/:where', function(req, res){
-    var table = req.params.table;
-    var column = req.params.column;
-    var where = req.params.where;
+    let table = req.params.table;
+    let column = req.params.column;
+    let where = req.params.where;
     if(where == 'none' && column !='none'){
-        query = `SELECT ${column} FROM ${table}`
+        var query = `SELECT ${column} FROM ${table}`
         db.query(query, function(err, rows, fields){
-            if(err) console.log(err)
-            res.send(rows)
+            if(err){throw(err)}
+            else{
+                res.send(rows)
+            }
         })
     }
     else if(where=='none' && column=='none'){
-        query = `SELECT * FROM ${table}`
+        var query = `SELECT * FROM ${table}`
         db.query(query, function(err, rows, fields){
-            if(err) console.log(err)
-            res.send(rows)
+            if(err){throw(err)}
+            else{
+                res.send(rows)
+            }
         })
     }
     else{
         db.query('SELECT * from '+table+' where '+column+' LIKE "%'+where+'%";', function(err, rows, fields){
-            if(err) throw err
-            res.send(rows)
+            if(err) {throw err}
+            else{
+                res.send(rows)
+            }
         })
     }
 })
@@ -370,10 +417,16 @@ app.get('/mytickets', function(req, res){
 
 app.get('/history', function(req, res){
     if(req.session.loggedin){
-        res.render('ticket/history.ejs')
+        db.query('SELECT * from projects', function(err, rows, fields){
+            if(err){throw err}
+            else{
+                console.log(rows)
+                res.render('ticket/history.ejs',{'data':rows})
+            }
+        })
     }
     else{
-        res.render('ticket/login.ejs',{ message: req.flash('loginMessage') })
+        res.render('ticket/login.ejs')
     }
 })
 
@@ -411,6 +464,6 @@ app.get('/fetchimg1/:tkid', async(req,res) => {
 })
 
 //server
-var server = app.listen(5500, function(){
+app.listen(5500, function(){
     console.log('app listening to port 5500')
 });

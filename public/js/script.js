@@ -2,9 +2,8 @@
 let usrid = localStorage.getItem("uid")
 let user_list=0;
 async function index_load(){
-
     console.log(usrid)
-    fetch("http://192.168.0.194:5500/gettable/"+usrid)
+    fetch("/gettable/"+usrid)
     .then(response => response.json())
     .then(data => {
       console.log(data)
@@ -55,7 +54,7 @@ async function issue_load(){
     let iss = document.getElementById('issuetab')
     html="" 
     console.log(iss)
-    fetch("http://192.168.0.194:5500/getdata/tickets/assignee/"+usrid)
+    fetch("/getdata/tickets/assignee/"+usrid)
     .then(response => response.json())
     .then(data => {
       console.log(data)
@@ -94,7 +93,7 @@ function myticket_load(){
     let mytkt = document.getElementById('mytickettab')
     html="" 
     console.log(mytkt)
-    fetch("http://192.168.0.194:5500/getdata/tickets/userid/"+usrid)
+    fetch("/getdata/tickets/userid/"+usrid)
     .then(response => response.json())
     .then(data => {
       console.log(data)
@@ -110,7 +109,7 @@ function myticket_load(){
 
 function tkgen(){
   document.getElementById('user_id').value = usrid
-  fetch("http://192.168.0.194:5500/getdata/projects/none/none")
+  fetch("/getdata/projects/none/none")
   .then(response => response.json())
   .then(data => {
     html=""
@@ -124,20 +123,21 @@ function tkgen(){
   })
       
   console.log(usrid)
-  fetch("http://192.168.0.194:5500/getdata/users/none/none")
+  fetch("/getdata/users/none/none")
   .then(response => response.json())
   .then(data => {
     html=""
     html1=""
     console.log(data)
     let ass = document.getElementById("p_list")
-    let assno = document.getElementById("")
-    html += '<select name="assignee" class="selectpicker" data-live-search="true">'
+    // html += '<select name="assignee" class="selectpicker" data-live-search="true">'
+    html = ""
     for(i=0;i<data.length;i++){
       console.log(data[i])
       html += "<option value="+data[i]["user_id"]+">"+data[i]['fname']+" "+data[i]['lname']+"</option>"
+      // html += "<option value="+i+">"+i+"</option>"
     }
-    html += '</select>'
+    // html += '</select>'
     console.log(html)
     ass.innerHTML = html
   })

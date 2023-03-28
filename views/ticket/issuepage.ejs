@@ -139,7 +139,7 @@
       <div id="followup<%= followup[i]['tkid'] %>" class="container" style="border: 1px solid; border-radius: 10px; margin-top: 10px;padding: 10px;">
         <% for(j=0; j < users.length; j++){ %>
           <% if(followup[i]['user_id'] == users[j]['user_id']){ %>
-            <p style="color: gray;"><b><%= users[j]['fname'] %> <%= users[j]['lname'] %></b></p>
+            <p style="color: gray;"><b><%= users[j]['fname'] %> <%= users[j]['lname'] %> :</b></p>
             <% } %>
         <% } %>
         <p><%= followup[i]['description'] %></p>

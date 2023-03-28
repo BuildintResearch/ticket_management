@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- html2canvas library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>iEMS Checklist PDF</title>
+</head>
+<body>
+    <div id="contentToPrint">
+        <div style="float: right;">
+            <img src="./assets/img/logo.png" alt="buildint" style="text-align: right;">
+        </div>
+        <h5 id="checklist_id" hidden><%=data['site_inst_id']%></h5>
+        <h4 style="text-align: center;">CHECKLIST FOR BANK BRANCH iEMS IoT SOLUTION INSTALLATION </h4>
+        <div class="container mt-4">
+            <p id="bname">Branch Name - <%=data['project_name']%> <%=data['city']%></p>
+            <p id="bcode">Branch Code - <%=data['branch_code']%></p>
+            <p>Branch Address - <%=data['address']%></p>
+            <p>Site Electrician - <%=data['site_prs']%></p>
+            <p>Site Electrician Contact - <%=data['site_p_con']%></p>
+            <p>meter count : <%=data['meter_count']%></p>
+            <!-- <%=data['meter_details']%> -->
+            <% meterdata = JSON.parse(data['meter_details'])%>
+            <% keys = Object.keys(meterdata) %>
+            <!-- <%= Object.keys(meterdata) %> -->
+        </div>
+
+        <div class="container mt-5" style="text-align: center;">
+            <table style="text-align: center;">
+                <tr>
+                    <th>Meter</th>
+                    <th>Load Connected</th>
+                </tr>
+                    <!-- loop for meter -->
+                    <% for(i=1;i<parseInt(data['meter_count'])+1;i++){ %>
+                        <!-- loop for channels -->
+                        <% for(j=1;j<5;j++){ %>
+                            <!-- loop for CTs -->
+                            <% if(meterdata['meter-'+i+'_ch'+j]==1){ %>
+                            <tr>
+                                <td>M<%=i%> - CH<%=j%> CT1</td>
+                                <td><%=meterdata['meter-'+i+'_ch'+j+'_ct1']%></td>
+                            </tr>
+                            <tr>
+                                <td>M<%=i%> - CH<%=j%> CT2</td>
+                                <td><%=meterdata['meter-'+i+'_ch'+j+'_ct2']%></td>
+                            </tr>
+                            <tr>
+                                <td>M<%=i%> - CH<%=j%> CT3</td>
+                                <td><%=meterdata['meter-'+i+'_ch'+j+'_ct3']%></td>
+                            </tr>
+            
+                            </tr>
+                            <% } %>
+                            <%if(meterdata['meter-'+i+'_ch'+j]==3){%>
+                            <tr>
+                                <td>M<%=i%> - CH - ALL</td>
+                                <td><%=meterdata['meter-'+i+'_ch'+j+'_ct1']%></td>
+                            </tr>
+                            <%}%>
+                        <% } %>
+                    <% } %>
+            </table>
+        </div>
+
+        <div class="container mt-5">
+            <table>
+                <tr>
+                    <th>Intime</th>
+                    <td><%=data['intime']%> Hrs</td>
+                </tr>
+                <tr>
+                    <th>Outtime</th>
+                    <td><%=data['outtime']%> Hrs</td>
+                </tr>
+                <tr>
+                    <th>Problem</th>
+                    <td><%=data['problem']%></td>
+                </tr>
+                <tr>
+                    <th>Issue</th>
+                    <td><%=data['issue']%></td>
+                </tr>
+                <tr>
+                    <th>Maintenance</th>
+                    <td><%=data['maint']%></td>
+                </tr>
+                <tr>
+                    <th>Notes</th>
+                    <td><%=data['notes']%></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="container">
+            <h5>Site Images</h5>
+            <div id="site_imgs">
+            </div>
+            <h5>Signature</h5>
+            <div id="sign_imgs">
+        </div>
+
+        </div>
+    </div>
+    <button onclick="Convert_HTML_To_PDF()">Convert HTML to PDF</button>
+</body>
+
+<style>
+    table, th, td {
+  border: 1px solid black;
+  padding: 10px;
+}
+</style>
+<script>
+    window.jsPDF = window.jspdf.jsPDF;
+
+// Convert HTML content to PDF
+function Convert_HTML_To_PDF() {
+    var doc = new jsPDF();
+	
+    // Source HTMLElement or a string containing HTML.
+    var elementHTML = document.querySelector("#contentToPrint");
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let currentDate = `${day}-${month}-${year}`;
+    let bname = document.getElementById('bname').innerText
+    let bcode = document.getElementById('bcode').innerText
+    console.log(bname.split('-')[0], bcode)
+    doc.html(elementHTML, {
+        callback: function(doc) {
+            // Save the PDF
+            doc.save('./'+currentDate+'.pdf');
+        },
+        margin: [10, 10, 10, 10],
+        autoPaging: 'text',
+        x: 0,
+        y: 0,
+        width: 190, 
+        windowWidth: 675
+    });
+}
+
+window.onload = function getimg(){
+    id = document.getElementById('checklist_id').textContent
+    console.log(id)
+    fetch("/getdata/site_survey/site_survey_id/"+id)
+    .then(response => response.json())
+    .then(data =>
+    {
+      html = ""
+      let img_list = data[0]['site_img']
+      console.log(img_list)
+      if(img_list != 'none'){
+        img_list = img_list.split(';')
+        for(var i=0; i<=img_list.length-1; i++){
+          console.log(img_list[i])
+          fetch("/getimage?path="+img_list[i])
+          .then(response => response.text())
+          .then(result => {
+            console.log(result)
+            html = '<img style="width: 200px; margin-left:10px;" src="data:image/png;base64,'+result+'" alt="img"+'+i+' />'
+            document.getElementById('site_imgs').innerHTML += html
+        })
+        .catch(error => console.log('error', error));
+      }
+      }
+    })
+    .catch(error => console.log('error', error));
+
+    id = document.getElementById('checklist_id').textContent
+    console.log(id)
+    fetch("/getdata/site_survey/site_survey_id/"+id)
+    .then(response => response.json())
+    .then(data =>
+    {
+      html = ""
+      let img_list = data[0]['sign_imgs']
+      console.log(img_list)
+      if(img_list != 'none'){
+        img_list = img_list.split(';')
+        for(var i=0; i<=img_list.length-1; i++){
+          console.log(img_list[i])
+          fetch("/getimage?path="+img_list[i])
+          .then(response => response.text())
+          .then(result => {
+            console.log(result)
+            html = '<img style="width: 200px; margin-left:10px;" src="data:image/png;base64,'+result+'" alt="img"+'+i+' />'
+            document.getElementById('sign_imgs').innerHTML += html
+        })
+        .catch(error => console.log('error', error));
+      }
+      }
+    })
+    .catch(error => console.log('error', error));
+}
+
+// post html body to test route for pdf generation
+// console.log(document.getElementsByTagName("body")[0])
+// fetch("http://example.com/movies.json")
+//   .then((response) => response.json())
+//   .then((data) => console.log(data));
+</script>
+</html>
