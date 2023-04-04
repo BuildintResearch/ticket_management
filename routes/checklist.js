@@ -5,7 +5,6 @@ var urlparser = bodyParser.urlencoded({ extended: true })
 var db = require('./database')
 const multer  = require('multer');
 var FTPStorage = require('multer-ftp')
-console.log(__dirname)
 router.use(express.static("./views/checklist/"));
 var mail = require('./mail')
 var pdf = require('./pdf')
@@ -114,10 +113,10 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 status: 'POC',
                 assignee: '39,40',
                 priority: 'High',
-                type:'ATM',
                 due_date: '',
                 description: 'Complete the monitoring installation and upload the checklist',
                 attachments: 'none',
+                ticket_type:'project',
                 created_at: null}
                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                     if(err){throw err}

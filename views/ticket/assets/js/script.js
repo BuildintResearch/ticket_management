@@ -61,11 +61,11 @@ async function issue_load(){
       var j = 0;
       for(i=0;i<data.length;i++){
         console.log(data[i])
-        if(data[i]['priority']=="High" && data[i]['solved']==0 && data[i]['status']!='POC'){
+        if((data[i]['priority']=="High" && data[i]['solved']==0) && (data[i]['status']!='POC' && data[i]['status']!='Live')){
           html += "<tr class='table-danger'><td>"+(j+1)+"</td><td>"+data[i]['project']+"</td><td>"+data[i]['status']+"</td><td>"+data[i]['priority']+"</td><td><a style='color: inherit;' href='/issuepage/"+data[i]['tkid']+"'>"+data[i]['subject']+"</a></td><td>"+data[i]['assignee']+"</td></td><td>"+data[i]['due_date']+"</td><td>"+data[i]['created_at']+"</td><td><i class='bi bi-three-dots-vertical'></i></td></tr>"
           j+=1
         }
-        if(data[i]['status']=='POC' && data[i]['solved']==0 && data[i]['priority']=="High"){
+        if(((data[i]['status']=='POC' || data[i]['status']=='Live')) && data[i]['solved']==0){
           html += "<tr class='table-info'><td>"+(j+1)+"</td><td>"+data[i]['project']+"</td><td>"+data[i]['status']+"</td><td>"+data[i]['priority']+"</td><td><a style='color: inherit;' href='/issuepage/"+data[i]['tkid']+"'>"+data[i]['subject']+"</a></td><td>"+data[i]['assignee']+"</td></td><td>"+data[i]['due_date']+"</td><td>"+data[i]['created_at']+"</td><td><i class='bi bi-three-dots-vertical'></i></td></tr>"
           j+=1
         }
@@ -82,6 +82,7 @@ async function issue_page(){
     var cont = document.getElementById('issue-comment-div') 
     html = "<input name='user_id' type='text' value='"+usrid+"'hidden>"
     cont.innerHTML +=html 
+    load_assignee()
 }
 
 // clear local variables
@@ -277,6 +278,30 @@ document.getElementById('pr_filter').addEventListener('change', async function (
     history_ele.innerHTML += html
   })
 })
+
+// change assign code for modal on issue page
+async function load_assignee(){
+  document.getElementById('change_assignee').addEventListener('click', async function (e){
+    console.log('hi')
+    fetch("/getdata/users/none/none")
+    .then(response => response.json())
+    .then(data => {
+      html=""
+      html1=""
+      console.log(data)
+      let ass = document.getElementById("p_list")
+      // html += '<select name="assignee" class="selectpicker" data-live-search="true">'
+      html = ""
+      for(i=0;i<data.length;i++){
+        console.log(data[i])
+        html += "<option value="+data[i]["user_id"]+">"+data[i]['fname']+" "+data[i]['lname']+"</option>"
+      }
+      console.log(html)
+      ass.innerHTML = html
+    })
+  })
+}
+
 
 
 // document.getElementById("upload_file_btn").addEventListener('click', async function (e) {

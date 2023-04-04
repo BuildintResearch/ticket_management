@@ -61,7 +61,10 @@ var db = require('./routes/database')
 const cors = require("cors");
 const { json, urlencoded, query } = require('express');
 var app = express();
+// app.use(express.json());       
+// app.use(express.urlencoded({extended: true})); 
 var checklist = require('./routes/checklist');
+app.use(express.static("./views/ticket/"));
 app.engine('html',require('ejs').renderFile)
 app.use(express.static("public"));
 app.use(express.static("views/checklist/"));
@@ -240,7 +243,9 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
                 file_name_list = file_name_list.slice(0, -1)
                 req.body['attachments'] = file_name_list;
             }
-            req.body['assignee'] = req.body['assignee'].join()
+            assignee = req.body['assignee']
+            req.body['assignee'] = assignee.join()
+            delete assignee
             req.body['created_at'] = null;
             var sql = 'INSERT INTO tickets SET ?';
             const formData = req.body
@@ -276,55 +281,109 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
 
     if(form == 'addproject'){
         console.log(req.body)
-        db.query('INSERT INTO projects SET ?', req.body, function (err, rows, fields){
-            if(err) {throw err}
-            else{
-                console.log('Project Added Successfully')
-                // generate ticket to service team to perform site survey
-                // service support team
-                obj = {userid: '44',
-                subject: 'Site Survey',
-                project: req.body['project_name'],
-                location: req.body['location_name'],
-                city: req.body['city_name'],
-                dept: 'Service',
-                status: 'POC',
-                assignee: '40,39',
-                priority: 'High',
-                type:req.body['project_type'],
-                due_date: '',
-                description: 'Complete the site survey and upload the checklist',
-                attachments: 'none',
-                created_at : null}
-                db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
-                    if(err){throw err}
-                    else{
-                        console.log('Ticket generated !!!')
-                        res.render('ticket/add_project.ejs',{"message":req.body})
-                    }
-                })
-            }
-        })
-    }
+        if(req.body['category']=="POC"){
+            req.body['checklist_survey']='1'
+            req.body['checklist_monitoring']='1'
+            req.body['checklist_controlling']='1'
+            req.body['checklist_inst']='0'
+            console.log(req.body)
+            db.query('INSERT INTO projects SET ?', req.body, function (err, rows, fields){
+                if(err) {throw err}
+                else{
+                    db.query('SELECT project_id from projects order by 1 limit 1', function(err,rows1,fields){
+                        console.log('Project Added Successfully')
+                        obj = {userid: '44',
+                        project_id:rows1[0]['project_id'],
+                        subject: 'Site Survey',
+                        project: req.body['project_name'],
+                        location: req.body['location_name'],
+                        city: req.body['city_name'],
+                        dept: 'Project Engineer',
+                        status: 'POC',
+                        assignee: '40,39',
+                        priority: 'High',
+                        ticket_type:"project",
+                        due_date: '',
+                        description: 'Complete the site survey for mentioned location and upload the checklist',
+                        attachments: 'none',
+                        created_at : null}
+                        db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+                            if(err){throw err}
+                            else{
+                                console.log('Ticket generated !!!')
+                                res.render('ticket/add_project.ejs',{"message":req.body})
+                            }
+                        })
+                    })
+                    
+                        }
+                    })
+                }
+                
+        if(req.body['category']=="Live"){
+            req.body['checklist_survey']='1'
+            req.body['checklist_monitoring']='0'
+            req.body['checklist_controlling']='0'
+            req.body['checklist_inst']='1'
+            db.query('INSERT INTO projects SET ?', req.body, function (err, rows, fields){
+                if(err) {throw err}
+                else{
+                    console.log('Project Added Successfully')
+                        obj = {userid: '44',
+                        subject: 'Site Survey',
+                        project: req.body['project_name'],
+                        location: req.body['location_name'],
+                        city: req.body['city_name'],
+                        dept: 'Project Engineer',
+                        status: 'Live',
+                        assignee: '40,39',
+                        priority: 'High',
+                        ticket_type:"project",
+                        due_date: '',
+                        description: 'Complete the site survey for mentioned location and upload the checklist',
+                        attachments: 'none',
+                        created_at : null}
+                        db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+                            if(err){throw err}
+                            else{
+                                console.log('Ticket generated !!!')
+                                res.render('ticket/add_project.ejs',{"message":req.body})
+                            }
+                        })
+                        }
+                    })
+                }
+        }
+            
     if(form == 'comment'){
         if(req.files!=null){
             let file_name_list = "";
-            for(i=0;i<req.files.length;i++){
+            for(i=0;i<req.files.length;i++){    
                 file_name_list += req.files[i]['path']+";"
             }
             file_name_list = file_name_list.slice(0, -1)
             req.body['attachments'] = file_name_list;
-
             const {tkid,description,user_id,attachments} = req.body
             console.log(req.body)
-            db.query('INSERT INTO ticket_followup SET ?',{tkid:tkid,description:description,user_id:user_id,attachments:attachments})
-            res.redirect('back');
+            db.query('INSERT INTO ticket_followup SET ?',{tkid:tkid,description:description,user_id:user_id,attachments:attachments}, function(err ,rows, field){
+                if(err){throw(err)}
+                else{
+                    console.log("comment added")
+                    res.redirect('back');
+                }
+            })
         }
         else{
             const {tkid,description,user_id} = req.body
             console.log(req.body)
-            db.query('INSERT INTO ticket_followup SET ?',{tkid:tkid,description:description,user_id:user_id})
-            res.redirect('back');
+            db.query('INSERT INTO ticket_followup SET ?',{tkid:tkid,description:description,user_id:user_id,attachments:'none'}, function(err, rows, field){
+                if(err){throw(err)}
+                else{
+                    console.log("comment added")
+                    res.redirect("back")
+                }
+            })
+            // res.redirect('back');
         }
         
     }
@@ -379,7 +438,10 @@ app.get('/issuepage/:id', function(req, res){
         if(err) throw err
     db.query('SELECT * from users', function(err, rows2, fields){
         if(err) throw err
-        res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2})
+    db.query('SELECT * FROM projects where project_id = '+rows[0]['project_id'], function(err,rows3, fields){
+        console.log(rows3)
+        res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3})
+    })
     })
     })
     })
@@ -458,6 +520,23 @@ app.get('/fetchimg1/:tkid', async(req,res) => {
     db.query('SELECT * from ticket_followup WHERE comment_id='+tkid, function(err, rows, fields){
         if(err) throw err
         res.send(rows)
+    })
+})
+
+//update assignee entry in the ticket
+app.post('/updateassignee/:tkid', urlparser, async(req,res,next) => {
+    var tkid = req.params.tkid
+    console.log(req.body)
+    
+    db.query('SELECT * FROM tickets WHERE tkid='+tkid, function(err, rows, fields){
+        if(err){ throw err}
+        else{
+            if(rows[0]['assignee']==req.body){
+                // console.log('already exists yede')
+            }
+            // console.log(rows[0]['assignee'])
+            res.sendStatus(200)
+        }
     })
 })
 
