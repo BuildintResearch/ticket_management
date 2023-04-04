@@ -328,8 +328,10 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
             db.query('INSERT INTO projects SET ?', req.body, function (err, rows, fields){
                 if(err) {throw err}
                 else{
+                    db.query('SELECT project_id from projects order by 1 limit 1', function(err,rows1,fields){
                     console.log('Project Added Successfully')
                         obj = {userid: '44',
+                        project_id:rows1[0]['project_id'],
                         subject: 'Site Survey',
                         project: req.body['project_name'],
                         location: req.body['location_name'],
@@ -349,7 +351,7 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
                                 console.log('Ticket generated !!!')
                                 res.render('ticket/add_project.ejs',{"message":req.body})
                             }
-                        })
+                        })})
                         }
                     })
                 }

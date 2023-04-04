@@ -53,8 +53,11 @@ router.get('/test2', function(req,res){
     }) 
 })
 
-router.get('/survey_service', function(req, res){
-   res.render('checklist/survey_service.ejs');
+router.get('/survey_service/:ref/:pid/:pstatus', function(req, res){
+    var ref = req.params.ref
+    var pid = req.params.pid
+    var pstatus = req.params.pstatus
+   res.render('checklist/survey_service.ejs', {"refid":ref,"pid":pid,"p_status":pstatus});
 });
 
 router.get('/testing', function(req,res){
@@ -69,8 +72,11 @@ router.get('/branch_c', function(req,res){
     res.render('checklist/branch_checklist.ejs')
 })
 
-router.get('/software_c', function(req,res){
-    res.render('checklist/software_checklist.ejs')
+router.get('/software_c/:ref/:pid/:pstatus', function(req,res){
+    var ref = req.params.ref
+    var pid = req.params.pid
+    var pstatus = req.params.pstatus
+    res.render('checklist/software_checklist.ejs', {"refid":ref,"pid":pid,"p_status":pstatus})
 })
 
 router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
@@ -105,11 +111,12 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 console.log("User data inserted successfully")
                 // generate ticket to service team for installation on survey checklist upload
                 obj = {userid: '44',
-                subject: 'Site Installation(Monitoring)',
+                subject: 'Site Installation',
                 project: req.body['project_name'],
                 location: req.body['atmcity'],
                 city : req.body['atmcity'],
                 dept: 'Service',
+                ticket_type:'project',
                 status: 'POC',
                 assignee: '39,40',
                 priority: 'High',
@@ -117,6 +124,7 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 description: 'Complete the monitoring installation and upload the checklist',
                 attachments: 'none',
                 ticket_type:'project',
+                project_id:req.body['project_id'],
                 created_at: null}
                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                     if(err){throw err}
@@ -167,11 +175,13 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                             dept: 'Software',
                             status: 'POC',
                             assignee: '43',
+                            city:req.body['atmc'],
                             priority: 'High',
                             due_date: '',
                             description: 'Create Dashboard, verify checklists.',
-                            type:'Software',
                             attachments: 'none',
+                            ticket_type:'project',
+                            project_id:req.body['project_id'],
                             created_at : null}
                             db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                                 if(err){throw err}
@@ -290,6 +300,9 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 due_date: '',
                 description: 'Complete Site Installation, upload the checklist',
                 attachments: 'none',
+                ref_id:refid,
+                project_id:pid,
+                project_type:'project',
                 created_at:null}
                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                     if(err){throw err}
