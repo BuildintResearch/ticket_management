@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Register Ticket</title>
 </head>
@@ -140,7 +140,7 @@
               <button type="button" class="btn btn-primary mt-1" id="change_assignee" data-toggle="modal" data-target="#exampleModalCenter">Assign</button>
 
               <% if(data[0]['ticket_type']=='project'){ %>
-                <% if(project[0]['category']=='POC' && project[0]['project_type']=='atm' && !data[0]['subject'].includes("Installation")){ %>
+                <% if(project[0]['category']=='POC' && project[0]['project_type']=='atm' && data[0]['subject'].includes("Survey")){ %>
                 <a href="/checklist/survey_service/<%= data[0]['tkid']%>/<%= project[0]['project_id']%>/<%= data[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
               <% } %>
               <% if(project[0]['category']=='POC' && project[0]['project_type']=='atm' && data[0]['subject'].includes("Installation")){ %>
@@ -166,16 +166,18 @@
             <% } %>
           </div>
           
-          <% if(data[0]['attachments'] != 'none'){ %>
+          
           <div class="row" style="text-align: left; font-size: 20px;">
             <div class="col-12">
+              <% if(data[0]['attachments'] != 'none'){ %>
               <p><b>Images : </b></p>
+              <%}%>
               <div id="img-container">
                 <!-- generate images here -->
               </div>
             </div>
           </div>
-          <%}%>
+          
           <!-- View Images here -->
           <!-- Retrieve from FTP Server -->
         <!-- <p><b>Files : </b></p> Files Here !!! -->
@@ -190,13 +192,14 @@
             <% } %>
         <% } %>
         <%= followup[i]['description'] %>
-        <hr width="100%" style="margin: 1;"><%= followup[i]['created_at'].toISOString().replace("T"," ").substring(0, 19) %>
+        <hr width="100%" style="margin: 1;">
         <% if(data[0]['attachments'] != 'none'){%>
-        <p>Images : </p>
+        <!-- <p>Images : </p> -->
         <div>
           <p id="followup_img_<%= i %>"><%= followup[i]['attachments'] %></p>
         </div>
         <% } %>
+        <%= followup[i]['created_at'].toISOString().replace("T"," ").substring(0, 19) %>
       </div>
       
     <% } %>

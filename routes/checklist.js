@@ -107,32 +107,59 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
             else{
                 // send email to concerned departments after survey checklist upload
                 // email async function here
-                
                 console.log("User data inserted successfully")
                 // generate ticket to service team for installation on survey checklist upload
-                obj = {userid: '44',
-                subject: 'Site Installation',
-                project: req.body['project_name'],
-                location: req.body['atmcity'],
-                city : req.body['atmcity'],
-                dept: 'Service',
-                ticket_type:'project',
-                status: 'POC',
-                assignee: '39,40',
-                priority: 'High',
-                due_date: '',
-                description: 'Complete the monitoring installation and upload the checklist',
-                attachments: 'none',
-                ticket_type:'project',
-                project_id:req.body['project_id'],
-                created_at: null}
-                db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
-                    if(err){throw err}
-                    else{
-                        console.log('Ticket generated !!!')
-                        res.redirect('back')
-                    }
-                })
+                if(req.body['project_type']=="POC"){
+                    obj = {userid: '44',
+                    subject: 'Site Installation',
+                    project: req.body['project_name'],
+                    location: req.body['atmaddr'],
+                    city : req.body['atmcity'],
+                    dept: 'Service',
+                    ticket_type:'project',
+                    status: 'POC',
+                    assignee: '39,40',
+                    priority: 'High',
+                    due_date: '',
+                    description: 'Complete the monitoring installation and upload the checklist',
+                    attachments: 'na',
+                    ticket_type:'project',
+                    project_id:req.body['project_id'],
+                    created_at: null}
+                    db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+                        if(err){throw err}
+                        else{
+                            console.log('Ticket generated !!!')
+                            res.redirect('back')
+                        }
+                    })
+                }
+
+                if(req.body['project_type']=="Live"){
+                    obj = {userid: '44',
+                    subject: 'Site Installation',
+                    project: req.body['project_name'],
+                    location: req.body['atmaddr'],
+                    city : req.body['atmcity'],
+                    dept: 'Service',
+                    ticket_type:'project',
+                    status: 'Live',
+                    assignee: '39,40',
+                    priority: 'High',
+                    due_date: '',
+                    description: 'Complete the installation and upload the checklist',
+                    attachments: 'none',
+                    ticket_type:'project',
+                    project_id:req.body['project_id'],
+                    created_at: null}
+                    db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+                        if(err){throw err}
+                        else{
+                            console.log('Ticket generated !!!')
+                            res.redirect('back')
+                        }
+                    })
+                }
             }
         })
     }
@@ -166,30 +193,57 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                     db.query(sql, formData, function(err, data){
                         if(err) {throw err}
                         else{
-                            console.log("User data inserted successfully")
                             // generate ticket to software team for dashboard creation on installation checklist upload
-                            obj = {userid: '44',
-                            subject: 'Dashboard Creation',
-                            project: req.body['project_name'],
-                            location: req.body['atmc'],
-                            dept: 'Software',
-                            status: 'POC',
-                            assignee: '43',
-                            city:req.body['atmc'],
-                            priority: 'High',
-                            due_date: '',
-                            description: 'Create Dashboard, verify checklists.',
-                            attachments: 'none',
-                            ticket_type:'project',
-                            project_id:req.body['project_id'],
-                            created_at : null}
-                            db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
-                                if(err){throw err}
-                                else{
-                                    console.log('Ticket generated !!!')
-                                    res.redirect('back')
-                                }
-                            })
+
+                            if(req.body['project_type']=="POC"){
+                                obj = {userid: '44',
+                                subject: 'Dashboard Creation',
+                                project: req.body['project_name'],
+                                location: req.body['atmc'],
+                                dept: 'Software',
+                                status: 'POC',
+                                assignee: '43',
+                                city:req.body['atmc'],
+                                priority: 'High',
+                                due_date: '',
+                                description: 'Create Dashboard, verify checklists.',
+                                attachments: 'none',
+                                ticket_type:'project',
+                                project_id:req.body['project_id'],
+                                created_at : null}
+                                db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+                                    if(err){throw err}
+                                    else{
+                                        console.log('Ticket generated !!!')
+                                        res.redirect('back')
+                                    }
+                                })
+                            }
+                            if(req.body['project_type']=="Live"){
+                                obj = {userid: '44',
+                                subject: 'Dashboard Creation',
+                                project: req.body['project_name'],
+                                location: req.body['atmc'],
+                                dept: 'Software',
+                                status: 'Live',
+                                assignee: '43',
+                                city:req.body['atmc'],
+                                priority: 'High',
+                                due_date: '',
+                                description: 'Create Dashboard, verify checklists.',
+                                attachments: 'none',
+                                ticket_type:'project',
+                                project_id:req.body['project_id'],
+                                created_at : null}
+                                console.log(obj)
+                                db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+                                    if(err){throw err}
+                                    else{
+                                        console.log('Ticket generated !!!')
+                                        res.redirect('back')
+                                    }
+                                })
+                            }
                         }
                     })
                 }

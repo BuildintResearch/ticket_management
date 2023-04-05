@@ -144,6 +144,10 @@ function tkgen(){
   })
 }
 
+// document.addEventListener('DOMContentLoaded', function() {
+//   getImage()
+// }, false);
+
 async function getImage(){
   let tkid = document.getElementById('tkid').innerText
   console.log(tkid)
@@ -169,9 +173,10 @@ async function getImage(){
       }
     })
     .catch(error => console.log('error', error));
-
+  }
     // get followup comment images
     let follow_elements = document.querySelectorAll('[id^="followup_img_"]')
+    console.log(follow_elements)
     for(let i=0;i<follow_elements.length;i++){
       // console.log(follow_elements[i].getAttribute('id'))
       // console.log(document.getElementById(follow_elements[i].getAttribute('id')).innerHTML)
@@ -192,6 +197,7 @@ async function getImage(){
         });
       }
       else{
+        let html = ''
         img_name = follow_elements[i].innerText
         fetch("/getimage?path="+img_name)
           .then(response => response.text())
@@ -204,9 +210,6 @@ async function getImage(){
         })
         .catch(error => console.log('error', error));
       }
-      
-    }
-    
 }
 
 // main history load 
