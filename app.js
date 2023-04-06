@@ -305,7 +305,8 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
                         ticket_type:"project",
                         due_date: '',
                         description: 'Complete the site survey for mentioned location and upload the checklist',
-                        attachments: 'none',
+                        attachments: 'na',
+                        ticket_role : '1',
                         created_at : null}
                         db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                             if(err){throw err}
@@ -343,7 +344,8 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
                         ticket_type:"project",
                         due_date: '',
                         description: 'Complete the site survey for mentioned location and upload the checklist',
-                        attachments: 'none',
+                        attachments: 'na',
+                        ticket_role : '1',
                         created_at : null}
                         db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                             if(err){throw err}
@@ -378,7 +380,7 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
         else{
             const {tkid,description,user_id} = req.body
             console.log(req.body)
-            db.query('INSERT INTO ticket_followup SET ?',{tkid:tkid,description:description,user_id:user_id,attachments:'none'}, function(err, rows, field){
+            db.query('INSERT INTO ticket_followup SET ?',{tkid:tkid,description:description,user_id:user_id,attachments:'na'}, function(err, rows, field){
                 if(err){throw(err)}
                 else{
                     console.log("comment added")
@@ -440,9 +442,11 @@ app.get('/issuepage/:id', function(req, res){
         if(err) throw err
     db.query('SELECT * from users', function(err, rows2, fields){
         if(err) throw err
-    db.query('SELECT * FROM projects where project_id = '+rows[0]['project_id'], function(err,rows3, fields){
+    db.query('SELECT * FROM projects where project_id = '+rows[0]['project_id'], function(err, rows3, fields){
         console.log(rows3)
-        res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3})
+    db.query('SELECT * FROM tickets WHERE ticket_ref = "'+id+'";', function(err, rows4, fields){
+        res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3,'tkt_ref':rows4})        
+    })
     })
     })
     })
@@ -527,17 +531,36 @@ app.get('/fetchimg1/:tkid', async(req,res) => {
 
 //update assignee entry in the ticket
 app.post('/updateassignee/:tkid', urlparser, async(req,res,next) => {
-    var tkid = req.params.tkid
-    console.log(req.body)
-    
-    db.query('SELECT * FROM tickets WHERE tkid='+tkid, function(err, rows, fields){
+    var tkid = req.params.tkid    
+    db.query('SELECT * FROM tickets WHERE tkid='+tkid, function(err, rows1, fields){
         if(err){ throw err}
         else{
-            if(rows[0]['assignee']==req.body){
-                // console.log('already exists yede')
-            }
-            // console.log(rows[0]['assignee'])
-            res.sendStatus(200)
+            console.log(req.body)
+            console.log(rows1)
+                obj = {userid: rows1[0]['userid'],
+                    project_id:rows1[0]['project_id'],
+                    subject: rows1[0]['subject'],
+                    project: rows1[0]['project'],
+                    location: rows1[0]['location'],
+                    city: rows1[0]['city'],
+                    dept: rows1[0]['dept'],
+                    status: rows1[0]['status'],
+                    assignee: req.body['list_assignee'],
+                    priority: rows1[0]['priority'],
+                    ticket_type:"project",
+                    due_date: '',
+                    description: req.body['description'],
+                    attachments: 'na',
+                    ticket_ref : rows1[0]['tkid'],
+                    ticket_role : '2',
+                    created_at : null}
+                    sql = 'INSERT INTO tickets SET ?'
+                    db.query(sql, obj, function(err, data){
+                    if(err){throw err}
+                    else{
+                        res.redirect('back')
+                }
+            })
         }
     })
 })

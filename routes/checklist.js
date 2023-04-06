@@ -125,6 +125,7 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                     attachments: 'na',
                     ticket_type:'project',
                     project_id:req.body['project_id'],
+                    ticket_role : '1',
                     created_at: null}
                     db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                         if(err){throw err}
@@ -148,9 +149,10 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                     priority: 'High',
                     due_date: '',
                     description: 'Complete the installation and upload the checklist',
-                    attachments: 'none',
+                    attachments: 'na',
                     ticket_type:'project',
                     project_id:req.body['project_id'],
+                    ticket_role : '1',
                     created_at: null}
                     db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                         if(err){throw err}
@@ -194,7 +196,6 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                         if(err) {throw err}
                         else{
                             // generate ticket to software team for dashboard creation on installation checklist upload
-
                             if(req.body['project_type']=="POC"){
                                 obj = {userid: '44',
                                 subject: 'Dashboard Creation',
@@ -202,14 +203,15 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                                 location: req.body['atmc'],
                                 dept: 'Software',
                                 status: 'POC',
-                                assignee: '43',
+                                assignee: '42',
                                 city:req.body['atmc'],
                                 priority: 'High',
                                 due_date: '',
                                 description: 'Create Dashboard, verify checklists.',
-                                attachments: 'none',
+                                attachments: 'na',
                                 ticket_type:'project',
                                 project_id:req.body['project_id'],
+                                ticket_role : '1',
                                 created_at : null}
                                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                                     if(err){throw err}
@@ -226,14 +228,15 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                                 location: req.body['atmc'],
                                 dept: 'Software',
                                 status: 'Live',
-                                assignee: '43',
+                                assignee: '42',
                                 city:req.body['atmc'],
                                 priority: 'High',
                                 due_date: '',
                                 description: 'Create Dashboard, verify checklists.',
-                                attachments: 'none',
+                                attachments: 'na',
                                 ticket_type:'project',
                                 project_id:req.body['project_id'],
+                                ticket_role : '1',
                                 created_at : null}
                                 console.log(obj)
                                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
@@ -353,7 +356,7 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 priority: 'High',
                 due_date: '',
                 description: 'Complete Site Installation, upload the checklist',
-                attachments: 'none',
+                attachments: 'na',
                 ref_id:refid,
                 project_id:pid,
                 project_type:'project',
@@ -424,12 +427,12 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 location: req.body['city']+'_'+req.body['branch_code'],
                 dept: 'Software',
                 status: 'POC',
-                assignee: '43',
+                assignee: '42',
                 priority: 'High',
                 type:'Software',
                 due_date: '',
                 description: 'Create Dashboard, verify checklists.',
-                attachments: 'none',
+                attachments: 'na',
                 created_at : null}
                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                     if(err){throw err}

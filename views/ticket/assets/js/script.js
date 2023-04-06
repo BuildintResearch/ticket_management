@@ -173,7 +173,7 @@ async function getImage(){
       }
     })
     .catch(error => console.log('error', error));
-  }
+  
     // get followup comment images
     let follow_elements = document.querySelectorAll('[id^="followup_img_"]')
     console.log(follow_elements)
@@ -211,7 +211,7 @@ async function getImage(){
         .catch(error => console.log('error', error));
       }
 }
-
+}
 // main history load 
 async function history_func(){
   history_ele = document.getElementById("history_table")
