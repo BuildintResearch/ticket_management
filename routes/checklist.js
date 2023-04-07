@@ -68,8 +68,11 @@ router.get('/back', function(req,res){
     res.redirect('back')
 })
 
-router.get('/branch_c', function(req,res){
-    res.render('checklist/branch_checklist.ejs')
+router.get('/branch_c/:ref/:pid/:pstatus', function(req,res){
+    var ref = req.params.ref
+    var pid = req.params.pid
+    var pstatus = req.params.pstatus
+    res.render('checklist/branch_checklist.ejs', {"refid":ref,"pid":pid,"p_status":pstatus})
 })
 
 router.get('/software_c/:ref/:pid/:pstatus', function(req,res){
@@ -130,6 +133,7 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                     db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                         if(err){throw err}
                         else{
+                            console.log(obj)
                             console.log('Ticket generated !!!')
                             res.redirect('back')
                         }
@@ -150,7 +154,6 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                     due_date: '',
                     description: 'Complete the installation and upload the checklist',
                     attachments: 'na',
-                    ticket_type:'project',
                     project_id:req.body['project_id'],
                     ticket_role : '1',
                     created_at: null}
@@ -342,41 +345,43 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
           db.query(sql, req.body, function(err, data){
             if(err) {throw err}
             else{
-                // generate ticket here to installation
-                console.log("User data inserted successfully")
-                obj = {userid: '44',
-                subject: 'Site Installation(Monitoring)',
-                project: req.body['project_name'],
-                location: req.body['city']+'_'+req.body['branch_code'],
-                dept: 'Service',
-                city : req.body['city'],
-                type : 'Branch',
-                status: 'POC',
-                assignee: '40,39',
-                priority: 'High',
-                due_date: '',
-                description: 'Complete Site Installation, upload the checklist',
-                attachments: 'na',
-                ref_id:refid,
-                project_id:pid,
-                project_type:'project',
-                created_at:null}
-                db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
-                    if(err){throw err}
-                    else{
-                        db.query('SELECT * FROM site_survey order by 1 desc limit 1', function(err, rows1, fields){
-                            if(err){throw err}
-                            else{
-                                console.log(rows1[0])
-                                // shoot mail for inventory here
-                                mail.testmail('research@buildint.co',rows1)
-                                res.render('checklist/branch_survey_iems_pdf.ejs',{'data':rows1[0]})
-                            }
-                        })
-                        console.log('Ticket generated !!!')
-                        // res.redirect('back')
-                    }
-                })
+                if(req.body['project_type']=='POC'){
+                    // generate ticket here to installation
+                    console.log("User data inserted successfully")
+                    obj = {userid: '44',
+                    subject: 'Site Installation(Monitoring)',
+                    project: req.body['project_name'],
+                    location: req.body['city']+'_'+req.body['branch_code'],
+                    dept: 'Service',
+                    city : req.body['city'],
+                    assignee: '40,39',
+                    priority: 'High',
+                    status:'POC',
+                    due_date: '',
+                    description: 'Complete Site Installation, upload the checklist',
+                    attachments: 'na',
+                    ticket_role : '1',
+                    ticket_type:'project',
+                    project_id : req.body['project_id'],
+                    created_at:null}
+                    db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+                        if(err){throw err}
+                        else{
+                            db.query('SELECT * FROM site_survey order by 1 desc limit 1', function(err, rows1, fields){
+                                if(err){throw err}
+                                else{
+                                    console.log(rows1[0])
+                                    // shoot mail for inventory here
+                                    // mail.testmail('research@buildint.co',rows1)
+                                    res.render('checklist/branch_survey_iems_pdf.ejs',{'data':rows1[0]})
+                                }
+                            })
+                            console.log('Ticket generated !!!')
+                            // res.redirect('back')
+                        }
+                    })
+                }
+
             }
         })
     }
@@ -426,13 +431,16 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 project: req.body['project_name'],
                 location: req.body['city']+'_'+req.body['branch_code'],
                 dept: 'Software',
+                city: req.body['city'],
                 status: 'POC',
                 assignee: '42',
                 priority: 'High',
-                type:'Software',
                 due_date: '',
                 description: 'Create Dashboard, verify checklists.',
                 attachments: 'na',
+                project_id: req.body['project_id'],
+                ticket_type: 'project',
+                ticket_role: '1',
                 created_at : null}
                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
                     if(err){throw err}
