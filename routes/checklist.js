@@ -411,6 +411,11 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
         console.log(formData)
         console.log('Printing meter details ...')
         for (const [key, value] of Object.entries(formData)) {
+            if(key.includes("piazza")){
+                meter_details[key]=value
+                console.log(`${key}: ${value}`);
+                delete req.body[key]
+            }
             if(key.includes("meter-")){
                 meter_details[key] = value
                 console.log(`${key}: ${value}`);
@@ -422,36 +427,38 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
           db.query(sql, req.body, function(err, data){
             if(err) {throw err}
             else{
-                // generate ticket here to software team
-
                 console.log("User data inserted successfully")
-                // generate ticket to software team for dashboard creation on installation checklist upload
-                obj = {userid: '44',
-                subject: 'Dashboard Creation',
-                project: req.body['project_name'],
-                location: req.body['city']+'_'+req.body['branch_code'],
-                dept: 'Software',
-                city: req.body['city'],
-                status: 'POC',
-                assignee: '42',
-                priority: 'High',
-                due_date: '',
-                description: 'Create Dashboard, verify checklists.',
-                attachments: 'na',
-                project_id: req.body['project_id'],
-                ticket_type: 'project',
-                ticket_role: '1',
-                created_at : null}
-                db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
-                    if(err){throw err}
-                    else{
-                        console.log('Ticket generated !!!')
-                        // res.redirect('back')
-                        db.query('SELECT * FROM site_inst order by 1 desc limit 1', function(err,rows,fields){
-                            res.render('checklist/branch_inst_iems_pdf.ejs',{'data':rows[0]})
-                        })
-                    }
-                })
+                // generate ticket here to software team
+                if(req.body['project_type']=="POC"){
+                    // generate ticket to software team for dashboard creation on installation checklist upload
+                    obj = {userid: '44',
+                    subject: 'Controlling Installation',
+                    project: req.body['project_name'],
+                    location: req.body['city']+'_'+req.body['branch_code'],
+                    dept: 'Software',
+                    city: req.body['city'],
+                    status: 'POC',
+                    assignee: '39,40',
+                    priority: 'High',
+                    due_date: '',
+                    description: 'Perform Controlling Installation and upload the checklist.',
+                    attachments: 'na',
+                    project_id: req.body['project_id'],
+                    ticket_type: 'project',
+                    ticket_role: '1',
+                    created_at : null}
+                    db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+                        if(err){throw err}
+                        else{
+                            console.log('Ticket generated !!!')
+                            // res.redirect('back')
+                            db.query('SELECT * FROM site_inst order by 1 desc limit 1', function(err,rows,fields){
+                                res.render('checklist/branch_inst_iems_pdf.ejs',{'data':rows[0]})
+                            })
+                        }
+                    })
+                }
+                
             }
         })
     }

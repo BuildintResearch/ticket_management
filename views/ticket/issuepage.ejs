@@ -139,18 +139,30 @@
               <% if(data[0]['ticket_role']=='1'){ %>
                 <button type="button" class="btn btn-primary mt-1" id="change_assignee" data-toggle="modal" data-target="#exampleModalCenter">Assign</button>
               <% } %>
+              <!-- poc-atm-survey -->
               <% if(data[0]['ticket_type']=='project'){ %>
                 <% if(project[0]['category']=='POC' && project[0]['project_type']=='atm' && data[0]['subject'].includes("Survey")){ %>
                 <a href="/checklist/survey_service/<%= data[0]['tkid']%>/<%= project[0]['project_id']%>/<%= data[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
               <% } %>
+              <!-- poc-atm-installation -->
               <% if(project[0]['category']=='POC' && project[0]['project_type']=='atm' && data[0]['subject'].includes("Installation")){ %>
                 <a href="/checklist/survey_service/<%= data[0]['tkid']%>/<%= project[0]['project_id']%>/<%= data[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
               <% } %>
+              <!-- poc-atm-software -->
               <% if(project[0]['category']=='POC' && project[0]['project_type']=='atm' && data[0]['subject'].includes("Dashboard")){ %>
                 <a href="/checklist/software_c/<%= data[0]['tkid']%>/<%= project[0]['project_id']%>/<%= data[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
               <% } %>
-                <% if(project[0]['category']=='POC' && project[0]['project_type'].includes('branch')){ %>
+              <!-- poc-branch-survey -->
+                <% if(project[0]['category']=='POC' && project[0]['project_type'].includes('branch') && data[0]['subject'].includes('Survey')){ %>
                 <a href="/checklist/branch_c/<%= data[0]['tkid']%>/<%= project[0]['project_id']%>/<%= data[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
+              <% } %>
+              <!-- poc-branch-installation -->
+              <% if(project[0]['category']=='POC' && project[0]['project_type']=='branch' && data[0]['subject'].includes('Installation')){%> 
+                <a href="/checklist/branch_c/<%= data[0]['tkid']%>/<%= project[0]['project_id']%>/<%= data[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
+              <% } %>
+              <!-- poc-branch-software -->
+              <% if(project[0]['category']=='POC' && project[0]['project_type']=='branch' && data[0]['subject'].includes('Dashboard')){%> 
+                <a href="/checklist/software_c/<%= data[0]['tkid']%>/<%= project[0]['project_id']%>/<%= data[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
               <% } %>
                 <% if(project[0]['category']=='Live' && project[0]['project_type']=='atm'){ %>
                 <a href="/checklist/survey_service/<%= data[0]['tkid']%>/<%= project[0]['project_id']%>/<%= data[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
