@@ -31,17 +31,24 @@ router.use(express.static("views/checklist/"));
     
 // })
 
-router.post('/test', function(req,err){
-    res.send(req.body)
+router.get('/branchcontrol/:ref/:pid/:pstatus', function(req,res){
+    var ref = req.params.ref
+    var pid = req.params.pid
+    var pstatus = req.params.pstatus
+    res.render('checklist/branchcontrol.ejs', {"refid":ref,"pid":pid,"p_status":pstatus})
 })
 
-router.get('/test1', function(req,res){
-    db.query("SELECT * FROM site_survey WHERE site_survey_id = '41'", function(err,rows,fields){
+router.get('/test/:refid', function(req,res){
+    var refid = req.params.refid
+    db.query('SELECT * FROM site_survey WHERE ref_id = "'+refid+'";', function(err, rows1, fields){
         if(err){throw err}
         else{
-            res.render('checklist/branch_survey_iems_pdf.ejs',{'data':rows[0]})
+            console.log(rows1[0])
+            // shoot mail for inventory here
+            // mail.testmail('research@buildint.co',rows1)
+            res.render('checklist/branch_survey_iems_pdf.ejs',{'data':rows1[0]})
         }
-    }) 
+    })
 })
 
 router.get('/test2', function(req,res){
@@ -455,6 +462,78 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                             db.query('SELECT * FROM site_inst order by 1 desc limit 1', function(err,rows,fields){
                                 res.render('checklist/branch_inst_iems_pdf.ejs',{'data':rows[0]})
                             })
+                        }
+                    })
+                }
+                
+            }
+        })
+    }
+
+    if(param == 'branchcontrol'){
+        if(req.files!=null){
+            let sign_img = "";
+            let site_img = "";
+            for(i=0;i<req.files.length;i++){
+                if(req.files[i]['fieldname']=='sign_imgs'){
+                    sign_img += req.files[i]['path']+";"
+                }
+                if(req.files[i]['fieldname']=='site_img'){
+                    site_img += req.files[i]['path']+";"
+                }
+            }
+            console.log(sign_img, site_img)
+            sign_img = sign_img.slice(0, -1)
+            site_img = site_img.slice(0, -1)
+            req.body['sign_imgs'] = sign_img;
+            req.body['site_img'] = site_img;
+        }
+        var sql = 'INSERT INTO site_control SET ?';
+        const formData = req.body
+        let meter_details = {}
+        console.log("URL POST : ",formData)
+        console.log(formData)
+        console.log('Printing meter details ...')
+        for (const [key, value] of Object.entries(formData)) {
+            if(key.includes("izion")){
+                meter_details[key]=value
+                console.log(`${key}: ${value}`);
+                delete req.body[key]
+            }
+          }
+          req.body['izion_details'] = JSON.stringify(meter_details)
+          console.log(req.body)
+          db.query(sql, req.body, function(err, data){
+            if(err) {throw err}
+            else{
+                console.log("User data inserted successfully")
+                // generate ticket here to software team
+                if(req.body['project_type']=="POC"){
+                    // generate ticket to software team for dashboard creation on installation checklist upload
+                    obj = {userid: '44',
+                    subject: 'Dashboard Creation',
+                    project: req.body['project_name'],
+                    location: req.body['city']+'_'+req.body['branch_code'],
+                    dept: 'Software',
+                    city: req.body['city'],
+                    status: 'POC',
+                    assignee: '42',
+                    priority: 'High',
+                    due_date: '',
+                    description: 'Ensure everything is working fine and create dashboard',
+                    attachments: 'na',
+                    project_id: req.body['project_id'],
+                    ticket_type: 'project',
+                    ticket_role: '1',
+                    created_at : null}
+                    db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+                        if(err){throw err}
+                        else{
+                            console.log('Ticket generated !!!')
+                            res.redirect('back')
+                            // db.query('SELECT * FROM site_control order by 1 desc limit 1', function(err,rows,fields){
+                            //     res.render('checklist/branch_inst_iems_pdf.ejs',{'data':rows[0]})
+                            // })
                         }
                     })
                 }

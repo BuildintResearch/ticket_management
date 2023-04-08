@@ -72,10 +72,10 @@
                   <div style="width: 30%; float:right; display: none;" class="img-logo-snip">
                     <img src="/checklist/assets/img/logo.png" alt="" class="img-fluid">
                   </div>
-                  <input id="tab-1" type="radio" name="tab" class="atm" checked><label for="tab-1" id="tab1" class="tab atm_tab">Software</label>
+                  <input id="tab-1" type="radio" name="tab" class="atm" checked><label for="tab-1" id="tab1" class="tab atm_tab">Controlling Checklist</label>
                   <input id="tab-2" type="radio" name="tab" class="branch"><label for="tab-2" id="tab2" class="tab branch_tab"></label>
                   <div class="checklist-space">
-                    <form enctype="multipart/form-data" action="/checklist/postdata/software" method="post">
+                    <form enctype="multipart/form-data" action="/checklist/postdata/branchcontrol" method="post">
                       <div class="atm-form">
                         <div class="row">
                           <div class="col-12">
@@ -101,7 +101,7 @@
                           <div class="col-6">
                             <div class="group">
                               <label for="project-name" class="label">Project</label>
-                              <input name="project" for="project-name" id="project_name_dd" type="text" class="input" placeholder="Project Name">
+                              <input name="project_name" for="project-name" id="project_name_dd" type="text" class="input" placeholder="Project Name">
                             </div>
                         </div>
                           <div class="col-6">
@@ -113,36 +113,109 @@
 
                           <div class="col-6">
                             <div class="group">
-                              <label for="atm_id_dropdown" class="label">Code</label>
-                              <input name="code" for="atm-code" id="atm_id_dropdown" type="text" class="input" placeholder="Branch Code/ATM Code">
+                              <label for="atm_id_dropdown" class="label">Branch code</label>
+                              <input name="branch_code" for="atm-code" id="atm_id_dropdown" type="text" class="input" placeholder="Branch Code/ATM Code">
+                            </div>
+                          </div>
+
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="atm_id_dropdown" class="label">Intime</label>
+                              <input name="intime" for="atm-code" id="atm_id_dropdown" type="text" class="input" placeholder="">
+                            </div>
+                          </div>
+
+                          <div class="col-6">
+                            <div class="group">
+                              <label for="atm_id_dropdown" class="label">Out Time</label>
+                              <input name="outtime" for="atm-code" id="atm_id_dropdown" type="text" class="input" placeholder="">
                             </div>
                           </div>
                           
-                          
-                        
-                          <div class="col-6 form-dropdown">
+                          <div style="margin-bottom: 35px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
+                                <label for="ac2" style="font-size: 18px;"><b>iZion Details</b></label>
+                              </div>
+                              <div class="col-6 form-check">
+                                <label for="ac2"><b>Device Count</b></label>
+                                <input id="device_count" name="device_count" class="input" type="number" placeholder="Device Count">
+                              </div>
+                              <div name="izion_details" class="row" id="device_count_div" style="margin-top: 15px;">
+                                <!-- add izion div here -->
+                                <!-- <label>iZion-1</label>
+                                <div class="col-12" style="margin-top: 15px;">
+                                  <input class="input" name="izion-1-area" type="text" placeholder="Area">
+                                </div>
+                                <div class="col-6" style="margin-top: 15px;">
+                                  <input class="input" type="text" name="izion-1-mac" placeholder="MAC ID">
+                                </div>
+                                <div class="col-6" style="margin-top: 15px;">
+                                  <input class="input" type="text" name="izion-1-devid" placeholder="DeviceID">
+                                </div>
+                                <div class="col-6" style="margin-top: 15px;">
+                                  <input class="input" type="text" name="izion-1-acm" placeholder="AC Manufacturer">
+                                </div>
+                                <div class="col-6" style="margin-top: 15px;">
+                                  <input class="input" type="text" name="izion-1acmid" placeholder="Model ID">
+                                </div>
+                                <div class="col-4" style="margin-top: 15px;">
+                                  <input class="input" type="text" name="izion-1-min" placeholder="Min Temp">
+                                </div>
+                                <div class="col-4" style="margin-top: 15px;">
+                                  <input class="input" type="text" name="izion-1-set" placeholder="Set Temp">
+                                </div>
+                                <div class="col-4" style="margin-top: 15px;">
+                                  <input class="input" type="text" name="izion-1-max" placeholder="Max Temp">
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-12 form-dropdown">
                             <div class="group">
-                              <label for="note">Note</label>
+                              <label for="note">Other Devices</label>
+                              <input name="other_devices" style="padding: 0 20px 0 20px"  for="atm-code" id="atm_note" type="text" class="input" placeholder="Note">
+                            </div>
+                          </div>
+
+                          <div class="col-12 form-dropdown">
+                            <div class="group">
+                              <label for="note">Engineer Remarks</label>
+                              <input name="remarks" style="padding: 0 20px 0 20px"  for="atm-code" id="atm_note" type="text" class="input" placeholder="Note">
+                            </div>
+                          </div>
+                    
+                          <div class="col-12 form-dropdown">
+                            <div class="group">
+                              <label for="note">Notes</label>
                               <input name="note" style="padding: 0 20px 0 20px"  for="atm-code" id="atm_note" type="text" class="input" placeholder="Note">
                             </div>
                           </div>
-                            
-                          <div class="col-12">
-                            <div class="group">
-                              <input type="checkbox" value="Submitted" id="checklist_check" name="checklist_check">
-                              <label for="checklist_check">Checklist</label>
-                              <input name="chk_com" class="m-1" type="text" placeholder="comments"><br>
 
-                              <input class="mt-3" type="checkbox" value="Submitted" id="dashboard_check" name="dashboard_creation">
-                              <label for="dashboard_check">Dashboard</label>
-                              <input name="dash_com" class="m-1" type="text" placeholder="comments"><br>
-
-                              <input class="mt-3" type="checkbox" value="Submitted" id="data_check" name="data_integrity">
-                              <label for="data_check">Data Integrity</label>
-                              <input name="data_com" class="m-1" type="text" placeholder="comments"><br>
-                              
+                          <div style="margin-bottom: 35px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
+                                <label for="atm_site">Add Site Images</label>
+                              </div>
+                              <div class="col-12 form-dropdown">
+                                <input name="site_img" for="atm_site" id="atm_site_file" type="file" class="input" multiple="multiple">
+                              </div>
                             </div>
                           </div>
+                            
+                          <div style="margin-bottom: 35px;" class="group">
+                            <div class="row">
+                              <div class="col-12 form-check">
+                                <label for="atm_sign">Add Signature</label>
+                              </div>
+                              <div class="col-12 form-dropdown">
+                                <input name="sign_imgs" for="atm_sign" type="file" id="atm_sign_file" class="input">
+                              </div>
+                            </div>
+                          </div>
+
+                        
 
                           <div class="group">
                             <input onclick="reset()" style="margin: auto; width: 50%;" type="reset" class="button" value="Clear Form" checked>
@@ -202,7 +275,8 @@
 
   <script type="text/javascript" src="/checklist/assets/js/main.js?v=3.0"></script>
   <script type="text/javascript" src="/checklist/assets/js/app.js?v=3.0"></script>
-  <script type="text/javascript" src="/checklist/assets/js/checklist.js?v=3.0"></script>
+  <!-- <script type="text/javascript" src="/checklist/assets/js/checklist.js?v=3.0"></script> -->
+  <script type="text/javascript" src="/checklist/assets/js/branch.js"></script>
 
 </body>
 

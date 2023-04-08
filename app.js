@@ -116,6 +116,7 @@ app.get("/getimage", async function (req, res) {
     }
   });
 
+
 app.get('/', (req,res) => {
     if(req.session.loggedin){
         res.render('ticket/index.ejs')
@@ -443,9 +444,20 @@ app.get('/issuepage/:id', function(req, res){
     db.query('SELECT * from users', function(err, rows2, fields){
         if(err) throw err
     db.query('SELECT * FROM projects where project_id = '+rows[0]['project_id'], function(err, rows3, fields){
-        console.log(rows3)
+        if(err) throw err
     db.query('SELECT * FROM tickets WHERE ticket_ref = "'+id+'";', function(err, rows4, fields){
-        res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3,'tkt_ref':rows4})        
+        console.log(rows)
+        if(rows3[0]['project_type']=='branch' && rows[0]['status']=='POC' && rows[0]['subject']=='Site Survey'){
+            db.query('SELECT * FROM site_survey where ref_id = "'+id+'";', function(err, rows5, fields){
+                res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3,'tkt_ref':rows4, 'checklist':rows5})        
+            })
+        
+        }
+        else{
+            db.query('SELECT * FROM site_survey where ref_id = "'+id+'";', function(err, rows5, fields){
+                res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3,'tkt_ref':rows4, 'checklist':rows5})        
+            })
+        }
     })
     })
     })
