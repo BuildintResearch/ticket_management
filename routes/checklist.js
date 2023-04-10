@@ -141,8 +141,26 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                         if(err){throw err}
                         else{
                             console.log(obj)
-                            console.log('Ticket generated !!!')
-                            res.redirect('back')
+                            
+                            if(obj['assignee'].includes(',')){
+                                mail_list = ''
+                                usr_list = obj['assignee'].split(',')
+                                for(i=0;i<usr_list.length;i++){
+                                    mail_list+=usr_[0]['usermail']+','
+                                }
+                            }
+                            else{
+                                mail_list = obj['assignee']
+                            }
+                            db.query('SELECT usermail FROM users WHERE user_id = '+usr_list[i], function(err,usr_, fields){
+                                if(err){throw err}
+                                else{
+                                    body = 'Dear User, <br> Ticket Generated for Following : <br>'+obj['subject']+'-'+obj['project']+'-'+obj['location']+'-'+obj['city']+'-'+obj['status']
+                                    mail.ticket_mail(mail_list, body)  // ticket mail here
+                                    console.log('Ticket generated !!!')
+                                    res.redirect('back')
+                                }
+                            })
                         }
                     })
                 }
