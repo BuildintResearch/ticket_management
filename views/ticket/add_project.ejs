@@ -14,7 +14,7 @@
 <body>
 
     <nav id="nav-bar-top" class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-        <a class="navbar-brand" href="#">Ticket Management</a>
+        <a class="navbar-brand" href="#">iTicket</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -56,64 +56,96 @@
         </div>
       </nav>
         <!-- <button class="btn btn-primary"><i class="fa fa-plus"></i></button> -->
-    <div id="add-project">
+
+      <div id="add-project">
+        <div class="accordion" id="ticket_window">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="ticket_head">
+                <!-- data-bs-toggle="collapse" -->
+                <button class="accordion-button" type="button" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <span>Add Project</span>
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <form action="/posturl/addproject" method="POST">
+                    <div class="mb-3">
+                        <label for="pname" class="form-label">Project Name</label>
+                        <input name="name" class="form-control" id="pname">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Project</button>
+                  </form>
+                    <% if(message){ %>
+                    <div class="alert alert-success" style="margin-top: 10px;" role="alert">
+                      <h4 class="alert-heading">Project Added!</h4>
+                      <p>Name : <%= message['project_name'] %> <br></p>
+                      <hr>
+                    </div>
+                    <% } %>
+                </div>
+              </div>
+            </div>
+        </div>
+    
+    <div id="add-location" class="mt-5">
     <div class="accordion" id="ticket_window">
         <div class="accordion-item">
           <h2 class="accordion-header" id="ticket_head">
             <!-- data-bs-toggle="collapse" -->
             <button class="accordion-button" type="button" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              <a href="issues"><i class="fa fa-arrow-left" style="font-size: 20px;"></i></a> <span>Add Project</span>
+              <span>Add Location</span>
             </button>
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-                <form action="/posturl/addproject" method="POST">
+                <form action="/posturl/addlocation" method="POST">
                     <div class="mb-3">
                         <label for="pname" class="form-label">Project Name</label>
-                        <input name="project_name" class="form-control" id="pname">
+                        <select class="form-select" name="project_id" id="">
+                          <% for(i=0;i<project_list.length;i++){ %>
+                            <option value="<%= project_list[i]['project_id'] %>"><%= project_list[i]['name'] %></option>
+                            <% } %>
+                          <!-- project list generated here   -->
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="cityname" class="form-label">Location Name</label>
+                      <input name="loc_name" class="form-control" id="locationname">
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="cityname" class="form-label">Branch/ATM ID</label>
+                      <input name="branch_atm_id" class="form-control" id="locationname">
                     </div>
 
                     <div class="mb-3">
                       <label for="pname" class="form-label">Project Status</label>
-                      <select class="form-select" name="category" id="">
-                        <option value="POC">POC</option>
-                        <option value="Live" selected>Live</option>
+                      <select class="form-select" name="status" id="">
+                        <option value="POC">poc</option>
+                        <option value="Live" selected>live</option>
                       </select>
                     </div>
                   
                     <div class="mb-3">
                       <label for="projecttype" class="form-label">Location Type</label>
-                      <input name="project_type" class="form-control" id="locationname">
-                      <!-- <select class="form-select" name="project_type" id="">
-                        <option value="ATM" selected>ATM</option>
-                        <option value="Branch">Branch</option>
-                      </select> -->
+                      <select class="form-select" name="type" id="">
+                        <option value="POC">atm</option>
+                        <option value="Live" selected>branch</option>
+                      </select> 
                     </div>
 
                     <div class="mb-3">
                       <label for="cityname" class="form-label">City</label>
-                      <input name="city_name" class="form-control" id="locationname">
-                    </div>
-
-                    <div class="mb-3">
-                      <label for="locationname" class="form-label">Location</label>
-                      <input name="location_name" class="form-control" id="locationname">
+                      <input name="city" class="form-control" id="locationname">
                     </div>
 
                     <div class="mb-3">
                       <label for="locationname" class="form-label">Complete Address</label>
                       <input name="complete_address" class="form-control" id="locationname">
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Add Project</button>
-                    <% if(message){ %>
-                    <div class="alert alert-success" style="margin-top: 10px;" role="alert">
-                      <h4 class="alert-heading">Project Added!</h4>
-                      <p>Name : <%= message['project_name'] %> <br> Location : <%= message['location_name'] %></p>
-                      <hr>
-                      <p class="mb-0">Ticket raised to concerned team.</p>
-                    </div>
-                    <% } %>
+                    <button type="submit" class="btn btn-primary">Add Location</button>
+                </form>
             </div>
           </div>
         </div>

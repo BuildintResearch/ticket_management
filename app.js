@@ -158,10 +158,13 @@ app.get('/dashboard', (req, res) => {
 
 app.get('/addproject', (req, res) => {
     if(req.session.loggedin){
-        res.render('ticket/add_project.ejs',{"message":""})
+        db.query('SELECT * FROM projects',function(err,rows,fields){
+            console.log(rows)
+            res.render('ticket/add_project.ejs',{"project_list":rows,"message":""})
+        })
     }
     else{
-        res.render('ticket/login.ejs',{ message: req.flash('loginMessage') })
+        res.render('ticket/login.ejs')
     }
 })
 
@@ -191,6 +194,7 @@ app.get('/create_ticket',(req,res) => {
         res.render('ticket/ticket_gen.ejs')
     }
     else{
+        db.query('SELECT * FROM ')
         res.render('ticket/login.ejs',{ message: req.flash('loginMessage') })
     }
 })
@@ -209,15 +213,15 @@ app.get('/login', (req, res) => {
 app.post('/loginpost', urlparser, (req, res) => {
     var {email, pass} = req.body
     db.query('SELECT * FROM users WHERE usermail = ? AND pass = ?',[email, pass], function(err, rows, fields){
-        user_type = rows[0]['user_type']
         console.log(user_type)
-        if(err) throw err
-        if(rows.length <= 0){
+        if(err){console.log(err)}
+        else if(rows.length <= 0){
             console.log('username/pass not found',rows)
             req.flash('error','Please enter correct email and password')
             res.redirect('/login')
         }
-        else{       
+        else{
+            user_type = rows[0]['user_type']
             console.log('user found',rows[0]['user_id'])
             req.session.loggedin = true;
             res.redirect('/')
@@ -245,10 +249,13 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
                 req.body['attachments'] = file_name_list;
             }
             assignee = req.body['assignee']
-            req.body['assignee'] = assignee.join()
+            if(assignee.length>1 && typeof(assignee)=='object'){
+                req.body['assignee'] = assignee.join()
+            }
             delete assignee
             req.body['created_at'] = null;
             var sql = 'INSERT INTO tickets SET ?';
+            req.body['ticket_role'] = 1
             const formData = req.body
             console.log("URL POST : ",formData)
             db.query(sql, formData, function(err, data){
@@ -281,19 +288,21 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
     } 
 
     if(form == 'addproject'){
-        console.log(req.body)
-        if(req.body['category']=="POC"){
-            req.body['checklist_survey']='1'
-            req.body['checklist_monitoring']='1'
-            req.body['checklist_controlling']='1'
-            req.body['checklist_inst']='0'
-            console.log(req.body)
-            db.query('INSERT INTO projects SET ?', req.body, function (err, rows, fields){
-                if(err) {throw err}
-                else{
-                    db.query('SELECT project_id from projects order by 1 limit 1', function(err,rows1,fields){
-                        console.log('Project Added Successfully')
-                        obj = {userid: '44',
+        req.body['created_at']=null
+        db.query('INSERT INTO projects SET ?', req.body, function(err,rows,fields){
+            if(err){throw(err)}
+            else{
+                res.redirect('back')
+            }
+        })
+    }
+
+    if(form == 'addlocation'){
+        req.body['created_at']=null
+        db.query('INSERT INTO locations SET ?', req.body, function(err, rows, fields){
+            if(err){throw err}
+            else{
+                obj = { userid: '44',
                         project_id:rows1[0]['project_id'],
                         subject: 'Site Survey',
                         project: req.body['project_name'],
@@ -308,57 +317,97 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
                         description: 'Complete the site survey for mentioned location and upload the checklist',
                         attachments: 'na',
                         ticket_role : '1',
-                        created_at : null}
-                        db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
-                            if(err){throw err}
-                            else{
-                                console.log('Ticket generated !!!')
-                                res.render('ticket/add_project.ejs',{"message":req.body})
-                            }
-                        })
-                    })
+                        created_at : null
+                }
+                db.query('INSERT INTO tickets SET ?', ticket_obj, function(err,rows,fields){
+                    if(err){throw err}
+                    else{
+                        res.redirect('back')
+                    }
+                })
+            }
+        })
+    }
+
+    // if(form == 'addproject'){
+    //     console.log(req.body)
+    //     if(req.body['category']=="POC"){
+    //         req.body['checklist_survey']='1'
+    //         req.body['checklist_monitoring']='1'
+    //         req.body['checklist_controlling']='1'
+    //         req.body['checklist_inst']='0'
+    //         console.log(req.body)
+    //         db.query('INSERT INTO projects SET ?', req.body, function (err, rows, fields){
+    //             if(err) {throw err}
+    //             else{
+    //                 db.query('SELECT project_id from projects order by 1 limit 1', function(err,rows1,fields){
+    //                     console.log('Project Added Successfully')
+    //                     obj = {userid: '44',
+    //                     project_id:rows1[0]['project_id'],
+    //                     subject: 'Site Survey',
+    //                     project: req.body['project_name'],
+    //                     location: req.body['location_name'],
+    //                     city: req.body['city_name'],
+    //                     dept: 'Project Engineer',
+    //                     status: 'POC',
+    //                     assignee: '40,39',
+    //                     priority: 'High',
+    //                     ticket_type:"project",
+    //                     due_date: '',
+    //                     description: 'Complete the site survey for mentioned location and upload the checklist',
+    //                     attachments: 'na',
+    //                     ticket_role : '1',
+    //                     created_at : null}
+    //                     db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+    //                         if(err){throw err}
+    //                         else{
+    //                             console.log('Ticket generated !!!')
+    //                             res.render('ticket/add_project.ejs',{"message":req.body})
+    //                         }
+    //                     })
+    //                 })
                     
-                        }
-                    })
-                }
+    //                     }
+    //                 })
+    //             }
                 
-        if(req.body['category']=="Live"){
-            req.body['checklist_survey']='1'
-            req.body['checklist_monitoring']='0'
-            req.body['checklist_controlling']='0'
-            req.body['checklist_inst']='1'
-            db.query('INSERT INTO projects SET ?', req.body, function (err, rows, fields){
-                if(err) {throw err}
-                else{
-                    db.query('SELECT project_id from projects order by 1 limit 1', function(err,rows1,fields){
-                    console.log('Project Added Successfully')
-                        obj = {userid: '44',
-                        project_id:rows1[0]['project_id'],
-                        subject: 'Site Survey',
-                        project: req.body['project_name'],
-                        location: req.body['location_name'],
-                        city: req.body['city_name'],
-                        dept: 'Project Engineer',
-                        status: 'Live',
-                        assignee: '40,39',
-                        priority: 'High',
-                        ticket_type:"project",
-                        due_date: '',
-                        description: 'Complete the site survey for mentioned location and upload the checklist',
-                        attachments: 'na',
-                        ticket_role : '1',
-                        created_at : null}
-                        db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
-                            if(err){throw err}
-                            else{
-                                console.log('Ticket generated !!!')
-                                res.render('ticket/add_project.ejs',{"message":req.body})
-                            }
-                        })})
-                        }
-                    })
-                }
-        }
+        // if(req.body['category']=="Live"){
+        //     req.body['checklist_survey']='1'
+        //     req.body['checklist_monitoring']='0'
+        //     req.body['checklist_controlling']='0'
+        //     req.body['checklist_inst']='1'
+        //     db.query('INSERT INTO projects SET ?', req.body, function (err, rows, fields){
+        //         if(err) {throw err}
+        //         else{
+        //             db.query('SELECT project_id from projects order by 1 limit 1', function(err,rows1,fields){
+        //             console.log('Project Added Successfully')
+        //                 obj = {userid: '44',
+        //                 project_id:rows1[0]['project_id'],
+        //                 subject: 'Site Survey',
+        //                 project: req.body['project_name'],
+        //                 location: req.body['location_name'],
+        //                 city: req.body['city_name'],
+        //                 dept: 'Project Engineer',
+        //                 status: 'Live',
+        //                 assignee: '40,39',
+        //                 priority: 'High',
+        //                 ticket_type:"project",
+        //                 due_date: '',
+        //                 description: 'Complete the site survey for mentioned location and upload the checklist',
+        //                 attachments: 'na',
+        //                 ticket_role : '1',
+        //                 created_at : null}
+        //                 db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){
+        //                     if(err){throw err}
+        //                     else{
+        //                         console.log('Ticket generated !!!')
+        //                         res.render('ticket/add_project.ejs',{"message":req.body})
+        //                     }
+        //                 })})
+        //                 }
+        //             })
+        //         }
+        // }
             
     if(form == 'comment'){
         if(req.files!=null){
@@ -437,27 +486,35 @@ app.get('/gettable/:ass', function(req,res){
 
 app.get('/issuepage/:id', function(req, res){
     var id = req.params.id
-    db.query('SELECT * from ticket_followup WHERE tkid = '+id, function(err, rows1, fields){
-        if(err) throw err
     db.query('SELECT * FROM tickets WHERE tkid = '+id, function(err, rows, fields){
-        if(err) throw err
-    db.query('SELECT * from users', function(err, rows2, fields){
-        if(err) throw err
+        if(err){console.log(err)}
+        else{}
     db.query('SELECT * FROM projects where project_id = '+rows[0]['project_id'], function(err, rows3, fields){
-        if(err) throw err
+        if(err){console.log(err)}
+        else{}
+    db.query('SELECT * from ticket_followup WHERE tkid = '+id, function(err, rows1, fields){
+        if(err){console.log(err)}
+        else{}
+    db.query('SELECT * from users', function(err, rows2, fields){
+        if(err){console.log(err)}
+        else{}
     db.query('SELECT * FROM tickets WHERE ticket_ref = "'+id+'";', function(err, rows4, fields){
-        console.log(rows)
+        if(err){console.log(err)}
+        else{}
         if(rows3[0]['project_type']=='branch' && rows[0]['status']=='POC' && rows[0]['subject']=='Site Survey'){
             db.query('SELECT * FROM site_survey where ref_id = "'+id+'";', function(err, rows5, fields){
+                if(err){console.log(err)}
+                else{
                 res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3,'tkt_ref':rows4, 'checklist':rows5})        
+                }
             })
-        
         }
         else{
             db.query('SELECT * FROM site_survey where ref_id = "'+id+'";', function(err, rows5, fields){
                 res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3,'tkt_ref':rows4, 'checklist':rows5})        
             })
         }
+    
     })
     })
     })
