@@ -122,19 +122,20 @@ router.post('/postdata/:param', urlparser, upload.any(), function (req, res){
                 if(req.body['project_type']=="POC"){
                     obj = {userid: '44',
                     subject: 'Site Installation',
-                    project: req.body['project_name'],
+                    project_id: req.body['ref_id'],
                     location: req.body['atmaddr'],
                     city : req.body['atmcity'],
                     dept: 'Service',
                     ticket_type:'project',
                     status: 'POC',
-                    assignee: '39,40',
+                    assignee: '39',
                     priority: 'High',
                     due_date: '',
-                    description: 'Complete the monitoring installation and upload the checklist',
+                    description: 'Approve the checklist',
                     attachments: 'na',
                     ticket_type:'project',
                     project_id:req.body['project_id'],
+                    ticket_phase:'checklist-approval',
                     ticket_role : '1',
                     created_at: null}
                     db.query('INSERT INTO tickets SET ?', obj, function(err, rows, fields){

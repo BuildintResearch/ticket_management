@@ -302,28 +302,32 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
         db.query('INSERT INTO locations SET ?', req.body, function(err, rows, fields){
             if(err){throw err}
             else{
-                obj = { userid: '44',
-                        project_id:rows1[0]['project_id'],
+                db.query('SELECT * FROM locations ORDER BY 1 LIMIT 1;', function(err,rows1,fields){
+                    obj = { userid: '44', // generated from admin user
+                        project_id:req.body['project_id'],
+                        location_id : rows1[0]['loc_id'],
                         subject: 'Site Survey',
-                        project: req.body['project_name'],
-                        location: req.body['location_name'],
-                        city: req.body['city_name'],
+                        location: req.body['loc_name'],
+                        branch_atm_id:req.body['branch_atm_id'],
+                        city: req.body['city'],
                         dept: 'Project Engineer',
                         status: 'POC',
-                        assignee: '40,39',
+                        assignee: '39',
                         priority: 'High',
                         ticket_type:"project",
                         due_date: '',
-                        description: 'Complete the site survey for mentioned location and upload the checklist',
+                        description: 'Complete the site survey',
                         attachments: 'na',
                         ticket_role : '1',
+                        ticket_phase:'pd-assign',
                         created_at : null
-                }
-                db.query('INSERT INTO tickets SET ?', ticket_obj, function(err,rows,fields){
-                    if(err){throw err}
-                    else{
-                        res.redirect('back')
                     }
+                    db.query('INSERT INTO tickets SET ?', obj, function(err,rows,fields){
+                        if(err){throw err}
+                        else{
+                            res.redirect('back')
+                        }
+                })
                 })
             }
         })
@@ -486,46 +490,107 @@ app.get('/gettable/:ass', function(req,res){
 
 app.get('/issuepage/:id', function(req, res){
     var id = req.params.id
-    db.query('SELECT * FROM tickets WHERE tkid = '+id, function(err, rows, fields){
+    db.query('SELECT * FROM tickets WHERE tkid = '+id, function(err,rows1,fields){
         if(err){console.log(err)}
-        else{}
-    db.query('SELECT * FROM projects where project_id = '+rows[0]['project_id'], function(err, rows3, fields){
-        if(err){console.log(err)}
-        else{}
-    db.query('SELECT * from ticket_followup WHERE tkid = '+id, function(err, rows1, fields){
-        if(err){console.log(err)}
-        else{}
-    db.query('SELECT * from users', function(err, rows2, fields){
-        if(err){console.log(err)}
-        else{}
-    db.query('SELECT * FROM tickets WHERE ticket_ref = "'+id+'";', function(err, rows4, fields){
-        if(err){console.log(err)}
-        else{}
-        if(rows3[0]['project_type']=='branch' && rows[0]['status']=='POC' && rows[0]['subject']=='Site Survey'){
-            db.query('SELECT * FROM site_survey where ref_id = "'+id+'";', function(err, rows5, fields){
+        else{
+            db.query('SELECT * FROM locations WHERE project_id = '+rows1[0]['project_id']+' AND loc_id ='+rows1[0]['location_id']+';', function(err,rows2,fields){
                 if(err){console.log(err)}
                 else{
-                res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3,'tkt_ref':rows4, 'checklist':rows5})        
+                    db.query('SELECT * FROM projects WHERE project_id='+rows1[0]['project_id'], function(err,rows3,fields){
+                        if(err){console.log(err)}
+                        else{
+                            db.query('SELECT * FROM users;',function(err,rows4,fields){
+                                if(err){console.log(err)}
+                                else{
+                                    db.query('SELECT * FROM ticket_followup WHERE tkid='+id, function(err,rows5,fields){
+                                        if(err){console.log(err)}
+                                        else{
+                                            db.query('SELECT * FROM tickets WHERE ticket_ref='+id, function(err,rows6,fields){
+                                                if(err){console.log(err)}
+                                                else{
+                                                    res.render('ticket/issuepage.ejs',{'ticket':rows1,'location':rows2,'project':rows3,'users':rows4,'followup':rows5,'subtkt':rows6})
+                                                }
+                                            })
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
                 }
             })
         }
-        else{
-            db.query('SELECT * FROM site_survey where ref_id = "'+id+'";', function(err, rows5, fields){
-                res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3,'tkt_ref':rows4, 'checklist':rows5})        
-            })
-        }
+    })
+    // db.query('SELECT * FROM tickets WHERE tkid = '+id, function(err, rows, fields){
+    //     if(err){console.log(err)}
+    // db.query('SELECT * FROM projects where project_id = '+rows[0]['project_id'], function(err, rows3, fields){
+    //     if(err){console.log(err)}
+    // db.query('SELECT * from ticket_followup WHERE tkid = '+id, function(err, rows1, fields){
+    //     if(err){console.log(err)}
+    //     else{}
+    // db.query('SELECT * from users', function(err, rows2, fields){
+    //     if(err){console.log(err)}
+    //     else{}
+    // db.query('SELECT * FROM tickets WHERE ticket_ref = "'+id+'";', function(err, rows4, fields){
+    //     if(err){console.log(err)}
+    //     else{}
+    //     if(rows3[0]['project_type']=='branch' && rows[0]['status']=='POC' && rows[0]['subject']=='Site Survey'){
+    //         db.query('SELECT * FROM site_survey where ref_id = "'+id+'";', function(err, rows5, fields){
+    //             if(err){console.log(err)}
+    //             else{
+    //             res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3,'tkt_ref':rows4, 'checklist':rows5})        
+    //             }
+    //         })
+    //     }
+    //     else{
+    //         db.query('SELECT * FROM site_survey where ref_id = "'+id+'";', function(err, rows5, fields){
+    //             res.render('ticket/issuepage.ejs',{'data':rows,'followup':rows1,'users':rows2,'project':rows3,'tkt_ref':rows4, 'checklist':rows5})        
+    //         })
+    //     }
     
-    })
-    })
-    })
-    })
-    })
+    // })
+    // })
+    // })
+    // })
+    // })
 })
 
 app.get('/update/:id/:action', function(req, res){
     var id = req.params.id
     var action = req.params.action
     console.log(id, action)
+    if(action == 'pd-assign'){
+        db.query('UPDATE tickets SET assignee = 40, ticket_phase ="service-align"  where tkid = '+id, function(err,rows,fields){
+            if(err){console.log(err)}
+            else{
+                res.render('ticket/issues.ejs')
+            }
+        })
+    }
+    if(action == 'service-align'){
+        db.query('UPDATE tickets SET assignee = 39, ticket_phase ="pd-assign-survey"  where tkid = '+id, function(err,rows,fields){
+            if(err){console.log(err)}
+            else{
+                res.render('ticket/issues.ejs')
+            }
+        })
+    }
+    if(action == 'pd-assign-survey'){
+        db.query('UPDATE tickets SET assignee = 39, ticket_phase ="upload-checklist"  where tkid = '+id, function(err,rows,fields){
+            if(err){console.log(err)}
+            else{
+                res.render('ticket/issues.ejs')
+            }
+        })
+    }
+    if(action == 'upload-checklist'){
+        db.query('UPDATE tickets SET assignee = 39, ticket_phase ="checklist-approval"  where tkid = '+id, function(err,rows,fields){
+            if(err){console.log(err)}
+            else{
+                res.render('ticket/issues.ejs')
+            }
+        })
+    }
     if(action == 'solved'){
         db.query('UPDATE tickets SET solved = 1 where tkid = '+id)
         res.redirect('back');
@@ -604,12 +669,12 @@ app.post('/updateassignee/:tkid', urlparser, async(req,res,next) => {
     db.query('SELECT * FROM tickets WHERE tkid='+tkid, function(err, rows1, fields){
         if(err){ throw err}
         else{
-            console.log(req.body)
-            console.log(rows1)
+            // console.log(req.body)
+            // console.log(rows1)
                 obj = {userid: rows1[0]['userid'],
                     project_id:rows1[0]['project_id'],
+                    location_id : rows1[0]['location_id'],
                     subject: rows1[0]['subject'],
-                    project: rows1[0]['project'],
                     location: rows1[0]['location'],
                     city: rows1[0]['city'],
                     dept: rows1[0]['dept'],
@@ -622,6 +687,7 @@ app.post('/updateassignee/:tkid', urlparser, async(req,res,next) => {
                     attachments: 'na',
                     ticket_ref : rows1[0]['tkid'],
                     ticket_role : '2',
+                    ticket_phase:rows1[0]['ticket_phase'],
                     created_at : null}
                     sql = 'INSERT INTO tickets SET ?'
                     db.query(sql, obj, function(err, data){
