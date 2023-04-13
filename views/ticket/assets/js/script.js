@@ -83,6 +83,7 @@ async function issue_page(){
     html = "<input name='user_id' type='text' value='"+usrid+"'hidden>"
     cont.innerHTML +=html 
     load_assignee()
+    load_assignee1()
 }
 
 // clear local variables
@@ -282,9 +283,9 @@ document.getElementById('pr_filter').addEventListener('change', async function (
   })
 })
 
-// change assign code for modal on issue page
+// assign sub-ticket code for modal on issue page
 async function load_assignee(){
-  document.getElementById('change_assignee').addEventListener('click', async function (e){
+  document.getElementById('subticket_assignee').addEventListener('click', async function (e){
     console.log('hi')
     fetch("/getdata/users/none/none")
     .then(response => response.json())
@@ -305,6 +306,28 @@ async function load_assignee(){
   })
 }
 
+// change main ticket assignee
+async function load_assignee1(){
+  document.getElementById('change_assignee').addEventListener('click', async function (e){
+    console.log('hi')
+    fetch("/getdata/users/none/none")
+    .then(response => response.json())
+    .then(data => {
+      html=""
+      html1=""
+      console.log(data)
+      let ass = document.getElementById("p_list1")
+      // html += '<select name="assignee" class="selectpicker" data-live-search="true">'
+      html = ""
+      for(i=0;i<data.length;i++){
+        console.log(data[i])
+        html += "<option value="+data[i]["user_id"]+">"+data[i]['fname']+" "+data[i]['lname']+"</option>"
+      }
+      console.log(html)
+      ass.innerHTML = html
+    })
+  })
+}
 
 
 // document.getElementById("upload_file_btn").addEventListener('click', async function (e) {

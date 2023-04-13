@@ -189,12 +189,19 @@ app.get('/issuepage',(req,res) => {
     }
 })
 
+
 app.get('/create_ticket',(req,res) => {
     if(req.session.loggedin){
-        res.render('ticket/ticket_gen.ejs')
+        db.query('SELECT * FROM projects', function(err,rows,fields){
+            if(err){console.log(err)}
+            else{
+                db.query('SELECT * FROM locations', function(err,rows1,fields){
+                    res.render('ticket/ticket_gen.ejs', {'projects':rows,'locations':rows1})
+                })
+            }
+        })
     }
     else{
-        db.query('SELECT * FROM ')
         res.render('ticket/login.ejs',{ message: req.flash('loginMessage') })
     }
 })
@@ -248,36 +255,52 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
                 file_name_list = file_name_list.slice(0, -1)
                 req.body['attachments'] = file_name_list;
             }
-            assignee = req.body['assignee']
-            if(assignee.length>1 && typeof(assignee)=='object'){
-                req.body['assignee'] = assignee.join()
+            // assignee = req.body['assignee']
+            // if(assignee.length>1 && typeof(assignee)=='object'){
+            //     req.body['assignee'] = assignee.join()
+            // }
+            if(typeof(req.body['assignee'])=='object'){
+                req.body['assignee'] = req.body['assignee'].join()
             }
-            delete assignee
             req.body['created_at'] = null;
             var sql = 'INSERT INTO tickets SET ?';
+            req.body['ticket_type'] = 'issue'
             req.body['ticket_role'] = 1
-            const formData = req.body
-            console.log("URL POST : ",formData)
-            db.query(sql, formData, function(err, data){
-            if(err){throw err}
-            else{
-                console.log("User data inserted successfully")
-                // generate ticket mail to concerned person
-                db.query("SELECT * FROM users WHERE user_id IN ("+req.body['assignee']+")", function(err,rows,fields){
+           
+            db.query('SELECT * FROM locations WHERE loc_id = '+req.body['location_id'], function(err,rows,fields){
+                if(err){console.log(err)}
+                else{
+                    data_=rows[0]
+                    console.log('>>>>>>>>>>>>>>>>>>>>>>',rows)
+                    req.body['branch_atm_id'] = data_['branch_atm_id']     
+                    req.body['location'] = data_['loc_name']
+                    req.body['city'] = data_['city']
+                    console.log("URL POST : ",formData)
+                    db.query(sql, formData, function(err, data){
                     if(err){throw err}
                     else{
-                        let user_mail = []
-                        console.log(rows)
-                        for(i=0;i<rows.length;i++){
-                            user_mail.push(rows[i]['usermail'])
-                        }
-                        mailer.ticket_mail(user_mail,req.body)
+                        console.log("User data inserted successfully")
+                        // generate ticket mail to concerned person
+                        // db.query("SELECT * FROM users WHERE user_id IN ("+req.body['assignee']+")", function(err,rows,fields){
+                        //     if(err){throw err}
+                        //     else{
+                        //         let user_mail = []
+                        //         console.log(rows)
+                        //         for(i=0;i<rows.length;i++){
+                        //             user_mail.push(rows[i]['usermail'])
+                        //         }
+                        //         // mailer.ticket_mail(user_mail,req.body)
+                        //     }
+                        // })
+                        // mailer.ticket_mail(formData['assignee'])
                     }
-                })
-                // mailer.ticket_mail(formData['assignee'])
-            }
-            })  
-            res.redirect('/create_ticket')
+                    })  
+                    res.redirect('/create_ticket')
+                }
+            })       
+            
+            const formData = req.body
+            
         }
 
     if(form == 'adduser'){
@@ -299,38 +322,84 @@ app.post('/posturl/:form',urlparser, upload.any(),async (req, res,next) => {
 
     if(form == 'addlocation'){
         req.body['created_at']=null
-        db.query('INSERT INTO locations SET ?', req.body, function(err, rows, fields){
-            if(err){throw err}
-            else{
-                db.query('SELECT * FROM locations ORDER BY 1 LIMIT 1;', function(err,rows1,fields){
-                    obj = { userid: '44', // generated from admin user
-                        project_id:req.body['project_id'],
-                        location_id : rows1[0]['loc_id'],
-                        subject: 'Site Survey',
-                        location: req.body['loc_name'],
-                        branch_atm_id:req.body['branch_atm_id'],
-                        city: req.body['city'],
-                        dept: 'Project Engineer',
-                        status: 'POC',
-                        assignee: '39',
-                        priority: 'High',
-                        ticket_type:"project",
-                        due_date: '',
-                        description: 'Complete the site survey',
-                        attachments: 'na',
-                        ticket_role : '1',
-                        ticket_phase:'pd-assign',
-                        created_at : null
-                    }
-                    db.query('INSERT INTO tickets SET ?', obj, function(err,rows,fields){
-                        if(err){throw err}
-                        else{
-                            res.redirect('back')
+        if(req.body['status']=='poc'){
+            db.query('INSERT INTO locations SET ?', req.body, function(err, rows, fields){
+                if(err){throw err}
+                else{
+                    db.query('SELECT * FROM locations ORDER BY 1 DESC LIMIT 1;', function(err,rows1,fields){
+                        obj = { userid: '44', // generated from admin user
+                            project_id:req.body['project_id'],
+                            location_id : rows1[0]['loc_id'],
+                            subject: 'Site Survey',
+                            location: req.body['loc_name'],
+                            branch_atm_id:req.body['branch_atm_id'],
+                            city: req.body['city'],
+                            dept: 'Project Engineer',
+                            status: 'poc',
+                            assignee: '39',
+                            priority: 'High',
+                            ticket_type:"project",
+                            due_date: '',
+                            description: 'complete the site survey',
+                            attachments: 'na',
+                            ticket_role : '1',
+                            ticket_phase:'pd-assign',
+                            created_at : null
                         }
-                })
-                })
-            }
-        })
+                        db.query('INSERT INTO tickets SET ?', obj, function(err,rows,fields){
+                            if(err){throw err}
+                            else{
+                                res.redirect('back')
+                            }
+                    })
+                    })
+                }
+            })
+        }
+        if(req.body['status']=='live'){
+            db.query('INSERT INTO locations SET ?', req.body, function(err, rows, fields){
+                if(err){throw err}
+                else{
+                    db.query('SELECT * FROM locations ORDER BY 1 LIMIT 1;', function(err,rows1,fields){
+                        obj = { userid: '44', // generated from admin user
+                            project_id:req.body['project_id'],
+                            location_id : rows1[0]['loc_id'],
+                            subject: 'Site Survey',
+                            location: req.body['loc_name'],
+                            branch_atm_id:req.body['branch_atm_id'],
+                            city: req.body['city'],
+                            dept: 'Project Engineer',
+                            status: 'live',
+                            assignee: '39',
+                            priority: 'High',
+                            ticket_type:"project",
+                            due_date: '',
+                            description: 'complete the installation',
+                            attachments: 'na',
+                            ticket_role : '1',
+                            ticket_phase:'pd-assign',
+                            created_at : null
+                        }
+                        db.query('INSERT INTO tickets SET ?', obj, function(err,rows,fields){
+                            if(err){throw err}
+                            else{
+                                res.redirect('back')
+                            }
+                    })
+                    })
+                }
+            })
+        }
+        if(req.body['status']=='none'){
+            db.query('INSERT INTO locations SET ?', req.body, function(err, rows, fields){
+                if(err){throw err}
+                else{
+                    console.log('location added')
+                    res.redirect('back')
+                }
+            })
+        }
+        
     }
 
     // if(form == 'addproject'){
@@ -457,6 +526,7 @@ app.get('/getdata/:table/:column/:where', function(req, res){
         db.query(query, function(err, rows, fields){
             if(err){throw(err)}
             else{
+                // console.log(rows)
                 res.send(rows)
             }
         })
@@ -466,6 +536,7 @@ app.get('/getdata/:table/:column/:where', function(req, res){
         db.query(query, function(err, rows, fields){
             if(err){throw(err)}
             else{
+                // console.log(rows)
                 res.send(rows)
             }
         })
@@ -474,6 +545,7 @@ app.get('/getdata/:table/:column/:where', function(req, res){
         db.query('SELECT * from '+table+' where '+column+' LIKE "%'+where+'%";', function(err, rows, fields){
             if(err) {throw err}
             else{
+                // console.log(rows)
                 res.send(rows)
             }
         })
@@ -493,9 +565,11 @@ app.get('/issuepage/:id', function(req, res){
     db.query('SELECT * FROM tickets WHERE tkid = '+id, function(err,rows1,fields){
         if(err){console.log(err)}
         else{
+            console.log(rows1)
             db.query('SELECT * FROM locations WHERE project_id = '+rows1[0]['project_id']+' AND loc_id ='+rows1[0]['location_id']+';', function(err,rows2,fields){
                 if(err){console.log(err)}
                 else{
+                    console.log('--------------------',rows2)
                     db.query('SELECT * FROM projects WHERE project_id='+rows1[0]['project_id'], function(err,rows3,fields){
                         if(err){console.log(err)}
                         else{
@@ -558,38 +632,9 @@ app.get('/issuepage/:id', function(req, res){
 app.get('/update/:id/:action', function(req, res){
     var id = req.params.id
     var action = req.params.action
-    console.log(id, action)
-    if(action == 'pd-assign'){
-        db.query('UPDATE tickets SET assignee = 40, ticket_phase ="service-align"  where tkid = '+id, function(err,rows,fields){
-            if(err){console.log(err)}
-            else{
-                res.render('ticket/issues.ejs')
-            }
-        })
-    }
-    if(action == 'service-align'){
-        db.query('UPDATE tickets SET assignee = 39, ticket_phase ="pd-assign-survey"  where tkid = '+id, function(err,rows,fields){
-            if(err){console.log(err)}
-            else{
-                res.render('ticket/issues.ejs')
-            }
-        })
-    }
-    if(action == 'pd-assign-survey'){
-        db.query('UPDATE tickets SET assignee = 39, ticket_phase ="upload-checklist"  where tkid = '+id, function(err,rows,fields){
-            if(err){console.log(err)}
-            else{
-                res.render('ticket/issues.ejs')
-            }
-        })
-    }
-    if(action == 'upload-checklist'){
-        db.query('UPDATE tickets SET assignee = 39, ticket_phase ="checklist-approval"  where tkid = '+id, function(err,rows,fields){
-            if(err){console.log(err)}
-            else{
-                res.render('ticket/issues.ejs')
-            }
-        })
+
+    if(action=='forward'){
+        console.log(req.body)
     }
     if(action == 'solved'){
         db.query('UPDATE tickets SET solved = 1 where tkid = '+id)
@@ -603,6 +648,7 @@ app.get('/update/:id/:action', function(req, res){
         db.query('DELETE FROM tickets WHERE tkid = '+id)
         res.redirect('/mytickets')
     }  
+
 })
 
 app.get('/mytickets', function(req, res){
@@ -663,41 +709,60 @@ app.get('/fetchimg1/:tkid', async(req,res) => {
     })
 })
 
-//update assignee entry in the ticket
-app.post('/updateassignee/:tkid', urlparser, async(req,res,next) => {
-    var tkid = req.params.tkid    
-    db.query('SELECT * FROM tickets WHERE tkid='+tkid, function(err, rows1, fields){
-        if(err){ throw err}
-        else{
-            // console.log(req.body)
-            // console.log(rows1)
-                obj = {userid: rows1[0]['userid'],
-                    project_id:rows1[0]['project_id'],
-                    location_id : rows1[0]['location_id'],
-                    subject: rows1[0]['subject'],
-                    location: rows1[0]['location'],
-                    city: rows1[0]['city'],
-                    dept: rows1[0]['dept'],
-                    status: rows1[0]['status'],
-                    assignee: req.body['list_assignee'],
-                    priority: rows1[0]['priority'],
-                    ticket_type:"project",
-                    due_date: '',
-                    description: req.body['description'],
-                    attachments: 'na',
-                    ticket_ref : rows1[0]['tkid'],
-                    ticket_role : '2',
-                    ticket_phase:rows1[0]['ticket_phase'],
-                    created_at : null}
-                    sql = 'INSERT INTO tickets SET ?'
-                    db.query(sql, obj, function(err, data){
-                    if(err){throw err}
-                    else{
-                        res.redirect('back')
-                }
-            })
+//update assignee entry in the ticket and create sub ticket
+app.post('/updateassignee/:tkid/:check', urlparser, async(req,res,next) => {
+    var tkid = req.params.tkid   
+    var check = req.params.check
+    if(check=='sub'){
+        if(typeof(req.body['list_assignee'])=='object'){
+            req.body['list_assignee'] = req.body['list_assignee'].join()
         }
-    })
+        db.query('SELECT * FROM tickets WHERE tkid='+tkid, function(err, rows1, fields){
+            if(err){ throw err}
+            else{
+                // console.log(req.body)
+                // console.log(rows1)
+                    obj = {userid: rows1[0]['userid'],
+                        project_id:rows1[0]['project_id'],
+                        location_id : rows1[0]['location_id'],
+                        subject: rows1[0]['subject'],
+                        location: rows1[0]['location'],
+                        city: rows1[0]['city'],
+                        dept: rows1[0]['dept'],
+                        status: rows1[0]['status'],
+                        assignee: req.body['list_assignee'],
+                        priority: rows1[0]['priority'],
+                        ticket_type:"project",
+                        due_date: '',
+                        description: req.body['description'],
+                        attachments: 'na',
+                        ticket_ref : rows1[0]['tkid'],
+                        ticket_role : '2',
+                        ticket_phase:rows1[0]['ticket_phase'],
+                        created_at : null}
+                        sql = 'INSERT INTO tickets SET ?'
+                        db.query(sql, obj, function(err, data){
+                        if(err){throw err}
+                        else{
+                            res.redirect('back')
+                    }
+                })
+            }
+        })
+    }
+    if(check=='forward'){
+        if(typeof(req.body['list_assignee1'])=='object'){
+            req.body['list_assignee1'] = req.body['list_assignee1'].join()
+        }
+        console.log('list_assingeeasdsa:',req.body['list_assignee1'])
+        // query = 'UPDATE tickets SET assignee = '+req.body['list_assignee1']+', description= '+req.body['description']+'where'
+        db.query('UPDATE tickets SET assignee ="'+req.body['list_assignee1']+'", description="'+req.body['description']+'" where tkid = '+tkid,';', function(err,rows,fields){
+            if(err){console.log(err)}
+            else{
+                res.redirect('/issues')
+            }
+        })
+    }
 })
 
 //server

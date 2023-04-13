@@ -31,12 +31,7 @@ router.use(express.static("views/checklist/"));
     
 // })
 
-router.get('/branchcontrol/:ref/:pid/:pstatus', function(req,res){
-    var ref = req.params.ref
-    var pid = req.params.pid
-    var pstatus = req.params.pstatus
-    res.render('checklist/branchcontrol.ejs', {"refid":ref,"pid":pid,"p_status":pstatus})
-})
+
 
 router.get('/test/:refid', function(req,res){
     var refid = req.params.refid
@@ -60,12 +55,21 @@ router.get('/test2', function(req,res){
     }) 
 })
 
-router.get('/survey_service/:ref/:pid/:pstatus', function(req, res){
+router.get('/survey_service/:ref/:pid/:loc_id/:pstatus', function(req, res){
     var ref = req.params.ref
     var pid = req.params.pid
     var pstatus = req.params.pstatus
-   res.render('checklist/survey_service.ejs', {"refid":ref,"pid":pid,"p_status":pstatus});
+    var loc_id = req.params.loc_id
+   res.render('checklist/survey_service.ejs', {"refid":ref,"pid":pid,"p_status":pstatus,"loc_id":loc_id});
 });
+
+router.get('/branchcontrol/:ref/:pid/:pstatus/:loc_id', function(req,res){
+    var ref = req.params.ref
+    var pid = req.params.pid
+    var pstatus = req.params.pstatus
+    var loc_id = req.params.loc_id
+    res.render('checklist/branchcontrol.ejs', {"refid":ref,"pid":pid,"p_status":pstatus,"loc_id":loc_id})
+})
 
 router.get('/testing', function(req,res){
     res.render('checklist/testing.ejs')
@@ -75,18 +79,20 @@ router.get('/back', function(req,res){
     res.redirect('back')
 })
 
-router.get('/branch_c/:ref/:pid/:pstatus', function(req,res){
+router.get('/branch_c/:ref/:pid/:loc_id/:pstatus', function(req,res){
     var ref = req.params.ref
     var pid = req.params.pid
     var pstatus = req.params.pstatus
-    res.render('checklist/branch_checklist.ejs', {"refid":ref,"pid":pid,"p_status":pstatus})
+    var loc_id = req.params.loc_id
+    res.render('checklist/branch_checklist.ejs', {"refid":ref,"pid":pid,"p_status":pstatus,"loc_id":loc_id})
 })
 
-router.get('/software_c/:ref/:pid/:pstatus', function(req,res){
+router.get('/software_c/:ref/:pid/:loc_id/:pstatus', function(req,res){
     var ref = req.params.ref
     var pid = req.params.pid
     var pstatus = req.params.pstatus
-    res.render('checklist/software_checklist.ejs', {"refid":ref,"pid":pid,"p_status":pstatus})
+    var loc_id = req.params.loc_id
+    res.render('checklist/software_checklist.ejs', {"refid":ref,"pid":pid,"loc_id":loc_id,"p_status":pstatus,})
 })
 
 router.post('/postdata/:param', urlparser, upload.any(), function (req, res){

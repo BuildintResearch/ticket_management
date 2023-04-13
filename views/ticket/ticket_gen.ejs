@@ -81,17 +81,23 @@
                     </div>
                     <div class="mb-3">
                       <label for="project_name" class="form-label">Select Project</label>
-                      <input name="project" class="form-control" id="project_name" list="project_list">
-                      <datalist id="project_list">
-                        <!-- project list here -->
-                      </datalist>
+                      <select name="project_id" id="project_name" class="form-select form-select-md mb-3">
+                        <% for(i=0;i<projects.length;i++){ %>
+                          <option value="<%=projects[i]['project_id']%>"><%= projects[i]['name'] %></option>
+                        <% } %>
+                      </select>
                     </div>
                     <div class="mb-3">
                         <label for="site_name" class="form-label">Select Location</label>
-                        <input name="location" class="form-control" id="site_name" list="site_list">
-                        <datalist id="site_list">
+                        <!-- <input name="location" class="form-control" id="site_name" list="site_list"> -->
+                        <select name="location_id" id="site_list" class="form-control">
+                        <!-- <datalist id="site_list"> -->
                           <!-- project locations here -->
-                        </datalist>
+                          <% for(i=0;i<locations.length;i++){ %>
+                            <option value="<%=locations[i]['loc_id']%>"><%=locations[i]['branch_atm_id']%></option>
+                          <% } %>
+                        <!-- </datalist> -->
+                      </select>
                     </div>
                     <div class="mb-3">
                         <label for="project_dept" class="form-label">Select Department</label>

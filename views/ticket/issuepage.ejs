@@ -99,39 +99,7 @@
             <p><b>Created Time : </b><%= ticket[0]['created_at'] %></p>
           </div>
           <div class="col-6">
-            <% switch (ticket[0]['ticket_phase']) {
-              case 'pd-assign' : %>
-                <form action="/update/<%= ticket[0]['tkid'] %>/pd-assign">
-                  <button type="submit" class="btn btn-primary">Forward</button>
-                </form>
-                      <% break;
-              
-              case 'service-align' : %>
-                <form action="/update/<%= ticket[0]['tkid'] %>/service-align">
-                  <button type="submit" class="btn btn-primary">Forward</button>
-                </form>
-                      <% break;
-              
-              case 'pd-assign-survey' : %>
-                <form action="/update/<%= ticket[0]['tkid'] %>/pd-assign-survey">
-                  <button type="submit" class="btn btn-primary">Forward</button>
-                </form>
-                      <% break;
-
-              case 'upload-checklist' : %>
-              <form action="/update/<%= ticket[0]['tkid'] %>/upload-checklist">
-                <button type="submit" class="btn btn-primary">Forward</button>
-              </form>
-                    <% break;
-
-              case 'checklist-verify' : %>
-              <form action="/update/<%= ticket[0]['tkid'] %>/upload-checklist">
-                <button type="submit" class="btn btn-primary">Forward</button>
-              </form>
-                    <% break;
-              } %>
-
-              
+                         
               <!-- Modal -->
               <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -143,7 +111,7 @@
                       </button>
                     </div>
                     
-                      <form enctype="application/x-www-form-urlencoded" name="assignee_data" action="/updateassignee/<%= ticket[0]['tkid'] %>" method="POST" id="sub_ticket">
+                      <form enctype="application/x-www-form-urlencoded" name="assignee_data" action="/updateassignee/<%= ticket[0]['tkid'] %>/sub" method="POST" id="sub_ticket">
                       <div class="modal-body">
                         <div class="mb-3">
                           <!-- <input type="text" name="test"> -->
@@ -164,12 +132,43 @@
                 </div>
               </div>
               <!-- Modal -->
-              <% if(ticket[0]['ticket_phase']=='upload-checklist'){ %>
-                <a href="/checklist/survey_service/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
-              <% } %>
+              <!-- Modal1 -->
+              <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Assignees</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    
+                      <form enctype="application/x-www-form-urlencoded" name="assignee_data" action="/updateassignee/<%= ticket[0]['tkid'] %>/forward" method="POST" id="sub_ticket">
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <!-- <input type="text" name="test"> -->
+                          <label for="p_list" class="form-label">Assignee</label>
+                          <select id="p_list1" name="list_assignee1" class="form-select" size="5" aria-label="size 3 select example" multiple>
+                            <!-- list of assignees -->
+                          </select>
+                          <input class="form-control mt-3" name="description" placeholder="Enter Description" type="text">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- Modal1 -->
+             
               <% if(ticket[0]['ticket_role']==1){ %>
-                <button type="button" class="btn btn-primary mt-1" id="change_assignee" data-toggle="modal" data-target="#exampleModalCenter">Assign</button>
+                <button type="button" class="btn btn-primary mt-1" id="subticket_assignee" data-toggle="modal" data-target="#exampleModalCenter">Assign SubTicket</button>
+                <button type="submit" class="btn btn-primary mt-2" id="change_assignee" data-toggle="modal" data-target="#exampleModalCenter1">Forward Ticket</button>
               <% } %>
+              
               <!-- <% if(ticket[0]['ticket_role']==2){ %>
                 <a href="/issuepage/<%= subtkt['ticket_ref'] %>">Main Ticket</a>
               <% } %> -->
@@ -179,8 +178,19 @@
                 <a href="/issuepage/<%= subtkt[i]['tkid'] %>">Subticket-<%=i+1%></a>
                 <% } %>
               <% } %>  
+              <% if(ticket[0]['status']=='poc' & location[0]['type']=='branch'){ %>
+                <a href="/checklist/branch_c/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
+              <% } %>
+              <% if(ticket[0]['status']=='poc' & location[0]['type']=='atm'){ %>
+                <a href="/checklist/survey_service/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
+              <% } %>
+              <% if(ticket[0]['status']=='live' & location[0]['type']=='branch'){ %>
+                <a href="/checklist/branch_c/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
+              <% } %>
+              <% if(ticket[0]['status']=='live' & location[0]['type']=='atm'){ %>
+                <a href="/checklist/branch_c/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
+              <% } %>
           </div>
-          
           
           <div class="row" style="text-align: left; font-size: 20px;">
             <div class="col-12">
