@@ -60,6 +60,9 @@ async function issue_load(){
       console.log(data)
       var j = 0;
       for(i=0;i<data.length;i++){
+        fetch("/getdata/locations/project_id/+data[i]['project_id]")
+        .then(response => response.json())
+        .then(data1 => console.log(data1))
         console.log(data[i])
         if((data[i]['priority']=="High" && data[i]['solved']==0) && (data[i]['status']!='POC' && data[i]['status']!='Live')){
           html += "<tr class='table-danger'><td>"+(j+1)+"</td><td>"+data[i]['project']+"</td><td>"+data[i]['status']+"</td><td>"+data[i]['priority']+"</td><td><a style='color: inherit;' href='/issuepage/"+data[i]['tkid']+"'>"+data[i]['subject']+"</a></td><td>"+data[i]['assignee']+"</td></td><td>"+data[i]['due_date']+"</td><td>"+data[i]['created_at']+"</td><td><i class='bi bi-three-dots-vertical'></i></td></tr>"
@@ -213,75 +216,81 @@ async function getImage(){
       }
 }
 }
+
 // main history load 
-async function history_func(){
-  history_ele = document.getElementById("history_table")
-  fetch("/getdata/tickets/none/none")
-  .then(response => response.json())
-  .then(result => {
-    html = ""
-    console.log(result)
-    for(var i=0; i<=result.length-1; i++){
-      console.log(result[i]['tkid'])
-      html += '<tr><td>'+(i+1)+'</td><td>'+result[i]['project']+'</td><td>'+result[i]['location']+'</td><td><a style="color: inherit;" href="/issuepage/'+result[i]['tkid']+'">'+result[i]['subject']+'</a></td><td>'+result[i]['dept']+'</td><td>'+result[i]['status']+'</td><td>'+result[i]['assignee']+'</td><td>'+result[i]['priority']+'</td><td>'+result[i]['due_date']+'</td><td>'+result[i]['description']+'</td><td>'+result[i]['created_at']+'</td></tr>'
-    }
-    history_ele.innerHTML += html
-  })
-}
+// async function history_func(){
+//   history_ele = document.getElementById("history_table")
+//   fetch("/getdata/tickets/none/none")
+//   .then(response => response.json())
+//   .then(result => {
+//     html = ""
+//     console.log(result)
+//     for(var i=0; i<=result.length-1; i++){
+//       console.log(result[i]['tkid'])
+//       html += '<tr><td>'+(i+1)+'</td><td>'+result[i]['project']+'</td><td>'+result[i]['location']+'</td><td><a style="color: inherit;" href="/issuepage/'+result[i]['tkid']+'">'+result[i]['subject']+'</a></td><td>'+result[i]['dept']+'</td><td>'+result[i]['status']+'</td><td>'+result[i]['assignee']+'</td><td>'+result[i]['priority']+'</td><td>'+result[i]['due_date']+'</td><td>'+result[i]['description']+'</td><td>'+result[i]['created_at']+'</td></tr>'
+//     }
+//     history_ele.innerHTML += html
+//   })
+// }
 
 // project filter
 document.getElementById('project_filter').addEventListener('change', async function (e){
   ele = document.getElementById('project_filter').value
-  console.log(ele)
-  fetch("/getdata/tickets/project/"+ele)
+  history_ele = document.getElementById("history_table")
+  // console.log(ele)
+  fetch("/historyload/"+ele)
   .then(response => response.json())
   .then(result => {
+    console.log(result)
     html = ""
     history_ele.innerHTML = html
-    console.log(result)
+    // console.log(result)
     for(var i=0; i<=result.length-1; i++){
-      console.log(result[i]['tkid'])
-      html += '<tr><td>'+(i+1)+'</td><td>'+result[i]['project']+'</td><td>'+result[i]['location']+'</td><td><a style="color: inherit;" href="/issuepage/'+result[i]['tkid']+'">'+result[i]['subject']+'</a></td><td>'+result[i]['dept']+'</td><td>'+result[i]['status']+'</td><td>'+result[i]['assignee']+'</td><td>'+result[i]['priority']+'</td><td>'+result[i]['due_date']+'</td><td>'+result[i]['description']+'</td><td>'+result[i]['created_at']+'</td></tr>'
+    //   fetch("/fetchloc/"+ele)
+    //   .then(response => response.json())
+    //   .then(result1 => {
+        html += '<tr><td>'+(i+1)+'</td><td>'+result[0]['name']+'</td><td>'+result[i]['location']+'</td><td><a style="color: inherit;" href="/issuepage/'+result[i]['tkid']+'">'+result[i]['subject']+'</a></td><td>'+result[i]['dept']+'</td><td>'+result[i]['status']+'</td><td>'+result[i]['assignee']+'</td><td>'+result[i]['priority']+'</td><td>'+result[i]['due_date']+'</td><td>'+result[i]['description']+'</td><td>'+result[i]['created_at']+'</td></tr>'
+      // })
     }
     history_ele.innerHTML += html
   })
 })
 
-// dept filter
-document.getElementById('dept_filter').addEventListener('change', async function (e){
-  ele = document.getElementById('dept_filter').value
-  console.log(ele)
-  fetch("/getdata/tickets/dept/"+ele)
-  .then(response => response.json())
-  .then(result => {
-    html = ""
-    history_ele.innerHTML = html
-    console.log(result)
-    for(var i=0; i<=result.length-1; i++){
-      console.log(result[i]['tkid'])
-      html += '<tr><td>'+(i+1)+'</td><td>'+result[i]['project']+'</td><td>'+result[i]['location']+'</td><td><a style="color: inherit;" href="/issuepage/'+result[i]['tkid']+'">'+result[i]['subject']+'</a></td><td>'+result[i]['dept']+'</td><td>'+result[i]['status']+'</td><td>'+result[i]['assignee']+'</td><td>'+result[i]['priority']+'</td><td>'+result[i]['due_date']+'</td><td>'+result[i]['description']+'</td><td>'+result[i]['created_at']+'</td></tr>'
-    }
-    history_ele.innerHTML += html
-  })
-})
+// // dept filter
+// document.getElementById('dept_filter').addEventListener('change', async function (e){
+//   ele = document.getElementById('dept_filter').value
+//   console.log(ele)
+//   fetch("/getdata/tickets/dept/"+ele)
+//   .then(response => response.json())
+//   .then(result => {
+//     html = ""
+//     history_ele.innerHTML = html
+//     console.log(result)
+//     for(var i=0; i<=result.length-1; i++){
+//       console.log(result[i]['tkid'])
+//       html += '<tr><td>'+(i+1)+'</td><td>'+result[i]['project']+'</td><td>'+result[i]['location']+'</td><td><a style="color: inherit;" href="/issuepage/'+result[i]['tkid']+'">'+result[i]['subject']+'</a></td><td>'+result[i]['dept']+'</td><td>'+result[i]['status']+'</td><td>'+result[i]['assignee']+'</td><td>'+result[i]['priority']+'</td><td>'+result[i]['due_date']+'</td><td>'+result[i]['description']+'</td><td>'+result[i]['created_at']+'</td></tr>'
+//     }
+//     history_ele.innerHTML += html
+//   })
+// })
 
-// priority filter
-document.getElementById('pr_filter').addEventListener('change', async function (e){
-  ele = document.getElementById('pr_filter').value
-  console.log(ele)
-  fetch("/getdata/tickets/priority/"+ele)
-  .then(response => response.json())
-  .then(result => {
-    html = ""
-    history_ele.innerHTML = html
-    console.log(result)
-    for(var i=0; i<=result.length-1; i++){
-      console.log(result[i]['tkid'])
-      html += '<tr><td>'+(i+1)+'</td><td>'+result[i]['project']+'</td><td>'+result[i]['location']+'</td><td><a style="color: inherit;" href="/issuepage/'+result[i]['tkid']+'">'+result[i]['subject']+'</a></td><td>'+result[i]['dept']+'</td><td>'+result[i]['status']+'</td><td>'+result[i]['assignee']+'</td><td>'+result[i]['priority']+'</td><td>'+result[i]['due_date']+'</td><td>'+result[i]['description']+'</td><td>'+result[i]['created_at']+'</td></tr>'
-    }
-    history_ele.innerHTML += html
-  })
-})
+// // priority filter
+// document.getElementById('pr_filter').addEventListener('change', async function (e){
+//   ele = document.getElementById('pr_filter').value
+//   console.log(ele)
+//   fetch("/getdata/tickets/priority/"+ele)
+//   .then(response => response.json())
+//   .then(result => {
+//     html = ""
+//     history_ele.innerHTML = html
+//     console.log(result)
+//     for(var i=0; i<=result.length-1; i++){
+//       console.log(result[i]['tkid'])
+//       html += '<tr><td>'+(i+1)+'</td><td>'+result[i]['project']+'</td><td>'+result[i]['location']+'</td><td><a style="color: inherit;" href="/issuepage/'+result[i]['tkid']+'">'+result[i]['subject']+'</a></td><td>'+result[i]['dept']+'</td><td>'+result[i]['status']+'</td><td>'+result[i]['assignee']+'</td><td>'+result[i]['priority']+'</td><td>'+result[i]['due_date']+'</td><td>'+result[i]['description']+'</td><td>'+result[i]['created_at']+'</td></tr>'
+//     }
+//     history_ele.innerHTML += html
+//   })
+// })
 
 // assign sub-ticket code for modal on issue page
 async function load_assignee(){

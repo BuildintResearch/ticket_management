@@ -569,7 +569,6 @@ app.get('/issuepage/:id', function(req, res){
             db.query('SELECT * FROM locations WHERE project_id = '+rows1[0]['project_id']+' AND loc_id ='+rows1[0]['location_id']+';', function(err,rows2,fields){
                 if(err){console.log(err)}
                 else{
-                    console.log('--------------------',rows2)
                     db.query('SELECT * FROM projects WHERE project_id='+rows1[0]['project_id'], function(err,rows3,fields){
                         if(err){console.log(err)}
                         else{
@@ -675,6 +674,20 @@ app.get('/history', function(req, res){
     }
 })
 
+app.get("/historyload/:pid", urlparser, function(req,res){
+    var pid = req.params.pid
+    db.query("SELECT * FROM tickets WHERE project_id="+pid, function(err,rows,fields){
+        res.send(rows)
+    })
+})
+
+app.get("/fetchproject/:pid", urlparser, function(req,res){
+    var pid = req.params.pid
+    db.query("SELECT * FROM projects WHERE project_id="+pid, function(err,rows,fields){
+        res.send(rows)
+    })
+})
+
 //ftp file route // unused route
 // app.post('/files', upload.any(),async (req, res, next) => {
 //     let file_name_list = "";
@@ -756,7 +769,8 @@ app.post('/updateassignee/:tkid/:check', urlparser, async(req,res,next) => {
         }
         console.log('list_assingeeasdsa:',req.body['list_assignee1'])
         // query = 'UPDATE tickets SET assignee = '+req.body['list_assignee1']+', description= '+req.body['description']+'where'
-        db.query('UPDATE tickets SET assignee ="'+req.body['list_assignee1']+'", description="'+req.body['description']+'" where tkid = '+tkid,';', function(err,rows,fields){
+        // db.query('UPDATE tickets SET assignee ="'+req.body['list_assignee1']+'", description="'+req.body['description']+'" where tkid = '+tkid,';', function(err,rows,fields){
+            db.query('UPDATE tickets SET assignee ="'+req.body['list_assignee1']+'" where tkid = '+tkid,';', function(err,rows,fields){
             if(err){console.log(err)}
             else{
                 res.redirect('/issues')

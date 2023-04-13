@@ -83,6 +83,9 @@
             <p><b>Status : </b><%= ticket[0]['status'] %></p>
           </div>
           <div class="col-6">
+            <p><b>Branch/ATM id : </b><%= ticket[0]['branch_atm_id'] %></p>
+          </div>
+          <div class="col-6">
             <p><b>Assignee : </b><% for(i=0;i<users.length-1;i++){ %>
               <% if(ticket[0]['assignee'].includes(users[i]['user_id'])){ %>
                 <%= users[i]['fname'] %> <%= users[i]['lname'] %>;
@@ -151,7 +154,7 @@
                           <select id="p_list1" name="list_assignee1" class="form-select" size="5" aria-label="size 3 select example" multiple>
                             <!-- list of assignees -->
                           </select>
-                          <input class="form-control mt-3" name="description" placeholder="Enter Description" type="text">
+                          <!-- <input class="form-control mt-3" name="description" placeholder="Enter Description" type="text"> -->
                         </div>
                       </div>
                       <div class="modal-footer">
@@ -251,5 +254,6 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </body>
 </html>

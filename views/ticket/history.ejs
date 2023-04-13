@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="assets/css/style.css" type="text/css">
     <title>Overview</title>
 </head>
-
-<body onload="history_func()">
+<!-- onload="history_func()" -->
+<body>
     <nav id="nav-bar-top" class="navbar navbar-expand-lg navbar-light bg-light mb-3">
         <a class="navbar-brand" href="/">iTicket</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,41 +58,39 @@
       <i class="bi bi-exclamation-triangle-fill" id="exc-i"></i> <span>Issue History</span>
       <div class="container">
         <div>
-          <div><label for="project_filter">Project Name</label></div>
-          <select name="project_filter" id="project_filter">
-            <!-- project filter html here -->
-            <option value="euronet">Euronet</option>
-            <option value="diebold">Diebold</option>
-            <option value="idfc">IDFC</option>
-            <option value="dbs">DBS</option>
-            <% for(i=0;i<data.length;i++){ %>
-              <option value="<%=data[i]['project_name']%>"><%=data[i]['project_name']%></option>
-            <% } %>
-            <option value="" selected hidden></option>
-          </select>
+          <!-- <form action="/historyload" method="post" enctype="application/x-www-form-urlencoded" name="project_load"> -->
+            <div><label for="project_filter" id="project_history_filter">Project Name</label></div>
+            <select name="project_filter" id="project_filter">
+              <!-- project filter html here -->
+              <% for(i=0;i<data.length;i++){ %>
+                <option value="<%=data[i]['project_id']%>"><%=data[i]['name']%></option>
+              <% } %>
+              <option value="" selected hidden></option>
+            </select>
+          <!-- </form> -->
         </div>
-        <div>
+        <!-- <div>
           <div><label for="dept_filter">Dept Name</label></div>
           <select name="dept_filter" id="dept_filter">
-            <!-- project filter html here -->
             <option value="service">Service</option>
             <option value="data">Data Analyst</option>
             <option value="software">Software</option>
             <option value="project">Project</option>
             <option value="" selected hidden></option>
           </select>
-        </div>
-        <div>
-          <div><label for="pr_filter">Priority</label></div>
+        </div> -->
+        <!-- <div>
+          <div>
+            <label for="pr_filter">Priority</label>
+          </div>
           <select name="pr_filter" id="pr_filter">
-            <!-- project filter html here -->
             <option value="normal">Normal</option>
             <option value="high">High</option>
             <option value="low">Low</option>
             <option value="" selected hidden></option>
           </select>
         </div>
-      </div>
+      </div> -->
       <div id="ow-cont-sub">
         <table id="sum_table">
           <thead>
