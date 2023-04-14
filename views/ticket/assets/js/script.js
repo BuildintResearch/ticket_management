@@ -244,13 +244,9 @@ document.getElementById('project_filter').addEventListener('change', async funct
     console.log(result)
     html = ""
     history_ele.innerHTML = html
-    // console.log(result)
-    for(var i=0; i<=result.length-1; i++){
-    //   fetch("/fetchloc/"+ele)
-    //   .then(response => response.json())
-    //   .then(result1 => {
-        html += '<tr><td>'+(i+1)+'</td><td>'+result[0]['name']+'</td><td>'+result[i]['location']+'</td><td><a style="color: inherit;" href="/issuepage/'+result[i]['tkid']+'">'+result[i]['subject']+'</a></td><td>'+result[i]['dept']+'</td><td>'+result[i]['status']+'</td><td>'+result[i]['assignee']+'</td><td>'+result[i]['priority']+'</td><td>'+result[i]['due_date']+'</td><td>'+result[i]['description']+'</td><td>'+result[i]['created_at']+'</td></tr>'
-      // })
+    console.log(result)
+    for(var i=0; i<result.length; i++){
+        html += '<tr><td>'+(i+1)+'</td><td>'+result[i]['location']+'</td><td><a style="color: inherit;" href="/issuepage/'+result[i]['tkid']+'">'+result[i]['subject']+'</a></td><td>'+result[i]['dept']+'</td><td>'+result[i]['status']+'</td><td>'+result[i]['assignee']+'</td><td>'+result[i]['priority']+'</td><td>'+result[i]['due_date']+'</td><td>'+result[i]['description']+'</td><td>'+result[i]['created_at']+'</td></tr>'
     }
     history_ele.innerHTML += html
   })

@@ -676,9 +676,9 @@ app.get('/history', function(req, res){
 
 app.get("/historyload/:pid", urlparser, function(req,res){
     var pid = req.params.pid
-    db.query("SELECT * FROM tickets WHERE project_id="+pid, function(err,rows,fields){
-        res.send(rows)
-    })
+        db.query("SELECT * FROM tickets WHERE project_id="+pid, function(err,rows,fields){
+            res.send(rows)
+        })
 })
 
 app.get("/fetchproject/:pid", urlparser, function(req,res){

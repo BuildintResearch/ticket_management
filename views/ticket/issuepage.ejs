@@ -191,7 +191,7 @@
                 <a href="/checklist/branch_c/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
               <% } %>
               <% if(ticket[0]['status']=='live' & location[0]['type']=='atm'){ %>
-                <a href="/checklist/branch_c/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
+                <a href="/checklist/survey_service/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
               <% } %>
           </div>
           
