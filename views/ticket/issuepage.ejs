@@ -61,6 +61,8 @@
         <div class="row">
           <div class="col-12" style="text-align: center; padding: 25px;">
             <h4 hidden id="tkid"><%= ticket[0]['tkid'] %></h4>
+            <h4 hidden id="creator"><%= ticket[0]['userid']%></h4>
+            <h4 hidden id="userxoxo"></h4>
             <h4><%= ticket[0]['subject'] %></h4>
           </div>
         </div>
@@ -93,6 +95,14 @@
               <% } %>
             </p>
           </div>
+          <div class="col-6">
+            <p><b>Assigner : </b><% for(i=0;i<users.length-1;i++){ %>
+              <% if(ticket[0]['userid'].includes(users[i]['user_id'])){ %>
+                <%= users[i]['fname'] %> <%= users[i]['lname'] %>;
+              <% } %>
+              <% } %>
+            </p>
+          </div>
           
         </div>
       
@@ -114,7 +124,7 @@
                       </button>
                     </div>
                     
-                      <form enctype="application/x-www-form-urlencoded" name="assignee_data" action="/updateassignee/<%= ticket[0]['tkid'] %>/sub" method="POST" id="sub_ticket">
+                      <form enctype="application/x-www-form-urlencoded" name="assignee_data" action="/updateassignee/<%= ticket[0]['tkid'] %>/sub/<%= ticket[0]['userid'] %>/<%= ticket[0]['assignee'] %>/<%= ticket[0]['project_id'] %>/<%= ticket[0]['location_id'] %>/<%= ticket[0]['description'] %>/<%= ticket[0]['ticket_type'] %>" method="POST" id="sub_ticket">
                       <div class="modal-body">
                         <div class="mb-3">
                           <!-- <input type="text" name="test"> -->
@@ -146,7 +156,7 @@
                       </button>
                     </div>
                     
-                      <form enctype="application/x-www-form-urlencoded" name="assignee_data" action="/updateassignee/<%= ticket[0]['tkid'] %>/forward" method="POST" id="sub_ticket">
+                      <form enctype="application/x-www-form-urlencoded" name="assignee_data" action="/updateassignee/<%= ticket[0]['tkid'] %>/forward/<%= ticket[0]['userid'] %>/<%= ticket[0]['assignee'] %>/<%= ticket[0]['project_id'] %>/<%= ticket[0]['location_id'] %>/<%= ticket[0]['description'] %>/<%= ticket[0]['ticket_type'] %>" method="POST" id="sub_ticket">
                       <div class="modal-body">
                         <div class="mb-3">
                           <!-- <input type="text" name="test"> -->
@@ -168,8 +178,8 @@
               <!-- Modal1 -->
              
               <% if(ticket[0]['ticket_role']==1){ %>
-                <button type="button" class="btn btn-primary mt-1" id="subticket_assignee" data-toggle="modal" data-target="#exampleModalCenter">Assign SubTicket</button>
-                <button type="submit" class="btn btn-primary mt-2" id="change_assignee" data-toggle="modal" data-target="#exampleModalCenter1">Forward Ticket</button>
+                <button type="button" class="btn btn-primary" id="subticket_assignee" data-toggle="modal" data-target="#exampleModalCenter">Assign SubTicket</button>
+                <button type="submit" class="btn btn-primary" id="change_assignee" data-toggle="modal" data-target="#exampleModalCenter1">Forward Ticket</button>
               <% } %>
               
               <!-- <% if(ticket[0]['ticket_role']==2){ %>
@@ -180,21 +190,39 @@
                 <% for(i=0;i<subtkt.length;i++){ %>
                 <a href="/issuepage/<%= subtkt[i]['tkid'] %>">Subticket-<%=i+1%></a>
                 <% } %>
-              <% } %>  
-              <% if(ticket[0]['status']=='poc' & location[0]['type']=='branch'){ %>
-                <a href="/checklist/branch_c/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
-              <% } %>
-              <% if(ticket[0]['status']=='poc' & location[0]['type']=='atm'){ %>
-                <a href="/checklist/survey_service/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
-              <% } %>
-              <% if(ticket[0]['status']=='live' & location[0]['type']=='branch'){ %>
-                <a href="/checklist/branch_c/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
-              <% } %>
-              <% if(ticket[0]['status']=='live' & location[0]['type']=='atm'){ %>
-                <a href="/checklist/survey_service/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>"><button class="btn btn-primary mt-1">Fill Checklist</button></a>
-              <% } %>
+              <% } %> 
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Checklist
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/checklist/survey_service/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>">iATM</a>
+                  <a class="dropdown-item" href="/checklist/branch_c/<%= ticket[0]['tkid']%>/<%= project[0]['project_id']%>/<%= location[0]['loc_id'] %>/<%= ticket[0]['status'] %>">POC</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                  <!-- <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Separated link</a>
+                </div> -->
+              </div>
+              <!-- custom file upload option -->
+              <!-- <form enctype="multipart/form-data" action="/customfile/" method="post">
+                <div class="container" id="issue-comment-div" style="margin-top: 10px;">
+                  <div class="form-group">
+                      <input name="file_input" type="file" class="form-control" id="file_input" multiple="multiple">
+                      <button style="margin-top: 10px;" class="btn btn-primary">Add</button>
+                  </div>
+                </div>	
+              </form> -->
           </div>
-          
+          </div>
+          <div id="close_tk">
+            <% if(ticket[0]['solved']==0){ %>
+            <a href="/update/<%=ticket[0]['tkid'] %>/solved"><button class="btn btn-primary">Close Ticket</button></a>
+            <% } %>
+            <% if(ticket[0]['solved']==1){ %>
+              <a href="/update/<%=ticket[0]['tkid'] %>/reopen"><button class="btn btn-primary">Reopen Ticket</button></a>
+            <% } %>
+            
+          </div>
           <div class="row" style="text-align: left; font-size: 20px;">
             <div class="col-12">
               <% if(ticket[0]['attachments'] != 'na'){ %>
@@ -255,5 +283,6 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
 </body>
 </html>

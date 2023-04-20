@@ -45,6 +45,7 @@ var mailer = require('./mailer')
 //       })
 //     })
 //   }
+
 // multer upload function
 let upload = multer({
     storage: new FTPStorage({
@@ -61,8 +62,6 @@ var db = require('./routes/database')
 const cors = require("cors");
 const { json, urlencoded, query } = require('express');
 var app = express();
-// app.use(express.json());       
-// app.use(express.urlencoded({extended: true})); 
 var checklist = require('./routes/checklist');
 app.use(express.static("./views/ticket/"));
 app.engine('html',require('ejs').renderFile)
@@ -87,11 +86,6 @@ app.use(session({
 
 //vars
 global.user_type=''
-
-// test routes
-// app.get("/test", async function (req,res){
-//     res.render('ticket/add_project.ejs')
-// })
 
 // checklist routes
 app.use("/checklist",checklist);
@@ -637,6 +631,7 @@ app.get('/update/:id/:action', function(req, res){
     }
     if(action == 'solved'){
         db.query('UPDATE tickets SET solved = 1 where tkid = '+id)
+        console.log(id, " closed")
         res.redirect('back');
     }   
     if(action == 'reopen'){
@@ -688,6 +683,7 @@ app.get("/fetchproject/:pid", urlparser, function(req,res){
     })
 })
 
+
 //ftp file route // unused route
 // app.post('/files', upload.any(),async (req, res, next) => {
 //     let file_name_list = "";
@@ -723,9 +719,15 @@ app.get('/fetchimg1/:tkid', async(req,res) => {
 })
 
 //update assignee entry in the ticket and create sub ticket
-app.post('/updateassignee/:tkid/:check', urlparser, async(req,res,next) => {
+app.post('/updateassignee/:tkid/:check/:userid/:assignee/:project_id/:location_id/:desc/:ttype', urlparser, async(req,res,next) => {
     var tkid = req.params.tkid   
     var check = req.params.check
+    var userid = req.params.userid
+    var assignee = req.params.assignee
+    var project_id = req.params.project_id
+    var location_id = req.params.location_id
+    var desc = req.params.desc
+    var ttype = req.params.ttype
     if(check=='sub'){
         if(typeof(req.body['list_assignee'])=='object'){
             req.body['list_assignee'] = req.body['list_assignee'].join()
@@ -741,11 +743,12 @@ app.post('/updateassignee/:tkid/:check', urlparser, async(req,res,next) => {
                         subject: rows1[0]['subject'],
                         location: rows1[0]['location'],
                         city: rows1[0]['city'],
+                        branch_atm_id : rows1[0]['branch_atm_id'],
                         dept: rows1[0]['dept'],
                         status: rows1[0]['status'],
                         assignee: req.body['list_assignee'],
                         priority: rows1[0]['priority'],
-                        ticket_type:"project",
+                        ticket_type:ttype,
                         due_date: '',
                         description: req.body['description'],
                         attachments: 'na',
@@ -757,7 +760,21 @@ app.post('/updateassignee/:tkid/:check', urlparser, async(req,res,next) => {
                         db.query(sql, obj, function(err, data){
                         if(err){throw err}
                         else{
-                            res.redirect('back')
+                            tk_history = {
+                                tkid : tkid,
+                                from : userid,
+                                to : req.body['list_assignee'],
+                                project_id : project_id,
+                                location_id : location_id,
+                                description : desc, 
+                                type : ttype
+                            }
+                            db.query('INSERT INTO ticket_history SET ?', tk_history, function(err,rows,fields){
+                                if(err){console.log(err)}
+                                else{
+                                    res.redirect('back')
+                                }
+                            })
                     }
                 })
             }
@@ -767,16 +784,53 @@ app.post('/updateassignee/:tkid/:check', urlparser, async(req,res,next) => {
         if(typeof(req.body['list_assignee1'])=='object'){
             req.body['list_assignee1'] = req.body['list_assignee1'].join()
         }
-        console.log('list_assingeeasdsa:',req.body['list_assignee1'])
+        // console.log('list_assingeeasdsa:',req.body['list_assignee1'])
         // query = 'UPDATE tickets SET assignee = '+req.body['list_assignee1']+', description= '+req.body['description']+'where'
         // db.query('UPDATE tickets SET assignee ="'+req.body['list_assignee1']+'", description="'+req.body['description']+'" where tkid = '+tkid,';', function(err,rows,fields){
             db.query('UPDATE tickets SET assignee ="'+req.body['list_assignee1']+'" where tkid = '+tkid,';', function(err,rows,fields){
             if(err){console.log(err)}
             else{
-                res.redirect('/issues')
+                // ticket history body
+                tk_history = {
+                    tkid : tkid,
+                    from : userid,
+                    to : req.body['list_assignee1'],
+                    project_id : project_id,
+                    location_id : location_id,
+                    description : desc, 
+                    type : ttype
+                }
+                db.query('INSERT INTO ticket_history SET ?', tk_history, function(err,rows,fields){
+                    if(err){console.log(err)}
+                    else{
+                        res.redirect('/issues')
+                    }
+                })
             }
         })
     }
+})
+
+// custom file upload download
+app.post('/customfile', urlparser, upload.any() ,async (req, res,next) => {
+// if(req.files!=null){
+//     let file_name_list = "";
+//     for(i=0;i<req.files.length;i++){    
+//         file_name_list += req.files[i]['path']+";"
+//     }
+//     file_name_list = file_name_list.slice(0, -1)
+    // req.body['attachments'] = file_name_list;
+    // const {tkid,description,user_id,attachments} = req.body
+    console.log('running')
+    console.log(req.files)
+    // db.query('INSERT INTO ticket_followup SET ?',{tkid:tkid,description:description,user_id:user_id,attachments:attachments}, function(err ,rows, field){
+    //     if(err){throw(err)}
+    //     else{
+    //         console.log("comment added")
+    //         res.redirect('back');
+    //     }
+    // })
+// }
 })
 
 //server

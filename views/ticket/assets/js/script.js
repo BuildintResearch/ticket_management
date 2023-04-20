@@ -54,28 +54,33 @@ async function issue_load(){
     let iss = document.getElementById('issuetab')
     html="" 
     console.log(iss)
-    fetch("/getdata/tickets/assignee/"+usrid)
+    await fetch("/getdata/tickets/assignee/"+usrid)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
       var j = 0;
       for(i=0;i<data.length;i++){
-        fetch("/getdata/locations/project_id/+data[i]['project_id]")
-        .then(response => response.json())
-        .then(data1 => console.log(data1))
-        console.log(data[i])
-        if((data[i]['priority']=="High" && data[i]['solved']==0) && (data[i]['status']!='POC' && data[i]['status']!='Live')){
-          html += "<tr class='table-danger'><td>"+(j+1)+"</td><td>"+data[i]['project']+"</td><td>"+data[i]['status']+"</td><td>"+data[i]['priority']+"</td><td><a style='color: inherit;' href='/issuepage/"+data[i]['tkid']+"'>"+data[i]['subject']+"</a></td><td>"+data[i]['assignee']+"</td></td><td>"+data[i]['due_date']+"</td><td>"+data[i]['created_at']+"</td><td><i class='bi bi-three-dots-vertical'></i></td></tr>"
+        // async () => {
+        // fetch("fetchproject/"+data[i]['project_id'])
+        // .then(response1 => response1.json())
+        // .then(data1 => {
+        //   console.log(data1)
+          // console.log("ticket data : ",data[0])
+          // console.log("project name : ",data1[i]['name'])
+          // console.log('data length : ',data.length)
+        if(data[i]['solved']==0){
+          html += "<tr class='table-danger'><td>"+(j+1)+"</td><td>"+data[i]['name']+"</td><td>"+data[i]['status']+"</td><td>"+data[i]['priority']+"</td><td><a style='color: inherit;' href='/issuepage/"+data[i]['tkid']+"'>"+data[i]['subject']+"</a></td><td>"+data[i]['assignee']+"</td></td><td>"+data[i]['due_date']+"</td><td>"+data[i]['created_at']+"</td><td><i class='bi bi-three-dots-vertical'></i></td></tr>"
           j+=1
         }
-        if(((data[i]['status']=='POC' || data[i]['status']=='Live')) && data[i]['solved']==0){
-          html += "<tr class='table-info'><td>"+(j+1)+"</td><td>"+data[i]['project']+"</td><td>"+data[i]['status']+"</td><td>"+data[i]['priority']+"</td><td><a style='color: inherit;' href='/issuepage/"+data[i]['tkid']+"'>"+data[i]['subject']+"</a></td><td>"+data[i]['assignee']+"</td></td><td>"+data[i]['due_date']+"</td><td>"+data[i]['created_at']+"</td><td><i class='bi bi-three-dots-vertical'></i></td></tr>"
-          j+=1
-        }
-        if((data[i]['priority']=="Low" || data[i]['priority']=="Normal") && data[i]['solved']==0){
-          html += "<tr><td>"+(j+1)+"</td><td>"+data[i]['project']+"</td><td>"+data[i]['status']+"</td><td>"+data[i]['priority']+"</td><td><a style='color: inherit;' href='/issuepage/"+data[i]['tkid']+"'>"+data[i]['subject']+"</a></td><td>"+data[i]['assignee']+"</td><td>"+data[i]['due_date']+"</td><td>"+data[i]['created_at']+"</td><td><i class='bi bi-three-dots-vertical'></i></td></tr>"
-          j+=1
-        }
+        // if(((data[i]['status']=='POC' || data[i]['status']=='Live')) && data[i]['solved']==0){
+        //   html += "<tr class='table-info'><td>"+(j+1)+"</td><td>"+data[i]['name']+"</td><td>"+data[i]['status']+"</td><td>"+data[i]['priority']+"</td><td><a style='color: inherit;' href='/issuepage/"+data[i]['tkid']+"'>"+data[i]['subject']+"</a></td><td>"+data[i]['assignee']+"</td></td><td>"+data[i]['due_date']+"</td><td>"+data[i]['created_at']+"</td><td><i class='bi bi-three-dots-vertical'></i></td></tr>"
+        //   j+=1
+        // }
+        // if((data[i]['priority']=="Low" || data[i]['priority']=="Normal") && data[i]['solved']==0){
+        //   html += "<tr><td>"+(j+1)+"</td><td>"+data[i]['name']+"</td><td>"+data[i]['status']+"</td><td>"+data[i]['priority']+"</td><td><a style='color: inherit;' href='/issuepage/"+data[i]['tkid']+"'>"+data[i]['subject']+"</a></td><td>"+data[i]['assignee']+"</td><td>"+data[i]['due_date']+"</td><td>"+data[i]['created_at']+"</td><td><i class='bi bi-three-dots-vertical'></i></td></tr>"
+        //   j+=1
+        // }
+      // })
+      // }
       }
       iss.innerHTML = html
     })
@@ -87,6 +92,18 @@ async function issue_page(){
     cont.innerHTML +=html 
     load_assignee()
     load_assignee1()
+    document.getElementById("userxoxo").innerText = localStorage.getItem("uid");
+    var userxoxo = parseInt(document.getElementById('userxoxo').innerText)
+    var creator = parseInt(document.getElementById('creator').innerText)
+    if(userxoxo == creator){
+      document.getElementById('close_tk').hidden = false
+    }
+    else{
+      document.getElementById('close_tk').hidden = true
+    }
+    // if(document.getElementById('userxoxo').innerText == document.getElementById('creator').innerText){
+    //   console.log(123456)
+    // }
 }
 
 // clear local variables
@@ -234,6 +251,7 @@ async function getImage(){
 // }
 
 // project filter
+if(document.getElementById('project_filter')){
 document.getElementById('project_filter').addEventListener('change', async function (e){
   ele = document.getElementById('project_filter').value
   history_ele = document.getElementById("history_table")
@@ -246,11 +264,13 @@ document.getElementById('project_filter').addEventListener('change', async funct
     history_ele.innerHTML = html
     console.log(result)
     for(var i=0; i<result.length; i++){
+        if(result[i]['ticket_role']==1){
         html += '<tr><td>'+(i+1)+'</td><td>'+result[i]['location']+'</td><td><a style="color: inherit;" href="/issuepage/'+result[i]['tkid']+'">'+result[i]['subject']+'</a></td><td>'+result[i]['dept']+'</td><td>'+result[i]['status']+'</td><td>'+result[i]['assignee']+'</td><td>'+result[i]['priority']+'</td><td>'+result[i]['due_date']+'</td><td>'+result[i]['description']+'</td><td>'+result[i]['created_at']+'</td></tr>'
-    }
+    }}
     history_ele.innerHTML += html
   })
 })
+}
 
 // // dept filter
 // document.getElementById('dept_filter').addEventListener('change', async function (e){
